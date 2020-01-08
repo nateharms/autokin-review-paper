@@ -1,0 +1,1103 @@
+@article{Ebejer:2012,
+author = {Ebejer, Jean-Paul and Morris, Garrett M. and Deane, Charlotte M.},
+title = {Freely Available Conformer Generation Methods: How Good Are They?},
+journal = {Journal of Chemical Information and Modeling},
+volume = {52},
+number = {5},
+pages = {1146-1158},
+year = {2012},
+doi = {10.1021/ci2004658},
+    note ={PMID: 22482737},
+
+URL = { 
+        https://doi.org/10.1021/ci2004658
+    
+},
+eprint = { 
+        https://doi.org/10.1021/ci2004658
+    
+}
+
+}
+
+@article{kinbot:2019,
+title = "KinBot: Automated stationary point search on potential energy surfaces",
+journal = "Computer Physics Communications",
+pages = "106947",
+year = "2019",
+issn = "0010-4655",
+doi = "https://doi.org/10.1016/j.cpc.2019.106947",
+url = "http://www.sciencedirect.com/science/article/pii/S0010465519302978",
+author = "Ruben Van de Vijver and Judit Zádor",
+keywords = "Automation, Potential energy surface, Temperature and pressure dependent rate coefficients",
+abstract = "KinBot is a Python code that automatically characterizes kinetically important stationary points on reactive potential energy surfaces and arranges the results into a form that lends itself easily to master equation calculations. This version of KinBot tackles C, H, O and S atom containing species and unimolecular (isomerization or dissociation) reactions. KinBot iteratively changes the geometry of the reactant to obtain initial guesses for reactive saddle points defined by KinBot’s reaction types, which are then optimized by a third-party quantum chemistry package. KinBot verifies the connectivity of the saddle points with the reactant and identifies the products through intrinsic reaction coordinate calculations. New calculations can be automatically spawned from the products to obtain complete potential energy surfaces. The utilities of KinBot include conformer searches, projected frequency and hindered rotor calculations, and the automatic determination of the rotational symmetry numbers. Input files for popular RRKM master equation codes are automatically built, enabling an automated workflow all the way to the calculation of pressure and temperature dependent rate coefficients. Four examples are included. (i) [1,3]-sigmatropic H-migration reactions of unsaturated hydrocarbons and oxygenates are calculated to assess the relative importance of suprafacial and antrafacial reactions. (ii) Saddle points on three products of gamma-valerolactone thermal decomposition are studied and compared to literature potential energy surfaces. (iii) The previously published propene+OH reaction is reproduced to show the capability of building an entire potential energy surface. (iv) All species up to C4 in the Aramco Mech 2.0 are subjected to a KinBot search.
+Program summary
+Program title: KinBot Program files doi: http://dx.doi.org/10.17632/hsh6dvv2zj.1 Licensing provisions: BSD 3-Clause Programming language: Python Supplementary material: 1. A static version of the source code (KinBot.tar), 2. The manual for the static version (KinBot_Manual.pdf) 3. Geometries and energies of the stationary points on the potential energy surface of the sigmatropic reaction search (sigmatropic_H_shift.out) 4. Geometries and energies of the stationary points on the potential energy surface of the propene+ OH central and terminal addition reaction (propene+oh central addition.out, propene+oh terminal addition.out) 5. Geometries and energies of the stationary points on the potential energy surface of gamma valerolactone, 4-pentenoic acid and 3-pentenoic acid (GVL energies and geometries.out, 4PA energies and geometries.out, 3PA energies and geometries.out) 6. Example runs including all input and output files for a one-well search for propanol radical, full PES search for the n-pentyl radical, a search for all homolytic scission in propanol, and the reaction searches for GVL (output.zip) 7. Results of symmetry calculations for a literature benchmark dataset (Symmetry_correct.pdf, Symmetry_wrong.pdf) Nature of problem: Automatic discovery of unimolecular reaction pathways (isomerization and dissociation) for molecules and radicals relevant in gas-phase combustion and atmospheric chemistry, including oxidation and pyrolytic processes for structures including carbon, oxygen, sulfur and hydrogen atoms. The reactants, products, and transition states are characterized using a suite of tools coupled to electronic structure codes, and the results are provided in a format that lends itself easily to calculating rate coefficients based on statistical rate theories with other external codes. Solution method: Reaction pathways are identified using heuristic searches starting from a reactant by iteratively altering its geometry toward a good guess for a transition state for reactions with barriers. The transition state is identified as a first-order saddle point on the potential energy surface, which is located using local optimization methods of third-party quantum chemistry codes. We use intrinsic reaction coordinate calculations to verify the direct connectivity of the saddle point to the reactant and to identify the product species. Conformational searches, hindered rotor potentials, frequency calculations, and high-level optimizations yield the necessary data for RRKM master equation calculations. Additional comments including restrictions and unusual features: KinBot is designed to run on Unix clusters, and is written in Python, compatible with versions 2.7 and 3. It communicates with a PBS or SLURM workload manager to submit quantum chemistry calculations to third-party software. It makes use of a modified fork of ASE for the input writing, calling and output parsing of the quantum chemistry software which has been tested with Gaussian (G09RevD.01). OpenBabel (2.4.1) and RDKit (2018.09.01) are used to convert smiles to internal species representations and for species comparison and results visualization. The output of KinBot can be visualized with the PESViewer script, and graph structures are drawn using NetworkX. The master equation solvers MESS or MESMER are needed to calculate rate coefficients at the end of a given run. This version of KinBot can handle H, C, S, and O atom-containing molecules, and searches for isomerization and dissociation pathways."
+}
+
+@book{dft:1994,
+  title={Density-Functional Theory of Atoms and Molecules},
+  author={Parr, R.G. and Weitao, Y.},
+  isbn={9780195357738},
+  series={International Series of Monographs on Chemistry},
+  url={https://books.google.com/books?id=mGOpScSIwU4C},
+  year={1994},
+  publisher={Oxford University Press}
+}
+
+@article{UFF:1992,
+author = {Rappe, A. K. and Casewit, C. J. and Colwell, K. S. and Goddard, W. A. and Skiff, W. M.},
+title = {UFF, a full periodic table force field for molecular mechanics and molecular dynamics simulations},
+journal = {Journal of the American Chemical Society},
+volume = {114},
+number = {25},
+pages = {10024-10035},
+year = {1992},
+doi = {10.1021/ja00051a040},    
+}
+
+@article{SEMethods:2014,
+author = {Thiel, Walter},
+title = {Semiempirical quantum–chemical methods},
+journal = {Wiley Interdisciplinary Reviews: Computational Molecular Science},
+volume = {4},
+number = {2},
+pages = {145-157},
+doi = {10.1002/wcms.1161},
+abstract = {The semiempirical methods of quantum chemistry are reviewed, with emphasis on established neglect of diatomic differential overlap-based methods (MNDO, AM1, PM3) and on the more recent orthogonalization-corrected methods (OM1, OM2, OM3). After a brief historical overview, the methodology is presented in nontechnical terms, covering the underlying concepts, parameterization strategies, and computational aspects, as well as linear scaling and hybrid approaches. The application section addresses selected recent benchmarks and surveys ground-state and excited-state studies, including recent OM2-based excited-state dynamics investigations. This article is categorized under: Electronic Structure Theory > Semiempirical Electronic Structure Methods},
+year = {2014}
+}
+}
+@article{HF:1951,
+  title = {A Simplification of the Hartree-Fock Method},
+  author = {Slater, J. C.},
+  journal = {Phys. Rev.},
+  volume = {81},
+  issue = {3},
+  pages = {385--390},
+  numpages = {0},
+  year = {1951},
+  month = {Feb},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRev.81.385},
+  url = {https://link.aps.org/doi/10.1103/PhysRev.81.385}
+}
+
+@article{QSS:2017,
+author = {Perez-Benito, Joaquin F.},
+title = {Some Considerations on the Fundamentals of Chemical Kinetics: Steady State, Quasi-Equilibrium, and Transition State Theory},
+journal = {Journal of Chemical Education},
+volume = {94},
+number = {9},
+pages = {1238-1246},
+year = {2017},
+doi = {10.1021/acs.jchemed.6b00957},
+
+URL = { 
+        https://doi.org/10.1021/acs.jchemed.6b00957
+    
+},
+eprint = { 
+        https://doi.org/10.1021/acs.jchemed.6b00957
+    
+}
+
+}
+
+@inbook{CC:2002,
+author = { Hermann G. K{\"u}mmel },
+title = {A BIOGRAPHY OF THE COUPLED CLUSTER METHOD},
+booktitle = {Recent Progress in Many-Body Theories},
+publisher = {World Scientific},
+chapter = {},
+pages = {334-348},
+doi = {10.1142/9789812777843_0040},
+year = 2002,
+    abstract = { Abstract The origins of the coupled cluster method are described. Special attention is paid to the arguments put forward for the exponential structure of the wave functions. Various approximation schemes invented during the last 40 years are presented. The problems arising from these approximations necessarily truncating or destroying the exponential form are discussed and ways to deal with them are described. }
+}
+
+
+@article{ gonzalez:2011,
+	author = {{Gonz\'alez, M.A.}},
+	title = {Force fields and molecular dynamics simulations},
+	DOI= "10.1051/sfn/201112009",
+	url= "https://doi.org/10.1051/sfn/201112009",
+	journal = {JDN},
+	year = 2011,
+	volume = 12,
+	pages = "169-200",
+}
+
+
+@book{simons:2003,
+  title={An Introduction to Theoretical Chemistry},
+  author={Simons, J.},
+  isbn={9780521823609},
+  lccn={2002073610},
+  url={https://books.google.com/books?id=\_e-BQgAACAAJ},
+  year={2003},
+  publisher={Cambridge University Press}
+}
+
+
+@article{Brown:1981, title={A Method of Calculating Tunneling Corrections for Eckart Potential Barriers}, volume={86}, url={http://dx.doi.org/10.6028/jres.086.014}, DOI={10.6028/jres.086.014}, number={4}, journal={Journal of Research of the National Bureau of Standards}, publisher={National Institute of Standards and Technology (NIST)}, author={Brown, R.L.}, year={1981}, month={Jul}, pages={357} }
+@article{eyring:1935,
+author = {Eyring, Henry.},
+title = {The Activated Complex and the Absolute Rate of Chemical Reactions.},
+journal = {Chemical Reviews},
+volume = {17},
+number = {1},
+pages = {65-77},
+year = {1935},
+doi = {10.1021/cr60056a006},
+
+URL = { 
+        https://doi.org/10.1021/cr60056a006
+    
+},
+eprint = { 
+        https://doi.org/10.1021/cr60056a006
+    
+}
+
+}
+
+@article{Guan:2018,
+author = {Guan, Yanfei and Ingman, Victoria M. and Rooks, Benjamin J. and Wheeler, Steven E.},
+title = {AARON: An Automated Reaction Optimizer for New Catalysts},
+journal = {Journal of Chemical Theory and Computation},
+volume = {14},
+number = {10},
+pages = {5249-5261},
+year = {2018},
+doi = {10.1021/acs.jctc.8b00578},
+    note ={PMID: 30095903},
+
+URL = { 
+        https://doi.org/10.1021/acs.jctc.8b00578
+    
+},
+eprint = { 
+        https://doi.org/10.1021/acs.jctc.8b00578
+    
+}
+
+}
+
+
+@article{sung:2014,
+title = "Using rapid compression machines for chemical kinetics studies",
+journal = "Progress in Energy and Combustion Science",
+volume = "44",
+pages = "1 - 18",
+year = "2014",
+issn = "0360-1285",
+doi = "https://doi.org/10.1016/j.pecs.2014.04.001",
+url = "http://www.sciencedirect.com/science/article/pii/S0360128514000148",
+author = "Chih-Jen Sung and Henry J. Curran",
+keywords = "Rapid compression machine, Ignition, Oxidation, Diagnostics, Low-temperature combustion, Shock tube",
+abstract = "Rapid compression machines (RCMs) are used to simulate a single compression stroke of an internal combustion engine without some of the complicated swirl bowl geometry, cycle-to-cycle variation, residual gas, and other complications associated with engine operating conditions. RCMs are primarily used to measure ignition delay times as a function of temperature, pressure, and fuel/oxygen/diluent ratio; further they can be equipped with diagnostics to determine the temperature and flow fields inside the reaction chamber and to measure the concentrations of reactant, intermediate, and product species produced during combustion. This paper first discusses the operational principles and design features of RCMs, including the use of creviced pistons, which is an important feature in order to suppress the boundary layer, preventing it from becoming entrained into the reaction chamber via a roll-up vortex. The paper then discusses methods by which experiments performed in RCMs are interpreted and simulated. Furthermore, differences in measured ignition delays from RCMs and shock tube facilities are discussed, with the apparent initial gross disagreement being explained by facility effects in both types of experiments. Finally, future directions for using RCMs in chemical kinetics studies are also discussed."
+}
+
+@article{hanson:2014,
+title = "Recent advances in laser absorption and shock tube methods for studies of combustion chemistry",
+journal = "Progress in Energy and Combustion Science",
+volume = "44",
+pages = "103 - 114",
+year = "2014",
+issn = "0360-1285",
+doi = "https://doi.org/10.1016/j.pecs.2014.05.001",
+url = "http://www.sciencedirect.com/science/article/pii/S0360128514000264",
+author = "R.K. Hanson and D.F. Davidson",
+keywords = "Shock tube, Laser absorption, Constrained reaction volume, Species time-histories, Isotopic labeling",
+abstract = "Recent advances in laser absorption and shock tube methodologies for studies of combustion chemistry are reviewed. First the principles of shock tube operation are discussed, and then an overview of shock tube diagnostic methods and experiments is covered. Recent shock tube developments include the use of driver inserts to counteract the small pressure gradient seen in conventional reflected shock wave experiments and the use of a constrained-reaction-volume strategy to enable the implementation of near-constant-pressure gasdynamic test conditions during energetic processes. Recent laser absorption developments include the use of a CO2 laser absorption sensor to accurately monitor temperature during shock wave experiments, the use of multi-wavelength laser absorption strategies to simultaneously monitor multiple species time-histories, and the used of isotopic labeling strategies to identify individual reaction sites during the measurement of elementary reaction rate constants. The improved ability to accurately constrain the test conditions in shock tube experiments, combined with non-intrusive, species-sensitive and quantitative laser absorption diagnostics, is enabling experimenters to provide a new generation of high-quality experimental kinetics targets for combustion chemistry model validation and refinement. The paper concludes with a brief discussion of newly emerging laser-diagnostic techniques and a summary of future research directions."
+}
+
+@article{dagaut:1985,
+  author={P Dagaut and M Cathonnet and J P Rouan and R Foulatier and A Quilgars and J C Boettner and F Gaillard and H James},
+  title={A jet-stirred reactor for kinetic studies of homogeneous gas-phase reactions at pressures up to ten atmospheres (≈1 MPa)},
+  journal={Journal of Physics E: Scientific Instruments},
+  volume={19},
+  number={3},
+  pages={207},
+  url={http://stacks.iop.org/0022-3735/19/i=3/a=009},
+  year={1986},
+  abstract={An homogeneous stirred reactor designed for kinetic studies of hydrocarbon oxidation in the intermediate temperature range is described. The originality of this reactor lies in its ability to operate under pressure up to 10 atm ( approximately 1 MPa). The design of the injectors makes it possible to move a thermocouple and a sampling probe throughout a whole diameter of the reactor.}
+}
+
+@article{yoneda:1979,
+author = {Yoneda, Yukio},
+title = {A Computer Program Package for the Analysis, Creation, and Estimation of Generalized Reactions—GRACE. I. Generation of Elementary Reaction Network in Radical Reactions—GRACE(I)},
+journal = {Bulletin of the Chemical Society of Japan},
+volume = {52},
+number = {1},
+pages = {8-14},
+year = {1979},
+doi = {10.1246/bcsj.52.8},
+
+URL = { 
+        https://doi.org/10.1246/bcsj.52.8
+    
+},
+eprint = { 
+        https://doi.org/10.1246/bcsj.52.8
+    
+}
+,
+    abstract = { The system GRACE generates elementary reaction networks for simple reactions including free radicals, ions and even active sites in heterogeneous catalysis, and also predicts the overall reaction rates and the product distributions in radical reactions in the gas phase where the Arrhenius parameters of elementary reactions are available. In this paper, A/GRACE (part A of GRACE) is explained, which prepares elementary reaction networks for radical reactions. The reactant and the product are represented by square symmetric matrices. The off-diagonal elements represent bond multiplicity, or the number of localized electrons, between corresponding atoms, whereas the diagonal elements imply the number of unshared electrons on radical atoms. A reacting system, an ensemble of the participating molecules, is composed of atom groups, each of which consists of a center atom (usually non-hydrogen) and attached hydrogen atom(s), if any. Firstly, all the possible changes in the atom groups are selected, and the permitted combinations are preapred bearing in mind the equivalent groups in the system and the restrictions optioned. The major restriction is the complexity, i.e., the number of ruptured or formed bonds. A direct sum of matrices are prepared from one of the combinations, and the elementary reaction is completed by setting the appropriate numerals, 1 or −1, to the outside elements. Secondly, the procedures are repeated until all the feasible networks are prepared. As an illustration the hydrogenation of ethylene over a heterogeneous catalyst has been cited. }
+}
+
+@article{maio:1992,
+number = {9},
+year = {1992},
+title = {KING, a KInetic Network Generator},
+address = {[Oxford] :},
+author = {Di Maio, FP and Lignola, PG},
+issn = {0009-2509},
+journal = {Chemical engineering science},
+pages = {2713--2718},
+volume = {47},
+publisher = {Pergamon Press},
+}
+
+@article{susnow:1997,
+author = {Susnow, Roberta G and Dean, Anthony M and Green, William H and Peczak, P and Broadbelt, Linda J},
+file = {:Users/belinda/Downloads/NetGen.pdf:pdf},
+journal = {J. Phys. Chem. A},
+number = {96},
+pages = {3731--3740},
+title = {{Rate-Based Construction of Kinetic Models for Complex Systems}},
+volume = {5639},
+year = {1997}
+}
+
+@article{warth:2000,
+abstract = {This paper describes EXGAS, an advanced software for the automatic generation of reaction mechanisms. It has been developed to model the gas-phase oxidation of some components of gasoline, alkanes and ethers. The chemistry involved in these validated mechanisms relies both on a reaction base for some particular species and for the largest part on generic elementary reactions, which are well known for the oxidation of hydrocarbons. The programming of this system is mainly based on a referenced canonical treelike description of molecules and free radicals and can handle both acyclic and cyclic compounds. Mechanisms are generated in a way to ensure their comprehensiveness. Chemical models, which can directly be used by codes of simulations, are obtained as a result.},
+author = {Warth, V and Battin-Leclerc, F and Fournet, R and Glaude, Pa and Come, Gm and Scacchi, G},
+file = {:Users/belinda/Downloads/exgas.pdf:pdf},
+issn = {0097-8485},
+journal = {Comput. Chem.},
+keywords = {alkanes,automatic generation,combustion,gas-phase,oxidation,reaction mechanisms},
+month = jul,
+pages = {541--560},
+pmid = {10890364},
+title = {{Computer based generation of reaction mechanisms for gas-phase oxidation}},
+url = {http://www.ncbi.nlm.nih.gov/pubmed/10890364},
+volume = {24},
+year = {2000}
+}
+
+@article{gao:2016,
+title = "Reaction Mechanism Generator: Automatic construction of chemical kinetic mechanisms",
+journal = "Computer Physics Communications",
+volume = "203",
+pages = "212 - 225",
+year = "2016",
+issn = "0010-4655",
+doi = "https://doi.org/10.1016/j.cpc.2016.02.013",
+url = "http://www.sciencedirect.com/science/article/pii/S0010465516300285",
+author = "Connie W. Gao and Joshua W. Allen and William H. Green and Richard H. West",
+keywords = "Chemical kinetics, Combustion, Automatic reaction mechanism generation, Rate-based algorithm",
+abstract = "Reaction Mechanism Generator (RMG) constructs kinetic models composed of elementary chemical reaction steps using a general understanding of how molecules react. Species thermochemistry is estimated through Benson group additivity and reaction rate coefficients are estimated using a database of known rate rules and reaction templates. At its core, RMG relies on two fundamental data structures: graphs and trees. Graphs are used to represent chemical structures, and trees are used to represent thermodynamic and kinetic data. Models are generated using a rate-based algorithm which excludes species from the model based on reaction fluxes. RMG can generate reaction mechanisms for species involving carbon, hydrogen, oxygen, sulfur, and nitrogen. It also has capabilities for estimating transport and solvation properties, and it automatically computes pressure-dependent rate coefficients and identifies chemically-activated reaction paths. RMG is an object-oriented program written in Python, which provides a stable, robust programming architecture for developing an extensible and modular code base with a large suite of unit tests. Computationally intensive functions are cythonized for speed improvements.
+Program summary
+Program title: RMG Catalogue identifier: AEZW_v1_0 Program summary URL:http://cpc.cs.qub.ac.uk/summaries/AEZW_v1_0.html Program obtainable from: CPC Program Library, Queen’s University, Belfast, N. Ireland Licensing provisions: MIT/X11 License No. of lines in distributed program, including test data, etc.: 958681 No. of bytes in distributed program, including test data, etc.: 9495441 Distribution format: tar.gz Programming language: Python. Computer: Windows, Ubuntu, and Mac OS computers with relevant compilers. Operating system: Unix/Linux/Windows. RAM: 1 GB minimum, 16 GB or more for larger simulations Classification: 16.12. External routines: RDKit, Open Babel, DASSL, DASPK, DQED, NumPy, SciPy Nature of problem: Automatic generation of chemical kinetic mechanisms for molecules containing C, H, O, S, and N. Solution method: Rate-based algorithm adds most important species and reactions to a model, with rate constants derived from rate rules and other parameters estimated via group additivity methods. Additional comments: The RMG software package also includes CanTherm, a tool for computing the thermodynamic properties of chemical species and both high-pressure-limit and pressure-dependent rate coefficients for chemical reactions using results from quantum chemical calculations. CanTherm is compatible with a variety of ab initio quantum chemistry software programs, including but not limited to Gaussian, MOPAC, QChem, and MOLPRO. Running time: From 30 s for the simplest molecules, to up to several weeks, depending on the size of the molecule and the conditions of the reaction system chosen."
+}
+
+@article{ratkiewicz:2003,
+abstract = {We present an application of the chemical graph theory approach for generating elementary reactions of complex systems. Molecular species are naturally represented by graphs, which are identified by their vertices and edges where vertices are atom types and edges are bonds. The mechanism is generated using a set of reaction patterns (sub-graphs). These subgraphs are the internal representations for a given class of reaction thus allowing for the possibility of eliminating unimportant product species a priori. Furthermore, each molecule is canonically represented by a set of topological indices (Connectivity Index, Balaban Index, Schulz TI Index, WID Index, etc.) and thus eliminates the probability for regenerating the same species twice. Theoretical background and test cases on combustion of hydrocarbons are presented.},
+author = {Ratkiewicz, Artur and Truong, Thanh N},
+doi = {10.1021/ci020297f},
+file = {:Users/belinda/Downloads/comgen.pdf:pdf},
+issn = {0095-2338},
+journal = {J. Chem. Inf. Comput. Sci.},
+number = {1},
+pages = {36--44},
+pmid = {12546535},
+title = {{Application of chemical graph theory for automated mechanism generation}},
+url = {http://www.ncbi.nlm.nih.gov/pubmed/12546535},
+volume = {43},
+year = {2003}
+}
+
+@article{rangarajan:2012,
+author = {Rangarajan, Srinivas and Bhan, Aditya and Daoutidis, Prodromos},
+doi = {10.1016/j.compchemeng.2012.06.008},
+file = {:Users/belinda/Downloads/ring.pdf:pdf},
+issn = {00981354},
+journal = {Comput. Chem. Eng.},
+keywords = {reaction network analysis,rule-based network generation},
+month = oct,
+pages = {114--123},
+publisher = {Elsevier Ltd},
+title = {{Language-oriented rule-based reaction network generation and analysis: Description of RING}},
+url = {http://linkinghub.elsevier.com/retrieve/pii/S0098135412001846},
+volume = {45},
+year = {2012}
+}
+
+@article{vandewiele:2012,
+title = "Genesys: Kinetic model construction using chemo-informatics",
+journal = "Chemical Engineering Journal",
+volume = "207-208",
+pages = "526 - 538",
+year = "2012",
+note = "22nd International Symposium on Chemical Reaction Engineering (ISCRE 22)",
+issn = "1385-8947",
+doi = "https://doi.org/10.1016/j.cej.2012.07.014",
+url = "http://www.sciencedirect.com/science/article/pii/S1385894712009059",
+author = "Nick M. Vandewiele and Kevin M. Van Geem and Marie-Françoise Reyniers and Guy B. Marin",
+keywords = "Kinetic model, Reaction network generation, Chemo-informatics",
+abstract = "A new tool for the automatic generation of kinetic models called Genesys is presented. A rule-based network generation methodology creates dedicated kinetic models based on the chemical knowledge of the end-user by iterating over all user-defined reaction families. The latter are constrained as much as possible to avoid the creation of unimportant species and insignificant reactions. Through integration with existing open-source chemo-informatics libraries the methodology is not constrained to specific chemical elements or to specific chemistries. The separation of all chemical data from the network generation code is accomplished by adopting a sub-molecular pattern language called SMARTS, and enables the use of quantitative structure property relationships such as group contribution methods. To demonstrate this, a Benson group additivity method for the estimation of ideal gas phase thermodynamic properties is described and compared to a benchmark database. A kinetic group additivity scheme for the estimation of Arrhenius parameters is implemented and validated."
+}
+
+@article{vandevijver:2015,
+author = {Van de Vijver, Ruben and Vandewiele, Nick M. and Bhoorasingh, Pierre L. and Slakman, Belinda L. and Seyedzadeh Khanshan, Fariba and Carstensen, Hans-Heinrich and Reyniers, Marie-Françoise and Marin, Guy B. and West, Richard H. and Van Geem, Kevin M.},
+title = {Automatic Mechanism and Kinetic Model Generation for Gas- and Solution-Phase Processes: A Perspective on Best Practices, Recent Advances, and Future Challenges},
+journal = {International Journal of Chemical Kinetics},
+volume = {47},
+number = {4},
+pages = {199-231},
+doi = {10.1002/kin.20902},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/kin.20902},
+abstract = {ABSTRACT Completely automated mechanism generation of detailed kinetic models is within reach in the coming decade. The recent developments in this field of chemical reaction engineering are anticipated to lead to some groundbreaking discoveries in the future, extending our fundamental understanding and resolving many of today's society problems such as energy production and conversion, emission reduction, greener chemical production processes, etc. In the present review, the focus is on the core of these automated mechanism generation for gas-phase and solution-phase processes that is on how the reaction kinetics and thermodynamic and transport properties of species are estimated and calculated starting from the fundamental elements of the software. With tasks such as the definition of reaction rules and reaction families, the unambiguous representation of species, and the choice of different termination criteria, generating a good reaction mechanism is still not as simple as pressing a “run” button. One of the main challenges that still needs to be overcome is how to deal with data scarcity and the combination with affordable computational chemistry calculations seems the logical step forward. The best practices are illustrated in a butane pyrolysis case study, which also exposes the challenges in the field of automatic kinetic model generation.}
+}
+
+@article{bhoorasingh:2017,
+author = {Bhoorasingh, Pierre L. and Slakman, Belinda L. and Seyedzadeh Khanshan, Fariba and Cain, Jason Y. and West, Richard H.},
+title = {Automated Transition State Theory Calculations for High-Throughput Kinetics},
+journal = {The Journal of Physical Chemistry A},
+volume = {121},
+number = {37},
+pages = {6896-6904},
+year = {2017},
+doi = {10.1021/acs.jpca.7b07361},
+    note ={PMID: 28820268},
+
+URL = { 
+        https://doi.org/10.1021/acs.jpca.7b07361
+    
+},
+eprint = { 
+        https://doi.org/10.1021/acs.jpca.7b07361
+    
+}
+
+}
+
+@article{jacobson:2017,
+author = {Jacobson, Leif D. and Bochevarov, Art D. and Watson, Mark A. and Hughes, Thomas F. and Rinaldo, David and Ehrlich, Stephan and Steinbrecher, Thomas B. and Vaitheeswaran, S. and Philipp, Dean M. and Halls, Mathew D. and Friesner, Richard A.},
+title = {Automated Transition State Search and Its Application to Diverse Types of Organic Reactions},
+journal = {Journal of Chemical Theory and Computation},
+volume = {13},
+number = {11},
+pages = {5780-5797},
+year = {2017},
+doi = {10.1021/acs.jctc.7b00764},
+    note ={PMID: 28957627},
+
+URL = { 
+        https://doi.org/10.1021/acs.jctc.7b00764
+    
+},
+eprint = { 
+        https://doi.org/10.1021/acs.jctc.7b00764
+    
+}
+
+}
+
+@article{vandewiele:2014,
+author = {Vandewiele, Nick M. and Van de Vijver, Ruben and Van Geem, Kevin M. and Reyniers, Marie-Françoise and Marin, Guy B.},
+title = {Symmetry calculation for molecules and transition states},
+journal = {Journal of Computational Chemistry},
+volume = {36},
+number = {3},
+pages = {181-192},
+keywords = {topological symmetry, automorphism, rotational symmetry number, reaction path degeneracy},
+doi = {10.1002/jcc.23788},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.23788},
+abstract = {The symmetry of molecules and transition states of elementary reactions is an essential property with important implications for computational chemistry. The automated identification of symmetry by computers is a very useful tool for many applications, but often relies on the availability of three-dimensional coordinates of the atoms in the molecule and hence becomes less useful when these coordinates are a priori unavailable. This article presents a new algorithm that identifies symmetry of molecules and transition states based on an augmented graph representation of the corresponding structures, in which both topology and the presence of stereocenters are accounted for. The automorphism group order of the graph associated with the molecule or transition state is used as a starting point. A novel concept of label-stereoisomers, that is, stereoisomers that arise after labeling homomorph substituents in the original molecule so that they become distinguishable, is introduced and used to obtain the symmetry number. The algorithm is characterized by its generic nature and avoids the use of heuristic rules that would limit the applicability. The calculated symmetry numbers are in agreement with expected values for a large and diverse set of structures, ranging from asymmetric, small molecules such as fluorochlorobromomethane to highly symmetric structures found in drug discovery assays. The new algorithm opens up new possibilities for the fast screening of the degree of symmetry of large sets of molecules. © 2014 Wiley Periodicals, Inc.}
+}
+
+@Article{pfaendtner:2007,
+author="Pfaendtner, Jim
+and Yu, Xinrui
+and Broadbelt, Linda J.",
+title="The 1-D hindered rotor approximation",
+journal="Theoretical Chemistry Accounts",
+year="2007",
+month="Jul",
+day="24",
+volume="118",
+number="5",
+pages="881",
+abstract="We offer an overview of the popular one- dimensional (1-D) hindered rotor model that is often used for quantum mechanical treatment of internal rotation. This model is put in context with other methods used for treating anharmonic motions. The 1-D hindered rotor scheme is general for tops of any symmetry and has been used to provide accurate treatment of hindered rotors in a wide range of systems. One obstacle preventing wider use of the model is its lack of incorporation into common electronic structure codes. We have developed an algorithm for consistently treating all tops in a molecule, and we present simple codes which interface with electronic structure codes to provide thermochemical properties (S, Cp, H) of individual species and reactions that have been corrected for internal rotations. Finally, we use this approach to give sensible advice about how the model can be used best. We show that dramatic changes in the reduced moment of inertia do not necessarily cause comparable changes in the properties of individual hindered rotors. We demonstrate that the rotational hindrance potential can be accurately determined using relatively coarse step sizes. Finally, we show that internal rotation in transition states can be treated using a ``frozen transition state'' approximation at a significant computational savings. We also discuss the relationship between calculated properties of hindered rotors and the choice of method and basis set used.",
+issn="1432-2234",
+doi="10.1007/s00214-007-0376-5",
+url="https://doi.org/10.1007/s00214-007-0376-5"
+}
+
+@article{truhlar:1996,
+author = {Truhlar, Donald G. and Garrett, Bruce C. and Klippenstein, Stephen J.},
+title = {Current Status of Transition-State Theory},
+journal = {The Journal of Physical Chemistry},
+volume = {100},
+number = {31},
+pages = {12771-12800},
+year = {1996},
+doi = {10.1021/jp953748q},
+
+URL = { 
+        https://doi.org/10.1021/jp953748q
+    
+},
+eprint = { 
+        https://doi.org/10.1021/jp953748q
+    
+}
+
+}
+
+@article{VANDEVIJVER:2018,
+title = "On-the-fly ab initio calculations toward accurate rate coefficients",
+journal = "Proceedings of the Combustion Institute",
+year = "2018",
+issn = "1540-7489",
+doi = "https://doi.org/10.1016/j.proci.2018.05.056",
+url = "http://www.sciencedirect.com/science/article/pii/S1540748918300579",
+author = "Ruben Van de Vijver and Kevin M. Van Geem and Guy B. Marin",
+keywords = "Automatic kinetic model generation, Reaction rate coefficients, Quantum chemistry, Chemoinformatics",
+abstract = "During automatic kinetic model generation a large number of reactions need to have kinetic data assigned to them. One of the main challenges is on how to account for the large scarcity of accurate data. The ever-growing computational power and availability of high performance computing solutions allows to envisage implementing on-the-fly ab initio calculations for a large number of reaction rate coefficients. Today extensive user knowledge and involvement is required to develop fast and effective ab initio based kinetic models. The present work introduces a series of automation procedures to minimize user involvement. It allows automated quantum chemical calculations for a large number of reactions for gas-phase processes with a wide variety in chemical species. 3D coordinates are calculated for all the reactants, products and transition states and automatically submitted to quantum chemistry packages. The latter yield accurate high-pressure limit rate coefficients. All steps are automated without the need for manual interventions, even for recognizing rotational frequencies and for verifying whether the saddle point searches lead to the appropriate transition state. A good agreement to literature data is found, i.e., most of the rate coefficients are within a factor of 2 of literature data."
+}
+
+@article{KECELI:2018,
+title = "Automated computational thermochemistry for butane oxidation: A prelude to predictive automated combustion kinetics",
+journal = "Proceedings of the Combustion Institute",
+year = "2018",
+issn = "1540-7489",
+doi = "https://doi.org/10.1016/j.proci.2018.07.113",
+url = "http://www.sciencedirect.com/science/article/pii/S1540748918305315",
+author = "Murat Keçeli and Sarah N. Elliott and Yi-Pei Li and Matthew S. Johnson and Carlo Cavallotti and Yuri Georgievskii and William H. Green and Matteo Pelucchi and Justin M. Wozniak and Ahren W. Jasper and Stephen J. Klippenstein",
+keywords = "Computational thermochemistry, Butane oxidation,  thermochemistry, Workflow",
+abstract = "Large-scale implementation of high level computational theoretical chemical kinetics offers the prospect for dramatically improving the fidelity of combustion chemical modeling. As a first step toward this goal, we developed a procedure for automatically generating the thermochemical data for combustion of an arbitrary fuel. The procedure begins by producing a list of combustion relevant species from a specification of the fuel and combustion conditions of interest. Then, for each element in the list of species, the procedure determines an internal coordinate z-matrix description of its structure, the optimal torsional configuration via Monte Carlo sampling, key rovibrational properties for that optimal geometry (including anharmonic corrections from torsional mappings and/or vibrational perturbation theory), and high level estimates of the electronic and zero-point energies via arbitrarily defined composite methods. This dataset is then converted first to partition functions, then to thermodynamic properties, and finally to NASA polynomial representations of the data. The end product is an automatically generated database of electronic structure results and thermochemical data including representations in a format appropriate for combustion simulations. The utility and functioning of this predictive automated computational thermochemistry (PACT) software package is illustrated through application to the automated generation of thermochemical data for the combustion of n-butane. Butane is chosen for this demonstration as its species list is of reasonably manageable size for debugging level computations, while still presenting most of the key challenges that need to be surmounted in the consideration of larger fuels. Furthermore, its low temperature chemistry is representative of that occurring with larger alkanes."
+}
+
+
+@misc{kinbot:2018,
+title = {KinBot, Version 00},
+author = {Zador, Judit and Van de Vijver, Ruben},
+abstractNote = {KinBot 2.0 searches for chemical reaction pathways for gas-phase systems containing C, H, and O atoms. It determines the structure of key intermediates and products, characterizes their molecular structure and related properties, and creates an output that can be conveniently used to calculate rate coefficients by other codes.},
+url = {https://www.osti.gov//servlets/purl/1464498},
+doi = {},
+year = {2018},
+month = {8},
+}
+
+@misc{Gaussian:2009,
+	Author = {Frisch, Michael J and Trucks, G W and Schlegel, H Bernhard and Scuseria, G E and Robb, M A and Cheeseman, J R and Scalmani, G and Barone, V and Mennucci, B and Petersson, G A and Nakatsuji, H and Caricato, M and Li, X and Hratchian, H P and Izmaylov, A F and Bloino, J and Zheng, G and Sonnenberg, J L and Hada, M and Ehara, M and Toyota, K and Fukuda, R and Hasegawa, J and Ishida, M and Nakajima, T and Honda, Y and Kitao, O and Nakai, H and Vreven Jr, T and Montgomery Jr, J A and Peralta, J E and Ogliaro, F and Bearpark, M and Heyd, J J and Brothers, E and Kudin, K N and Staroverov, V N and Kobayashi, R and Normand, J and Raghavachari, K and Rendell, A and Burant, J C and Iyengar, S S and Tomasi, J and Cossi, M and Rega, N and Millam, J M and Klene, M and Knox, J E and Cross, J B and Bakken, V and Adamo, C and Jaramillo, J and Gomperts, R and Stratmann, R E and Yazyev, O and Austin, A J and Cammi, R and Pomelli, C and Ochterski, J W and Martin, R L and Morokuma, K and Zakrzewski, V G and Voth, G A and Salvador, P and Dannenberg, J J and Dapprich, S and Daniels, A D and Farkas, {\"O} and Foresman, James B and Ortiz, J V and Cioslowski, J and Fox, D J},
+	Howpublished = {{Gaussian, Inc., Wallingford, CT}},
+	Title = {{Gaussian 09}},
+	Year = {2009}}
+	
+	
+@misc{RDKit:2018,
+	Author = {Landrum, G},
+	Title = {{RDKit: Open-source cheminformatics}},
+	Url = {http://rdkit.org},
+	Bdsk-Url-1 = {http://rdkit.org}}
+	
+	
+@article{Jaguar:2013,
+author = {Bochevarov, Art D. and Harder, Edward and Hughes, Thomas F. and Greenwood, Jeremy R. and Braden, Dale A. and Philipp, Dean M. and Rinaldo, David and Halls, Mathew D. and Zhang, Jing and Friesner, Richard A.},
+title = {Jaguar: A high-performance quantum chemistry software program with strengths in life and materials sciences},
+journal = {International Journal of Quantum Chemistry},
+volume = {113},
+year = 2013,
+number = {18},
+pages = {2110-2142},
+keywords = {ab initio, density functional theory, life sciences, materials sciences, software},
+doi = {10.1002/qua.24481},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/qua.24481},
+abstract = {Jaguar is an ab initio quantum chemical program that specializes in fast electronic structure predictions for molecular systems of medium and large size. Jaguar focuses on computational methods with reasonable computational scaling with the size of the system, such as density functional theory (DFT) and local second-order Møller–Plesset perturbation theory. The favorable scaling of the methods and the high efficiency of the program make it possible to conduct routine computations involving several thousand molecular orbitals. This performance is achieved through a utilization of the pseudospectral approximation and several levels of parallelization. The speed advantages are beneficial for applying Jaguar in biomolecular computational modeling. Additionally, owing to its superior wave function guess for transition-metal-containing systems, Jaguar finds applications in inorganic and bioinorganic chemistry. The emphasis on larger systems and transition metal elements paves the way toward developing Jaguar for its use in materials science modeling. The article describes the historical and new features of Jaguar, such as improved parallelization of many modules, innovations in ab initio pKa prediction, and new semiempirical corrections for nondynamic correlation errors in DFT. Jaguar applications in drug discovery, materials science, force field parameterization, and other areas of computational research are reviewed. Timing benchmarks and other results obtained from the most recent Jaguar code are provided. The article concludes with a discussion of challenges and directions for future development of the program. © 2013 Wiley Periodicals, Inc.}
+}
+
+@article{MMFF94:1996,
+author = {Halgren, Thomas A.},
+title = {Merck molecular force field. I. Basis, form, scope, parameterization, and performance of MMFF94},
+journal = {Journal of Computational Chemistry},
+volume = {17},
+number = {5-6},
+year={1996},
+pages = {490-519},
+doi = {10.1002/(SICI)1096-987X(199604)17:5/6<490::AID-JCC1>3.0.CO;2-P},
+abstract = {Abstract This article introduces MMFF94, the initial published version of the Merck molecular force field (MMFF). It describes the objectives set for MMFF, the form it takes, and the range of systems to which it applies. This study also outlines the methodology employed in parameterizing MMFF94 and summarizes its performance in reproducing computational and experimental data. Though similar to MM3 in some respects, MMFF94 differs in ways intended to facilitate application to condensed-phase processes in molecular-dynamics simulations. Indeed, MMFF94 seeks to achieve MM3-like accuracy for small molecules in a combined “organic/protein” force field that is equally applicable to proteins and other systems of biological significance. A second distinguishing feature is that the core portion of MMFF94 has primarily been derived from high-quality computational data—ca. 500 molecular structures optimized at the HF/6-31G* level, 475 structures optimized at the MP2/6-31G* level, 380 MP2/6-31G* structures evaluated at a defined approximation to the MP4SDQ/TZP level, and 1450 structures partly derived from MP2/6-31G* geometries and evaluated at the MP2/TZP level. A third distinguishing feature is that MMFF94 has been parameterized for a wide variety of chemical systems of interest to organic and medicial chemists, including many that feature frequently occurring combinations of functional groups for which little, if any, useful experimental data are available. The methodology used in parameterizing MMFF94 represents a fourth distinguishing feature. Rather than using the common “functional group” approach, nearly all MMFF parameters have been determined in a mutually consistent fashion from the full set of available computational data. MMFF94 reproduces the computational data used in its parameterization very well. In addition, MMFF94 reproduces experimental bond lengths (0.014 Å root mean square [rms]), bond angles (1.2° rms), vibrational frequencies (61 cm−1 rms), conformational energies (0.38 kcal/mol/rms), and rotational barriers (0.39 kcal/mol rms) very nearly as well as does MM3 for comparable systems. MMFF94 also describes intermolecular interactions in hydrogen-bonded systems in a way that closely parallels that given by the highly regarded OPLS force field. © 1996 John Wiley \& Sons, Inc.}
+}
+
+@article{PM3:1989,
+author = {Stewart, James J. P.},
+title = {Optimization of parameters for semiempirical methods I. Method},
+journal = {Journal of Computational Chemistry},
+volume = {10},
+number = {2},
+pages = {209-220},
+doi = {10.1002/jcc.540100208},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/jcc.540100208},
+eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/jcc.540100208},
+abstract = {Abstract A new method for obtaining optimized parameters for semiempirical methods has been developed and applied to the modified neglect of diatomic overlap (MNDO) method. The method uses derivatives of calculated values for properties with respect to adjustable parameters to obtain the optimized values of parameters. The large increase in speed is a result of using a simple series expression for calculated values of properties rather than employing full semiempirical calculations. With this optimization procedure, the rate-determining step for parameterizing elements changes from the mechanics of parameterization to the assembling of experimental reference data.}
+}
+
+@unpublished{vandevijver:2017,
+title= {First Principles Based Automated Kinetic Model Generation Using on-the-Fly \textit{Ab Initio} Calculations},
+author = {Ruben Van de Vijver and Guy B. Marin and Kevin M. Van Geem},
+year = {2017},
+note= {AIChE Annual Meeting},
+URL= {https://www.aiche.org/conferences/aiche-annual-meeting/2017/proceeding/paper/571d-first-principles-based-automated-kinetic-model-generation-using-on-fly-ab-initio-calculations},
+}
+
+@software{estoktp:2018,
+    Author = {Carlo Cavallotti and Stephen J. Klippenstein},
+    Date = {2018-10},
+    Date-Added = {2018-06-14},
+    Date-Modified = {2018-10-02},
+    Title = {{{EStokTP}}},
+    Url = {https://github.com/PACChem/EStokTP},
+    Version = {0.0}}
+    
+    
+@software{aarontools:2018,
+    Author = {Steven Wheeler},
+    Date = {2018-10},
+    Date-Added = {2018-06-14},
+    Date-Modified = {2018-10-02},
+    Title = {{{AaronTools}}},
+    Url = {https://github.com/QChASM/AaronTools},
+    Version = {0.0}}
+    
+@article{molpro:2012,
+author = {Werner, H.-J. and Knowles, P. J. and Knizia, G. and Manby, F. R. and Sch{\"u}tz, M.},
+title = {{Molpro: a general purpose quantum chemistry program package}},
+journal = {WIREs Comput Mol Sci},
+year = {2012},
+volume = {2},
+pages = {242--253},
+}
+
+
+
+@software{mopac:2016,
+    Author = {J.J.P. Stewart, Stewart},
+    Title = {{{MOPAC2016}}},
+    Url = {http://openmopac.net/downloads.html},
+    Version = {16}}
+
+
+@article{Greene:1964,
+author = {Greene, E. F.},
+title = {The shock tube in high-temperature chemical physics (Gaydon, A. G.; Hurle, I. R.)},
+journal = {Journal of Chemical Education},
+volume = {41},
+number = {2},
+pages = {114},
+year = {1964},
+doi = {10.1021/ed041p114.3},
+}
+
+@article{MESMER:2012,
+author = {Glowacki, David R. and Liang, Chi-Hsiu and Morley, Christopher and Pilling, Michael J. and Robertson, Struan H.},
+title = {MESMER: An Open-Source Master Equation Solver for Multi-Energy Well Reactions},
+journal = {The Journal of Physical Chemistry A},
+volume = {116},
+number = {38},
+pages = {9545-9560},
+year = {2012},
+doi = {10.1021/jp3051033},
+ note ={PMID: 22905697},
+}
+
+@article{fernandez:2013,
+author = {Fern{\'a}ndez-Ramos, Antonio},
+year = {2013},
+month = {04},
+pages = {134112},
+title = {Accurate treatment of two-dimensional non-separable hindered internal rotors},
+volume = {138},
+journal = {The Journal of chemical physics},
+doi = {10.1063/1.4798407}
+}
+
+@Article{FernandezRamos:2007,
+author="Fern{\'a}ndez-Ramos, Antonio
+and Ellingson, Benjamin A.
+and Meana-Pa{\~{n}}eda, Rub{\'e}n
+and Marques, Jorge M. C.
+and Truhlar, Donald G.",
+title="Symmetry numbers and chemical reaction rates",
+journal="Theoretical Chemistry Accounts",
+year="2007",
+month="Oct",
+day="01",
+volume="118",
+number="4",
+pages="813--826",
+abstract="This article shows how to evaluate rotational symmetry numbers for different molecular configurations and how to apply them to transition state theory. In general, the symmetry number is given by the ratio of the reactant and transition state rotational symmetry numbers. However, special care is advised in the evaluation of symmetry numbers in the following situations: (i) if the reaction is symmetric, (ii) if reactants and/or transition states are chiral, (iii) if the reaction has multiple conformers for reactants and/or transition states and, (iv) if there is an internal rotation of part of the molecular system. All these four situations are treated systematically and analyzed in detail in the present article. We also include a large number of examples to clarify some complicated situations, and in the last section we discuss an example involving an achiral diasteroisomer.",
+issn="1432-2234",
+doi="10.1007/s00214-007-0328-0",
+url="https://doi.org/10.1007/s00214-007-0328-0"
+}
+
+
+}
+@article{MESS:2013,
+author = {Georgievskii, Yuri and Miller, James A. and Burke, Michael P. and Klippenstein, Stephen J.},
+title = {Reformulation and Solution of the Master Equation for Multiple-Well Chemical Reactions},
+journal = {The Journal of Physical Chemistry A},
+volume = {117},
+number = {46},
+pages = {12146-12154},
+year = {2013},
+doi = {10.1021/jp4060704},
+    note ={PMID: 24053787},
+
+URL = { 
+        https://doi.org/10.1021/jp4060704
+    
+},
+eprint = { 
+        https://doi.org/10.1021/jp4060704
+    
+}
+
+}
+@article{Tranter:2008,
+  doi = {10.1063/1.2976671},
+  url = {https://doi.org/10.1063/1.2976671},
+  year  = {2008},
+  publisher = {{AIP} Publishing},
+  volume = {79},
+  number = {9},
+  pages = {094103},
+  author = {Robert S. Tranter and Binod R. Giri},
+  title = {A diaphragmless shock tube for high temperature kinetic studies},
+  journal = {Review of Scientific Instruments}
+}
+
+@article{Tranter:2013,
+  doi = {10.1063/1.4820917},
+  url = {https://doi.org/10.1063/1.4820917},
+  year  = {2013},
+  month = {sep},
+  publisher = {{AIP} Publishing},
+  volume = {84},
+  number = {9},
+  pages = {094102},
+  author = {R. S. Tranter and P. T. Lynch},
+  title = {A miniature high repetition rate shock tube},
+  journal = {Review of Scientific Instruments}
+}
+
+@article{HF:1987,
+title = "General Hartree-Fock program",
+journal = "Computer Physics Communications",
+volume = "43",
+number = "3",
+pages = "355 - 365",
+year = "1987",
+issn = "0010-4655",
+doi = "https://doi.org/10.1016/0010-4655(87)90053-1",
+url = "http://www.sciencedirect.com/science/article/pii/0010465587900531",
+author = "Charlotte Froese Fischer",
+keywords = "atomic structure, numerical Hartree-Fock, bound state, Schrödinger equation, wavefunction, self-consistent field, energy level, spin-orbit parameter",
+abstract = "Title of program: HF86 Catalogue number: AATK Program obtainable from: CPC Program Library, Queen's University of Belfast, N. Ireland (see application from in this issue) Computer: Vax 11/780; Installation: Vanderbilt University, Nashville, TN 37235, USA Operation system: VMS Version 4.4 Programming language used: FORTRAN 77 Virtual memory: 526 kbytes No. of bits in a word: 32 Peripherals used: disk, printer, terminal No. of lines in combined program and test deck: 4167"
+}
+
+@article{DFT:1964,
+  title = {Inhomogeneous Electron Gas},
+  author = {Hohenberg, P. and Kohn, W.},
+  journal = {Phys. Rev.},
+  volume = {136},
+  issue = {3B},
+  pages = {B864--B871},
+  numpages = {0},
+  year = {1964},
+  month = {Nov},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRev.136.B864},
+  url = {https://link.aps.org/doi/10.1103/PhysRev.136.B864}
+}
+
+@article{Bartlett:2007,
+  doi = {10.1103/revmodphys.79.291},
+  url = {https://doi.org/10.1103/revmodphys.79.291},
+  year  = {2007},
+  month = {feb},
+  publisher = {American Physical Society ({APS})},
+  volume = {79},
+  number = {1},
+  pages = {291--352},
+  author = {Rodney J. Bartlett and Monika Musia{\l}},
+  title = {Coupled-cluster theory in quantum chemistry},
+  journal = {Reviews of Modern Physics}
+}
+
+@article{Fukui:1970,
+author = {Fukui, Kenichi},
+title = {Formulation of the reaction coordinate},
+journal = {The Journal of Physical Chemistry},
+volume = {74},
+number = {23},
+pages = {4161-4163},
+year = {1970},
+doi = {10.1021/j100717a029},
+
+URL = { 
+        https://doi.org/10.1021/j100717a029
+    
+},
+eprint = { 
+        https://doi.org/10.1021/j100717a029
+    
+}
+
+}
+
+@article{RUBAKOV:1984,
+title = "Quantum mechanics in the tunneling universe",
+journal = "Physics Letters B",
+volume = "148",
+number = "4",
+pages = "280 - 286",
+year = "1984",
+issn = "0370-2693",
+doi = "https://doi.org/10.1016/0370-2693(84)90088-1",
+url = "http://www.sciencedirect.com/science/article/pii/0370269384900881",
+author = "V.A. Rubakov",
+abstract = "We discuss the particle creation in a closed homogeneous and isotropic universe with positive cosmological constant, which tunnels from the Friedmann regime (or from “nothing”) to a De Sitter-like one. Assuming the quasiclassical character of tunneling and neglecting the back reaction of the created particles, we derive the basic equation of the quantum field theory in the tunneling universe. We then show that during tunneling, particle creation is catastrophic, at least in the model of massive scalar fields conformally coupled to gravity, and discuss the possible effects of the back reaction on the tunneling process."
+}
+
+
+@article{fernandezramos:2006,
+author = {Fernández-Ramos, Antonio and Miller, James A. and Klippenstein, Stephen J. and Truhlar, Donald G.},
+title = {Modeling the Kinetics of Bimolecular Reactions},
+journal = {Chemical Reviews},
+volume = {106},
+number = {11},
+pages = {4518-4584},
+year = {2006},
+doi = {10.1021/cr050205w},
+    note ={PMID: 17091928},
+
+URL = { 
+        https://doi.org/10.1021/cr050205w
+    
+},
+eprint = { 
+        https://doi.org/10.1021/cr050205w
+    
+}
+
+}
+
+@article{Weber:2018,
+  doi = {10.1002/kin.21142},
+  url = {https://doi.org/10.1002/kin.21142},
+  year  = {2018},
+  month = {jan},
+  publisher = {Wiley},
+  volume = {50},
+  number = {3},
+  pages = {135--148},
+  author = {Bryan W. Weber and Kyle E. Niemeyer},
+  title = {{ChemKED}: A Human- and Machine-Readable Data Standard for Chemical Kinetics Experiments},
+  journal = {International Journal of Chemical Kinetics}
+}
+
+
+@misc{PyTeCK,
+    author = {Kyle E Niemeyer},
+    year = 2017,
+    title = {{PyTeCK} v0.2.1},
+    doi = {10.5281/zenodo.546270},
+    url = {https://github.com/kyleniemeyer/PyTeCK},
+}
+
+@misc{cantera,
+    author = "David G. Goodwin and Harry K. Moffat and Raymond L. Speth",
+    title = "Cantera: An Object-oriented Software Toolkit for Chemical
+             Kinetics, Thermodynamics, and Transport Processes",
+    year = 2018,
+    note = "Version 2.4.0",
+    howpublished = "\url{http://www.cantera.org}",
+    doi = {10.5281/zenodo.1174508}
+}
+
+@article{ase:2017,
+  author={Ask Hjorth Larsen and Jens Jørgen Mortensen and Jakob Blomqvist and Ivano E Castelli and Rune Christensen and Marcin
+Dułak and Jesper Friis and Michael N Groves and Bjørk Hammer and Cory Hargus and Eric D Hermes and Paul C Jennings and Peter
+Bjerre Jensen and James Kermode and John R Kitchin and Esben Leonhard Kolsbjerg and Joseph Kubal and Kristen
+Kaasbjerg and Steen Lysgaard and Jón Bergmann Maronsson and Tristan Maxson and Thomas Olsen and Lars Pastewka and Andrew
+Peterson and Carsten Rostgaard and Jakob Schiøtz and Ole Schütt and Mikkel Strange and Kristian S Thygesen and Tejs
+Vegge and Lasse Vilhelmsen and Michael Walter and Zhenhua Zeng and Karsten W Jacobsen},
+  title={The atomic simulation environment—a Python library for working with atoms},
+  journal={Journal of Physics: Condensed Matter},
+  volume={29},
+  number={27},
+  pages={273002},
+  url={http://stacks.iop.org/0953-8984/29/i=27/a=273002},
+  year={2017},
+  abstract={The atomic simulation environment (ASE) is a software package written in the Python programming language with the aim of setting up, steering, and analyzing atomistic simulations. In ASE, tasks are fully scripted in Python. The powerful syntax of Python combined with the NumPy array library make it possible to perform very complex simulation tasks. For example, a sequence of calculations may be performed with the use of a simple ‘for-loop’ construction. Calculations of energy, forces, stresses and other quantities are performed through interfaces to many external electronic structure codes or force fields using a uniform interface. On top of this calculator interface, ASE provides modules for performing many standard simulation tasks such as structure optimization, molecular dynamics, handling of constraints and performing nudged elastic band calculations.}
+}
+
+@article{fafoom:2015,
+author = {Supady, Adriana and Blum, Volker and Baldauf, Carsten},
+title = {First-Principles Molecular Structure Search with a Genetic Algorithm},
+journal = {Journal of Chemical Information and Modeling},
+volume = {55},
+number = {11},
+pages = {2338-2348},
+year = {2015},
+doi = {10.1021/acs.jcim.5b00243},
+    note ={PMID: 26484612},
+
+URL = { 
+        https://doi.org/10.1021/acs.jcim.5b00243
+    
+},
+eprint = { 
+        https://doi.org/10.1021/acs.jcim.5b00243
+    
+}
+
+}
+
+@article{sadeghi:2014,
+title = "Optimizing a hybrid vendor-managed inventory and transportation problem with fuzzy demand: An improved particle swarm optimization algorithm",
+journal = "Information Sciences",
+volume = "272",
+pages = "126 - 144",
+year = "2014",
+issn = "0020-0255",
+doi = "https://doi.org/10.1016/j.ins.2014.02.075",
+url = "http://www.sciencedirect.com/science/article/pii/S0020025514001819",
+author = "Javad Sadeghi and Saeid Sadeghi and Seyed Taghi Akhavan Niaki",
+keywords = "Vendor managed inventory, Consignment stock, Fuzzy demand, Particle swarm optimization (PSO), Genetic algorithm (GA), Taguchi method",
+abstract = "Vendor-managed inventory (VMI) is a popular policy in supply chain management (SCM) to decrease bullwhip effect. Since the transportation cost plays an important role in VMI and because the demands are often fuzzy, this paper develops a VMI model in a multi-retailer single-vendor SCM under the consignment stock policy. The aim is to find optimal retailers’ order quantities so that the total inventory and transportation cost are minimized while several constraints are satisfied. Because of the NP-hardness of the problem, an algorithm based on particle swarm optimization (PSO) is proposed to find a near optimum solution, where the centroid defuzzification method is employed for defuzzification. Since there is no benchmark available in the literature, another meta-heuristic, namely genetic algorithm (GA), is presented in order to verify the solution obtained by PSO. Besides, to make PSO faster in finding a solution, it is improved by a local search. The parameters of both algorithms are calibrated using the Taguchi method to have better quality solutions. At the end, conclusions are made and future research is recommended."
+}
+
+@article{Wang:2013,
+	Author = {Wang, Weijing and Li, Zhenhua and Oehlschlaeger, Matthew A and Healy, Darren and Curran, Henry J and Sarathy, S Mani and Mehl, Marco and Pitz, William J and Westbrook, Charles K},
+	Journal = {Proceedings of the Combustion Institute},
+	Month = jan,
+	Number = {1},
+	Pages = {335--343},
+	Title = {{An experimental and modeling study of the autoignition of 3-methylheptane}},
+	Volume = {34},
+	Year = {2013}}
+
+@article{Sarathy:2012,
+	Author = {Sarathy, S Mani and Vranckx, Stijn and Yasunaga, Kenji and Mehl, Marco and O{\ss}wald, Patrick and Metcalfe, Wayne K and Westbrook, Charles K and Pitz, William J and Kohse-H{\"o}inghaus, Katharina and Fernandes, Ravi X and Curran, Henry J},
+	Journal = {Combust. Flame},
+	Month = jun,
+	Number = {6},
+	Pages = {2028--2055},
+	Title = {{A comprehensive chemical kinetic combustion model for the four butanol isomers}},
+	Volume = {159},
+	Year = {2012},
+    doi = {10.1016/j.combustflame.2011.12.017},
+    }
+    
+@article{Mehl:2011,
+	Author = {Mehl, Marco and Pitz, William J and Westbrook, Charles K and Curran, Henry J},
+	Journal = {Proceedings of the Combustion Institute},
+	Number = {1},
+	Pages = {193--200},
+	Title = {{Kinetic modeling of gasoline surrogate components and mixtures under engine conditions}},
+	Volume = {33},
+	Year = {2011}}
+	
+@article{DiSante:2012,
+title = "Measurements of the auto-ignition of n-heptane/toluene mixtures using a rapid compression machine",
+journal = "Combustion and Flame",
+volume = "159",
+number = "1",
+pages = "55 - 63",
+year = "2012",
+issn = "0010-2180",
+doi = "https://doi.org/10.1016/j.combustflame.2011.05.020",
+url = "http://www.sciencedirect.com/science/article/pii/S0010218011001660",
+author = "R. Di Sante",
+keywords = "Rapid compression machine (RCM), Auto-ignition, Ignition delay, -Heptane, Toluene, Fuel chemistry"
+}
+
+@article{Burcat:1981,
+author = {Burcat, Alexander and F. Farmer, Richard and A. Matula, Richard},
+year = {1981},
+month = {07},
+pages = {8},
+title = {Shock Initiated Ignition in Heptane-Oxygen-Argon Mixtures},
+booktitle = {13th International Symposium on Shock Tubes and Waves}
+}
+
+
+@article{Horning:2002,
+annote = {doi: 10.2514/2.5942},
+author = {Horning, D C and Davidson, D F and Hanson, R K},
+doi = {10.2514/2.5942},
+issn = {0748-4658},
+journal = {Journal of Propulsion and Power},
+month = {mar},
+number = {2},
+pages = {363--371},
+publisher = {American Institute of Aeronautics and Astronautics},
+title = {{Study of the High-Temperature Autoignition of n-Alkane/O/Ar Mixtures}},
+url = {https://doi.org/10.2514/2.5942},
+volume = {18},
+year = {2002}
+}
+
+@article{Hartmann:2011,
+title = {Auto-ignition of toluene-doped n-heptane and iso-octane/air mixtures: High-pressure shock-tube experiments and kinetics modeling},
+author = {Hartmann, M. and Fikri, M. and Schulz, C. and Gushterova, I. and Schiessl, R. and Maas, U.},
+abstractNote = {Toluene is often used as a fluorescent tracer for fuel concentration measurements, but without considering whether it affects the auto-ignition properties of the base fuel. We investigate the auto-ignition of pure toluene and its influence on the auto-ignition of n-heptane and iso-octane/air mixtures under engine-relevant conditions at typical tracer concentrations. Ignition delay times {tau}{sub ign} were measured behind reflected shock waves in mixtures with air at {phi}=1.0 and 0.5 at p=40 bar, over a temperature range of T=700-1200 K and compared to numerical results using two different mechanisms. Based on the models, information is derived about the relative influence of toluene on {tau}{sub ign} on the base fuels as function of temperature. For typical toluene tracer concentrations {<=}10%, the ignition delay time {tau}{sub ign} changes by less than 10% in the relevant pressure and temperature range. (author)},
+doi = {10.1016/J.COMBUSTFLAME.2010.08.005},
+journal = {Combustion and Flame},
+number = 1,
+volume = 158,
+place = {United States},
+year = {2011},
+month = {1}
+}
+
+@article{Herzler:2007,
+author = {Herzler, Jürgen and Fikri, Mustapha and Hitzbleck, K and Starke, Ralf and Schulz, Christof and Roth, P and Kalghatgi, Gautam},
+year = {2007},
+month = {04},
+pages = {25-31},
+title = {Shocktube study of the autoignition of n-heptane/toluene/air mixtures at intermediate temperatures and high pressures},
+volume = {149},
+booktitle = {Combustion and Flame - COMBUST FLAME}
+}
+
+@article{Gauthier:2004,
+author = {Gauthier, Ben and Davidson, David and Hanson, R.K.},
+year = {2004},
+month = {12},
+pages = {300-311},
+title = {Shock tube determination of ignition delay times in full-blend and surrogate fuel mixtures},
+volume = {139},
+booktitle = {Combustion and Flame}
+}
+
+@Article{Colket:2001,
+author={Colket, Meredith B.
+and Spadaccini, Louis J.},
+title={Scramjet Fuels Autoignition Study},
+journal={Journal of Propulsion and Power},
+year={2001},
+month={Mar},
+day={01},
+publisher={American Institute of Aeronautics and Astronautics},
+volume={17},
+number={2},
+pages={315-323},
+issn={0748-4658},
+doi={10.2514/2.5744},
+}
+
+@article{Vermer:1972,
+title = "Auto-ignition of hydrocarbons behind reflected shock waves",
+journal = "Combustion and Flame",
+volume = "18",
+number = "3",
+pages = "327 - 336",
+year = "1972",
+issn = "0010-2180",
+doi = "10.1016/S0010-2180(72)80183-4",
+url = "http://www.sciencedirect.com/science/article/pii/S0010218072801834",
+author = "D.J. Vermeer and J.W. Meyer and A.K. Oppenheim"
+}
+
+@article{Smith:2005,
+author = {Smith, John M. and Simmie, John M. and Curran, Henry J.},
+title = {Autoignition of heptanes; experiments and modeling},
+journal = {International Journal of Chemical Kinetics},
+volume = {37},
+number = {12},
+pages = {728-736},
+doi = {10.1002/kin.20120},
+url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/kin.20120},
+eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/kin.20120},
+abstract = {Abstract There is much interest in determining the influence of molecular structure on the rate of combustion of hydrocarbons; the C7H16 isomers of heptane have been selected here as they exemplify all the different structural elements present in aliphatic, noncyclic hydrocarbons. With the exception of n-heptane itself, no autoignition studies have been carried out to date on the other isomers of heptane at high temperatures. Therefore, ignition delay times were measured for the oxidation of four isomers—n-heptane, 2,2-dimethylpentane, 2,3-dimethylpentane, and 2,2,3-trimethylbutane—under stoichiometric conditions at a reflected shock pressure of 2 atm, within the temperature range of 1150–1650 K. Measurements under identical conditions reveal that they all have essentially the same ignition delay time; this confirms earlier theoretical predictions based purely on detailed chemical kinetic modeling. The variation of ignition delay times for n-heptane with changing oxygen concentrations and reflected shock pressure was determined and shown to follow expected trends. © 2005 Wiley Periodicals, Inc. Int J Chem Kinet 37: 728–736, 2005}
+}
+
+@article{Moss:2008bva,
+	Author = {Moss, Jeffrey T and Berkowitz, Andrew M and Oehlschlaeger, Matthew A and Biet, Joffrey and Warth, Val{\'e}rie and Glaude, Pierre-Alexandre and Battin-Leclerc, Fr{\'e}d{\'e}rique},
+	Date-Added = {2017-07-31 00:54:46 +0000},
+	Date-Modified = {2017-07-31 00:54:46 +0000},
+	Doi = {10.1021/jp806464p},
+	Journal = {J. Phys. Chem. A},
+	Month = oct,
+	Number = {43},
+	Pages = {10843--10855},
+	Title = {An Experimental and Kinetic Modeling Study of the Oxidation of the Four Isomers of Butanol},
+	Volume = {112},
+	Year = 2008
+}
+
+@article{Stranic:2012jl,
+	Author = {Stranic, Ivo and Chase, Deanna P and Harmon, Joseph T and Yang, Sheng and Davidson, David F and Hanson, Ronald K},
+	Doi = {10.1016/j.combustflame.2011.08.014},
+	Journal = {Combust. Flame},
+	Month = feb,
+	Number = {2},
+	Pages = {516--527},
+	Title = {Shock tube measurements of ignition delay times for the butanol isomers},
+	Volume = {159},
+	Year = 2012
+}
+
+@article {Bec:2014,
+author = {Bec, I. L. R. and Zhu, Y. and Davidson, D. F. and Hanson, R. K.},
+title = {Shock Tube Measurements of Ignition Delay Times for the Butanol Isomers Using the Constrained-Reaction-Volume Strategy},
+journal = {International Journal of Chemical Kinetics},
+volume = {46},
+number = {8},
+issn = {1097-4601},
+doi = {10.1002/kin.20859},
+pages = {433--442},
+year = 2014,
+}
+
+@article{Zhu:2014td,
+  doi = {10.1016/j.combustflame.2013.06.028},
+  year  = 2014,
+  month = mar,
+  volume = {161},
+  number = {3},
+  pages = {634--643},
+  author = {Yangye Zhu and David Frank Davidson and Ronald K. Hanson},
+  title = {{1-Butanol} ignition delay times at low temperatures: An application of the constrained-reaction-volume strategy},
+  journal = {Combust. Flame}
+}
+
+@article{koskinen:2009,
+      Author = {P. Koskinen, V. Mäkinen},
+      Journal = {Computational Material Science},
+      Title = {Density-functional tight-binding for beginners},
+      Volume = {47},
+      Pages = {237},
+      Year = {2009}
+    }
+    
+@article{Sirumalla:2018,
+title = "Assessing impacts of discrepancies in model parameters on autoignition model performance: A case study using butanol",
+journal = "Combustion and Flame",
+volume = "190",
+pages = "284 - 292",
+year = "2018",
+issn = "0010-2180",
+doi = "https://doi.org/10.1016/j.combustflame.2017.11.018",
+url = "http://www.sciencedirect.com/science/article/pii/S0010218017304571",
+author = "Sai Krishna Sirumalla and Morgan A. Mayer and Kyle E. Niemeyer and Richard H. West",
+keywords = "Butanol, Chemical kinetic models, Model comparison, Uncertainty",
+abstract = "Side-by-side comparison of detailed kinetic models using a new tool to aid recognition of species structures reveals significant discrepancies in the published rates of many reactions and thermochemistry of many species. We present a first automated assessment of the impact of these varying parameters on observable quantities of interest—in this case, autoignition delay—using literature experimental data. A recent kinetic model for the isomers of butanol was imported into a common database. Individual reaction rate and thermodynamic parameters of species were varied using values encountered in combustion models from recent literature. The effects of over 1600 alternative parameters were considered. Separately, experimental data were collected from recent publications and converted into the standard YAML-based ChemKED format. The Cantera-based model validation tool, PyTeCK, was used to automatically simulate autoignition using the generated models and experimental data, to judge the performance of the models. Taken individually, most of the parameter substitutions have little effect on the overall model performance, although a handful have quite large effects, and are investigated more thoroughly. Additionally, models varying multiple parameters simultaneously were evolved using a genetic algorithm to give fastest and slowest autoignition delay times, showing that changes exceeding a factor of 10 in ignition delay time are possible by cherry-picking from only accepted, published parameters. All data and software used in this study are available openly."
+}
