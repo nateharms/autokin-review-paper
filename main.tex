@@ -63,16 +63,16 @@
 
 
 \journal{Combustion and Flame}
-%%% FOR ARXIV PURPOSE - REMOVE THE Preprint submitted to... FOOTER
-% \makeatletter
-% \def\ps@pprintTitle{%
-%   \let\@mkboth\@gobbletwo
-%   \renewcommand{\@oddhead}{}%
-%   \renewcommand{\@evenhead}{}%
-%   \renewcommand{\@evenfoot}{}%
-%   \renewcommand{\@oddfoot}{}%
-% }
-% \makeatother
+%FOR ARXIV PURPOSE - REMOVE THE Preprint submitted to... FOOTER
+\makeatletter
+\def\ps@pprintTitle{%
+   \let\@mkboth\@gobbletwo
+   \renewcommand{\@oddhead}{}%
+   \renewcommand{\@evenhead}{}%
+   \renewcommand{\@evenfoot}{}%
+   \renewcommand{\@oddfoot}{}%
+ }
+\makeatother
 %%%%
 
 \begin{document}
@@ -109,8 +109,6 @@ This review highlights the recent advances in automated transition state theory 
 \end{frontmatter}
 
 %\clearpage
-Combustion of fuels is a ubiquitous process that is prevalent in many aspects of our lives, and understanding combustion allows us to smartly design new fuels. 
-Detailed kinetic modeling is an imperative tool to thoroughly understand combustion, and the construction of these models requires the determination of thousands of kinetic and thermodynamic parameters through experimentation, high level of theory calculations, or estimations. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
@@ -184,7 +182,7 @@ Force field calculations are known for giving rough potential energy estimates w
 \subsubsection{Hartree-Fock and semi-empirical methods}
 
 Hartree-Fock methods are a way to approximate the quantum wave function of a molecule at a stationary state \cite{HF:1951, HF:1987} by assuming: the molecular wave function is dependant on the coordinates of each atom's nuclei and their electrons, the solution to the wave function is a linear combination of basis functions, each energy eigenvector is solved by a single Slater determinant, and Coulomb correlations of electrons and London dispersion effects are approximated using mean field theory.
-\todo{HF uses mean field theory to simplify the electron coulomb correlation,  it does not fully neglect it. It is described well on p.34 in Jensen's Introduction to Computational Chemistry book in the DFT QC books folder in Dropbox.  He uses the solar system as an analogy.  In the HF method, you would calculate Earth's orbit by considering the gravitational force from the sun (nucleus) and the average of the gravitational forces from all the other planets}
+%\todo{HF uses mean field theory to simplify the electron coulomb correlation,  it does not fully neglect it. It is described well on p.34 in Jensen's Introduction to Computational Chemistry book in the DFT QC books folder in Dropbox.  He uses the solar system as an analogy.  In the HF method, you would calculate Earth's orbit by considering the gravitational force from the sun (nucleus) and the average of the gravitational forces from all the other planets}
 From these assumptions, Fock matrices are constructed to approximate the energy operator of each orbital of the molecular system using basis functions.
 
 Semi-empirical methods are based on HF methods, but use parameters determined from empirical data \cite{SEMethods:2014}. 
@@ -203,52 +201,14 @@ DFT will be defined as a ``level 2'' (L2) level of theory throughout this paper.
 Coupled cluster (CC) methods are another way to describe many-body systems \cite{CC:2002}, and are based on HF molecular orbital methods but instead constructs a mutli-electron wave function to account for electron interactions missing from HF.
 These methods offer more accurate treatment of electronic correlation than both HF and DFT, often resulting high fidelity calculations. 
 CC methods are often the most accurate form of calculations that can be performed, however, their increase in accuracy is met by an increase in computational cost.
-CC methods include single (S), double (D), triple (T), and quadruple (Q) excitations.  \todo{can have higher order excitations as well (beyond Q),  I would mention CCSD(T) method here which is Single, Double, Pertubative Triple.  It is the most popular methods and known as the 'gold standard' and offers the best accuracy to cost. Going beyond (T) doesn't add much accuracy unless it's a multireference molecule.  You might also want to mention that CC method accuracy is highly dependent on basis set size.  Need to extrapolate to complete basis set limit (CBS) or use F12 with big basis sets}
-By choosing combinations of different excitation levels, cluster operators that can approximate the wave function based on a reference wave function can be created.
+CC methods include single (S), double (D), triple (T), quadruple (Q) excitations and excitation combinations as well.
+One of the more common CC excitation is CCSD(T) (the single, double, and pertubative triple excitation) as is often seen as the ``gold standard'' in that it offers a good balance between accuracy and cost.
+The accuracy of CC is highly dependent on the basis set size and by choosing combinations of different excitation levels, cluster operators are created that can approximate the wave function based on a reference wave function.
 Because of this, these calculations are often reserved for single point (SP) calculations rather than for geometry optimizations.
 CC calculations will be defined as a ``level 3'' (L3) level of theory.
 
-\begin{comment}
+%\todo{can have higher order excitations as well (beyond Q),  I would mention CCSD(T) method here which is Single, Double, Pertubative Triple.  It is the most popular methods and known as the 'gold standard' and offers the best accuracy to cost. Going beyond (T) doesn't add much accuracy unless it's a multireference molecule.  You might also want to mention that CC method accuracy is highly dependent on basis set size.  Need to extrapolate to complete basis set limit (CBS) or use F12 with big basis sets}
 
-\subsection{Quantum Chemistry Calculations}
-
-A variety of methods exist to estimate a solution of the Schrodinger equation which can be used to arrive at an optimized electronic structure.
-One of the first methods developed was the Hartree-Fock (HF) method \cite{HF:1987}.
-The HF method assumes that the exact wave function of a system can be approximated by a single Slater determinant of the spin orbitals.
-By using this assumption, one can derive a set of equations that, when solved, can yield the HF wave function and the energy of the system. 
-The solutions for the wave function and the energy of the system are upper bound estimates of the exact value. 
-One of the shortcomings of the HF method is that it assumes that there are no interactions between electrons.
-Because of this, the HF method can be solved quickly; however, the solution returned is not as accurate as more detailed methods.
-
-An alternate to the HF method is density function theory (DFT) \cite{DFT:1964}.
-DFT differs from HF in that DFT estimates the electronic wave function as an electronic density.
-This estimation allows for a more accurate approximation than HF methods but at an increase of required computational resources.
-Hohenberg and Kohn were the two pioneers of this method and developed two theorems that rest at the crux of DFT:
-\begin{enumerate}
-    \item The ground state electronic density determines the electronic wave function and the properties of the electronic system.
-    \item The energy of an electron distribution can be described as a function of the electron density.
-\end{enumerate}
-From these theorems, one can create an approximation of the Schrodinger equation and minimize the corresponding density function to arrive an optimized electronic structure.
-DFT allows for a good balance between accuracy of a solution and its computational cost; however, DFT approximations can only be made to within a few kcal/mol so uncertainty is still relatively large.
-
-To obtain higher fidelity solutions, one can turn to coupled cluster theory \cite{Bartlett:2007}.
-
-Coupled cluster theory makes the assumption that that the wave function can be represented as described in equations \ref{eq:CC1} and \ref{eq:CC2}.
-\begin{equation}
-    \Psi_{MBPT} = \Psi_{CC} = \exp{T} \Phi_0 = \Omega \Phi_0
-\label{eq:CC1}
-\end{equation}
-
-\begin{equation}
-    \Psi_{CC} = \sum^\infty_{i=0} \frac{T^i}{i!}
-\label{eq:CC2}
-\end{equation}
-
-In the above equations, $\Psi_{MBPT}$ is the many-body perturbation theory (MBPT) wave function, $\Psi_{CC}$ is the coupled cluster wave function, $T$ is the cluster operator, and  $\Omega$ is the wave operator.
-Equation \ref{eq:CC2} is simply the Taylor series expansion of the exponential of the cluster operator. 
-
-The cluster operator can be further expanded depending on the version of coupled cluster theory one is using, e.g. CCD, CCSD, CCSDT, CCSD(T), etc. 
-\end{comment}
 
 \subsection{Conformer Analysis}
 
@@ -355,15 +315,6 @@ This potential energy curve is fitted to a Fourier series described in equation 
 Where $V$ is the potential energy as a function of the rotation of the torsion of interest $\Theta$, $n$ is the number of scanned points (e.g. if the scan was performed over \ang{10} intervals, $n$ would be 36), and $a_k$ and $b_k$ are fitted parameters.
 It is noted that the above equations are used to represent 1-D hindered rotors which are completely separable.
 Treatment of coupled hindered rotors (e.g. 2-D and 3-D) is not discussed in this review, but is discussed Fernández-Ramos' paper on the treatment of 2-D rotors \cite{fernandez:2013}.
-
-\begin{comment}
-
-\begin{equation}
-    Q_{rot} Q_{vib} = \frac{8 \pi^2}{\sigma} \Big( \frac{2 \pi k T}{h^2} \Big)^2 \Big( \frac{k T}{h} \Big)^a \int^{2 \pi}_{0} \frac{S^{1/2}}{\prod^a_{i=1} \nu_i} \exp \big({\frac{-V(\phi)}{k T}\big)} d \phi
-\label{eq:hinderedrotor}
-\end{equation}
-In the above equation, $a$ is the number of vibrational modes, $\nu_i$ is the frequency of the $i$th mode, S is the product of internal and external rotation, and $\phi$ is the angle of internal rotation.
-\end{comment}
 
 
 \subsubsection{Symmetry number}
@@ -472,142 +423,6 @@ Total & 1117 & 781 & 70\%\\
 A majority of AutoTST calculated kinetics agreed well with kinetics reported in the original model and estimates by RMG, however some had large disagreements with published kinetics. 
 Based on error analysis against benchmark calculations, Bhoorasingh and co-workers commented that AutoTST's workflow would benefit from a detailed conformational analysis and hindered rotor treatment. 
 
-\begin{comment}
-Figures describing the agreement of kinetics at 1000K are given in figure \ref{fig:KinComp_all_compare}.
-Six of the reactions with the largest discrepancies, two from each reaction family (Figure \ref{table:BenchRxns}), were then compared to benchmark calculations to identify erroneous kinetics.
-Benchmark calculations were performed by running geometry optimizations using the \texttt{ultrafine} setting, inclusion of the 1-D hindered rotor approximation instead of the rigid rotor harmonic oscillation approximation, a systematic conformational analysis, and manual calculation of symmetry number. 
-All calculations were performed using the M06-2X DFT functional with the MG3S basis set in Gaussian 09. 
-
-
-\begin{figure}[H]
-	\begin{flushleft}
-	\begin{subfigure}[b]{\textwidth}
-    \includegraphics[width=\textwidth]{RateRulesvsAutoTST.pdf}
-    \caption{\label{fig:comp_RMG}}
-	\end{subfigure}
-    ~
-    \begin{subfigure}[b]{0.94\textwidth}
-    \includegraphics[width=\textwidth]{SarathyvsAutoTST.pdf}
-    \caption{\label{fig:comp_Sarathy}}
-	\end{subfigure}
-	\caption{Rate rule estimates from RMG (a) and LLNL model rates (b)  plotted against automated algorithm TST calculations evaluated at 1000~K. From ref. \citenum{Bhoorasingh2017data}.}
-    \label{fig:KinComp_all_compare}
-    \end{flushleft}
-\end{figure}
-
-\begin{table}[htbp]
-\small
-\caption{\label{table:BenchRxns} Reactions compared to benchmark calculations.}
-\centering
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}c l c}
-\hline\rule{0pt}{2.6ex}%
-Label & Family & Reaction \\
-\hline\rule{0pt}{2.6ex}%
-R1 & H abstraction & \ce{C2H5OO^. + C2H6 <=> C2H5OOH + ^.CH2CH3} \\
-R2 & H abstraction &  \ce{^.OOH + CH3C(=O)C2H5 <=> H2O2 + ^.CH2C(=O)C2H5} \\
-R3 & Intramolecular H migration & \ce{O=CHCH2OO^. <=> O=C^.CH2OOH} \\
-R4 & Intramolecular H migration & \ce{CH3C(CH3)(C=O)OO^. <=> CH3C(CH3)(^.C=O)OOH} \\
-R5 & Radical addition & \ce{CO2 + ^.CH3 <=> CH3C(=O)O^.} \\
-R6 & Radical addition & \ce{CH2C(CH3)CH=O + HO2^. <=> ^.CH2C(CH3)(CH=O)OOH} \\
-\hline
-\end{tabular*}
-\end{table}
-
-
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[b]{3in}%0.45\textwidth}
-    \includegraphics[width=\textwidth]{R1}
-    \caption{\label{fig:habs_comp1}}
-	\end{subfigure}
-    ~
-    \begin{subfigure}[b]{3in}%0.45\textwidth}
-    \includegraphics[width=\textwidth]{R2}
-    \caption{\label{fig:habs_comp2}}
-	\end{subfigure}
-	\caption{Comparison of kinetic estimates for hydrogen abstraction reactions R1 (a) and R2 (b). }
-	% Well defined rate rules exist for reaction 1, resulting in the predictions outperforming the automated calculations. The automated calculations outperformed the rate rule predictions for reaction 2.
-    \label{fig:HAbs_Comp}
-\end{figure}
-
-
-\begin{figure}
-	\centering
-	\begin{subfigure}[b]{3in}%0.45\textwidth}
-    \includegraphics[width=\textwidth]{R3}
-    \caption{\label{fig:iha_comp1}}
-	\end{subfigure}
-    ~
-    \begin{subfigure}[b]{3in}%0.45\textwidth}
-    \includegraphics[width=\textwidth]{R4}
-    \caption{\label{fig:iha_comp2}}
-	\end{subfigure}
-	\caption{Comparison of kinetic estimates for intramolecular hydrogen migration reactions R3 (a) and R4 (b).}
-    \label{fig:iHA_Comp}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\begin{subfigure}[b]{3in}%0.45\textwidth}
-    \includegraphics[width=\textwidth]{R5}
-    \caption{\label{fig:RAddMult_comp1}}
-	\end{subfigure}
-    ~
-    \begin{subfigure}[b]{3in}%0.45\textwidth}
-    \includegraphics[width=\textwidth]{R6}
-    \caption{\label{fig:RAddMult_comp2}}
-	\end{subfigure}
-	\caption{Comparison of kinetic estimates for radical addition to multiple bond reactions R5 (a) and R6 (b).}
-    \label{fig:RAddMult_Comp}
-\end{figure}
-
-
-\begin{figure}
-\centering	
-\includegraphics[width=\textwidth]{error_comparison}
-\caption{\label{fig:k1000_error} Sources of error in each automated algorithm compared to its respective benchmark calculation. $\Delta \log(k(1000\text{ K})) = \log_{10}\left((k \text{ with a correction omitted})/(\text{benchmark } k\text{ with all corrections})\right)$. Omitting all the corrections simultaneously gives the ``Fully Automated Algorithm'' result.}
-\end{figure}
-
-\begin{table}[H]
-\caption{\label{table:Activation_Energy} Difference in the activation energy (kJ/mol) compared to the benchmark calculations. Kinetics fitted to Arrhenius form between 600K and 2000K.}
-\centering
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}|c|c|cccc|c|}
-\hline\rule{0pt}{2.6ex}%
-Reaction & Benchmark  & Inaccurate & Hindered & Incorrect & Incorrect & Overall\\
-  & E$_a$  & Energy & Rotors & Symmetry & Conformer & Discrepancy\\
-\hline\rule{0pt}{2.6ex}%
-R1 & 111.98 & --5.46 & --0.34 & 0.00 & --0.91 & --6.01\\
-R2 & 119.38 & --9.92 & --20.70 & 0.00 & +4.57 & --24.53\\
-R3 & 88.54 & +6.16 & +0.28 & 0.00 & --11.05 & --4.06\\
-R4 & 85.19 & +7.03 & +1.08 & 0.00 & --12.52 & --3.35\\
-R5 & 97.24 & --7.73 & 0.00 & 0.00 & --2.52 & --7.68\\
-R6 & 84.89 & --6.74 & --8.35 & 0.00 & +0.01 & +1.91\\
-\hline
-\end{tabular*}
-\end{table}
-
-\begin{table}[H]
-\caption{\label{table:A_Factor} Difference in the log$_{10}$ of the $A$ factor compared to the benchmark calculations. Kinetics fitted to Arrhenius form between 600K and 2000K. R3 and R4 are in [s\textsuperscript{-1}] and the others are in [cm$_3$/(mol s)].}
-\centering
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}|c|c|cccc|c|}
-\hline\rule{0pt}{2.6ex}%
-Reaction & Benchmark &Inaccurate & Hindered & Incorrect & Incorrect & Overall\\
- & log$_{10}$A  & Energy & Rotors & Symmetry & Conformer & Discrepancy\\
-\hline\rule{0pt}{2.6ex}%
-R1 & 13.96 & +0.020 & --0.772 & --1.079 & 0.000 & --2.337\\
-R2 & 13.27 & +0.010 & --2.659 & 0.000 & -0.016 & --1.854\\
-R3 & 12.00 & --0.001 & +0.416 & 0.000 & +0.004 & +0.620\\
-R4 & 11.64 & --0.002 & +1.253 & 0.000 & +0.004 & +1.369\\
-R5 & 12.83 & 0.000 & 0.000 & --1.079 & 0.000 & --1.169\\
-R6 & 11.53 & 0.000 & --0.483 & 0.000 & 0.000 & +0.141\\
-\hline
-\end{tabular*}
-\end{table}
-\end{comment}
-
-\clearpage
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%                                                %%%%%%%%%%%%%%%%%%
@@ -656,70 +471,6 @@ To test the efficacy of AutoTS, Jacobson and coworkers used test sets for four r
 AutoTS has shown great efficacy in these test cases, although the authors do highlight avenues of improvement necessary in AutoTS.
 From the version of AutoTS published, the authors wished to add support of reactions that do not involve forming or breaking covalent bonds, reactions with spectator molecules, reactions involving transition metals, reactions with cage-like geometries, sterocenters of reacting atoms, conformational analysis (this version of AutoTS currently uses only the input conformation of reactants and products to generate TS geometries), and very large molecules (300+ atoms).
 
-\begin{comment}
-For Michael addition, Jacobson and co-workers uses AutoTS on a set of reactions first studied by Flanagan et al. \cite{?} \todo{add citation}
-This test set was chosen because, although it is a simple reaction in theory, the potential energy surface of the reaction is very complex with very shallow barrier heights. 
-AutoTS was able to successfully arrive at a TS for 14 of the reactions studied by Flanagan et al. where $\Delta G^\ddagger$ and $t_{1/2}$ is given.
-A plot of the work of Jacobson et al. and of this work is shown in figure \ref{fig:autots_someresults}.
-All of the calculations for this work were done using the B3LYP functional and the 6-311+G** basis sets.
-Jacobson and co-workers acknowledge that the separate data sets show similar trends but produce slightly different values for $\Delta G^\ddagger$.
-This difference is attributed to the calculations of Jacobson et al. using the PBF solvation model while Flanagan et al. used the SMD model. 
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.95]{autots_someresults.jpeg}
-\caption{Correlation between $\Delta G^\ddagger$ and $\log t_{1/2}$ for 14 Michael addition reactions from the work of Jacobson et al. and the calculations performed by AutoTS}
-\label{fig:autots_someresults}
-\end{figure}
-
-
-The authors chose carbene insertion reactions as another test case because these reactions represent a good test of the cheminformatics aspect of their workflow. 
-Specifically, they studied the insertion of carbenes into the H-C bonds of acetonitrile, methane, and butane previously studied by \cite{} \todo{add ref}
-There were 69 possible TS geometries, 57 of them were calculated at B3LYP/6-31G* level of theory and 12 were calculated at HF/3-21G* level of theory.
-From these 69 possible reactions, the authors were able to find 63 TS geometries (2, of which, were not found in the original work they were testing on).
-The authors saw good agreement between the previously published barriers and the barriers that they found as seen in figure \ref{fig:autots_carbene}.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.8]{autots_insertionresults.jpeg}
-\caption{Gibbs free energies of transitions state barriers for \todo{caption} }
-\label{fig:autots_carbene}
-\end{figure}
-
-The authors also tested their software against a test set of hydrogen abstraction TS geometries found by Bhoorasingh and West.
-The authors attempted calculations on the 1393 hydrogen abstractions present in a combustion model for diisopropyl ketone.
-Of these reactions, Bhoorasingh and West were able to find validated TS geometries for 930 of the 1393 reactions while the authors were able to find 1202 of these reactions.
-
-
-\begin{table}[h!]
-\caption{\label{table:autots-autotst-comparison} Comparison of success rate of AutoTS to rates previously found by Bhoorsingh and West.}
-\centering
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}c c c}
-\hline\rule{0pt}{2.6ex}%
- & Bhoorasingh \& West \cite{Bhoorasingh:2015dza}  & AutoTS \\
-\hline\rule{0pt}{2.6ex}%
-TS found & 930 & 1202 \\
-Success rate & 67 \% & 86 \% \\
-Method transferable? & No & Yes \\
-Training required? & Yes & No
-\hline
-\end{tabular*}
-\end{table}
-
-Finally, the authors tested AutoTS on a set of Diels-Alder reactions.
-The authors chose this class of reactions is quite ubiquitous in many organic synthesis reactions and have been well studies. 
-For their validation study, the authors chose a a work by Chopin et al. \cite{} \todo{cite} which studied the Diels-Alder reaction experimentally and theoretically.
-The authors used AutoTS on all reactions proposed by Chopin and co-workers and saw good agreement in the energetics of their reaction paths.
-
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=6in]{autots_reactionpath.jpeg}
-\caption{Flow diagram to describe AutoTS}
-\label{fig:autots_workflow}
-\end{figure}
-\end{comment}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -751,47 +502,6 @@ This is preformed in lieu of  IRC calculations to reduce computational costs.
 A TS is verified if the the translational mode corresponding to the imaginary frequency contains motion along active bonds, and if these contributions are larger than that of the rest of the complex, the TS is validated. 
 Validated TS, reactant, and product geometries are then used to extract Arrhenius parameters through statistical thermodynamics.
 
-\begin{comment}
-\begin{figure}[hb!]
-\centering
-\includegraphics[width=0.7\textwidth]{genesys_workflow.png}
-\caption{Flow diagram to describe the automated geometry optimizations performed in Genesys \cite{vandevijver:2017}. }
-\label{fig:genesys_workflow}
-\end{figure}
-\end{comment}
-
-Van de Vijver and co-workers chose a set of 8 elementary reactions (shown in figure \ref{fig:genesys_reactions}) to test their workflow.
-These reaction represent the following reaction families: inter- and intramolecular radical addition, inter- and intramolecular hydrogen abstractions, substitutions, dehydrations, dehydrogenations, and retro-ene reactions.
-The calculated kinetics had good agreement with experimental and theoretical data in the literature.
-In future developments of Genesys, the authors wish to automatically identify reacting atoms.
-
-\begin{figure}
-    \centering
-    \includegraphics{genesys_reactions.jpg}
-    \caption{The set of 8 reactions used to test the automated TST workflow in GENESYS, taken from \cite{VANDEVIJVER:2018}}
-    \label{fig:genesys_reactions}
-\end{figure}
-
-\begin{comment}
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[b]{3in}%0.45\textwidth}
-    \includegraphics[width=\textwidth]{genesys_results1.jpg}
-    \caption{\label{fig:habs_comp1}}
-	\end{subfigure}
-    ~
-    \begin{subfigure}[b]{3in}%0.45\textwidth}
-    \includegraphics[width=\textwidth]{genesys_results2.jpg}
-    \caption{\label{fig:habs_comp2}}
-	\end{subfigure}
-	\caption{Comparison of kinetic estimates for hydrogen abstraction reactions R1 (a) and R2 (b). }
-	% Well defined rate rules exist for reaction 1, resulting in the predictions outperforming the automated calculations. The automated calculations outperformed the rate rule predictions for reaction 2.
-    \label{fig:HAbs_Comp}
-\end{figure}
-
-\end{comment}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%                                                %%%%%%%%%%%%%%%%%%
@@ -810,7 +520,7 @@ AARON is built on the AaronTools \cite{aarontools:2018} collection which allows 
 \begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{aaron_workflow.png}
-    \caption{An overview of the AARON workflow.}
+    \caption{An overview of the AARON workflow. Borrowed from \cite{Guan:2018}}
     \label{fig:aaron_workflow}
 \end{figure}
 
@@ -840,21 +550,6 @@ AARON was able to locate a majority of the TS geometries with good agreement in 
 
 AARON is still in its early stages of development with room for improvement, specifically, creating an automated approach to create TS libraries by making use of numerous TS data generated in each run.
 
-
-\begin{comment}
-AARON was able to calculate 184 of 192 possible TS geometries for Heck allenylation where they were able to find multiple low energy wells of TS conformers. 
-One notable issue is that AARON was unable to identify the global lowest energy conformer for one case (the reaction involving the trans configuration of 2-methyl-2-buten-1-ol).
-These results are summarized in figure \ref{fig:aaron_heck}.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.7\textwidth]{aaron_heck.png}
-    \caption{An overview of the AARON workflow.}
-    \label{fig:aaron_heck}
-\end{figure}
-
-\todo[inline]{I'm not sure how to describe the remaining results. See https://pubs.acs.org/doi/full/10.1021/acs.jctc.8b00578}
-\end{comment}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -904,26 +599,6 @@ Reactant, product, and TS geometries are passed to EStokTP's master equation sol
 
 Cavollotti and co-workers studied test sets of hydrogen abstraction and addition reactions, and discussed EStokTP's handling of isomerization, beta-scission, barrierless, and multiple well reactions.
 Although the methodology for barrierless reactions is promising, this class of reactions would benefit from variable reaction coordinate TST to accurately describe the translational modes within this class of reactions.
-
-\begin{comment}
-For abstraction reactions, two test sets were considered: the abstraction from small molecules by \ce{H}, \ce{ OH}, \ce{ OOH}, \ce{ CH3}, and \ce{ O} (HAB65) and the abstraction from these small molecules by \ce{C2H}, \ce{C2H3}, \ce{C2H5}, \ce{Cl}, \ce{HS}, \ce{NH2}, and \ce{O2} (HAB91). 
-For these abstraction reactions, the 3TS method described above was utilized.
-EStokTP was able to successfully able to obtain kinetics for 93\% and 94\% for the HAB65 and HAB91 test sets, respectively. 
-%A summary of these results is displayed in tables \ref{} and \ref{} \todo{get these tables... hopefully I don't need to recreate them...}.
-For addition reactions, two test sets were considered.
-First, the addition of \ce{H}, \ce{ OH}, \ce{ OOH}, \ce{ CH3}, and \ce{ O} to a set of small molecules (ADD30) and the addition of \ce{C2H}, \ce{C2H3}, \ce{C2H5}, \ce{Cl}, \ce{HS}, \ce{NH2}, and \ce{O2} to the same set of small molecules (ADD42).
-For these test sets, EStokTP was able to find kinetics for 96\% and 89\% of the reactions present ADD30 and ADD42, respectively. 
-The authors attribute the decrease in success rate not because issues with the TS search workflow in EStokTP but because of the absence of a reaction barrier in the failed reactions. 
-%Summaries of these results are shown in tables \ref{} \ref{} \todo{tables}.
-For the remaining reaction types, the authors provide a commentary on the expected use of the code rather than explicit results.
-
-For isomerization reactions, EStokTP treats these reactions very similarly to abstraction reaction with the only difference being that there are no van der Waals wells present. 
-The authors also state that this class of reactions can be quite troublesome for close shelled species and require users to make very educated guesses of active bond distances to scan across, the range of the scan, and the number of points scanned.
-Beta-scission reactions are treated as the reverse of addition reactions so the authors deem the protocol for this reaction family redundant.
-
-\todo{discuss authors suggested improvements?}
-
-\end{comment}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -995,57 +670,6 @@ Van de Vijver and Zador tested the efficacy of KinBot on four different test set
 The authors do not comment on improvement in the article itself, but point to \texttt{kinbot.sandia.gov} and the KinBot manual for descriptions of improvements.
 
 
-\begin{comment}
-\todo[inline]{GET FIGURES FROM JUDIT ONCE THE PAPER GETS PUBLISHED}
-
-KinBot was used to identify [1,3]-sigmatropic H-migration reactions for 8 different compounds (shown in Figure \ref{fig:sigmatropic} \todo{add figure}.
-Both suprafacial and antrafacial pathways were considered in addition to cis and trans configurations of compounds were considered due to the fact that each configuration leads to a unique TS.
-Pathways were initially calculated at B3LYP/6-31G (L1) and then reoptimization and frequencies were obtained at M062X/6-311++(d,p) level of theory (L2).
-The authors noted that suprafacial reactions for the keto-enol tautomerization did not converge so B3LYP calculations were used instead.
-The results showed that for half of the compounds (vinyl alcohol, propene, 2-methyl-1-butene, and propanol) favored the antrafacial reaction over the forbidden suprafacial reaction pathway.
-However, three of the other compounds (3-methyl butene, 4-pentenoic acid, and 1-butene) favored the antrafacial reaction.
-The authors suggest that this underscores the need for all reaction pathways to be considered when exploring reaction pathways. 
-
-The authors then chose to study the exploration of reaction channels starting from gamma-valeroactone. 
-This compound was chosen because previous, non-automatic, studies have been performed. \todo{cite sources}
-
-%%% Program overview for KinBot, could be useful, but commented out for now 
-\begin{tcolorbox}[title=\texttt{*** OVERALL PROGRAM STRUCTURE FOR KINBOT ***},,halign title=center]
-\label{box:kinbot}
-\texttt{
-\begin{itemize}
-    \item read input: seed geometry and keywords (e.g. level of theory, various thresholds, etc.)
-    \item optimize seed geometry /G09
-    \item analyze seed geometry to extract chemical information about it
-    \begin{itemize}
-        \item distance matrix
-        \item bond matrix
-        \item radical center
-        \item resonantly stabilized structures
-        \item cycles
-        \item torsions
-    \end{itemize}
-    \item sample conformational space of seed including torsional modes in cycle /G09
-    \begin{itemize}
-        \item analyze results
-        \item select lowest energy conformer
-        \item perform torsional scans for the lowest energy conformer /G09
-    \end{itemize}
-    \item perform reaction pathway search starting from seed for the following reaction types
-    \begin{itemize}
-        \item beta scission pathways /G09
-        \item all other (non-beta) scission pathways /G09
-        \item internal hydrogen abstraction pathways /G09
-        \item direct HO2 elimination pathway /G09
-        \item cyclic ether formation pathway /G09
-    \end{itemize}
-    \item output optimized geometries, frequencies and rotational constants of both products and TSs for all pathways found
-\end{itemize}
-}
-\end{tcolorbox}
-\end{comment}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1091,7 +715,7 @@ A collaborative effort should be made, when possible, to allow codes and their d
 \begin{adjustbox}{angle=90}
 \begin{scriptsize}
 \begin{centering}
-\begin{tabular}{m{0.5in}||m{0.25in} | m{0.5in} | m{0.8in} | m{0.75in}| m{0.5in}| m{0.5in }|m{0.5in}| m{0.5in}| m{0.5in}| m{0.5in}| m{0.5in}| m{0.5in}}
+\begin{tabular}{m{0.5in}||m{0.25in} | m{0.5in} | m{0.8in} | m{0.75in}| m{0.5in}| m{0.5in }|m{0.5in}| m{0.5in}| m{0.5in}| m{0.5in}| m{0.5in}| m{0.5in} | m{0.5in}}
     
     Software & Year Published & Input & Generation of Guesses & Geometry Optimizations & Conformer Analysis & Validation & Hindered Rotors & Zero Point Energies & Symmetry & Kinetics & Supported QM Software & Supported Atoms & Open Source? Licensing? \\
     \hline
@@ -1116,14 +740,6 @@ A collaborative effort should be made, when possible, to allow codes and their d
 \end{adjustbox}
 \end{singlespace}
 
-\begin{comment}
-\begin{figure}[H!]
-    \centering
-    \includegraphics[width=\textwidth]{Untitled.png}
-    \caption{A qualitative comparison of the code bases discussed, rate rule estimations, and experimental kinetics.}
-    \label{fig:autokin_comparison}
-\end{figure}
-\end{comment}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
