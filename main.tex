@@ -144,13 +144,13 @@ This section of the review will describes electronic structure calculations of: 
 \centering
 \begin{subfigure}[t]{.5\textwidth}
   \centering
-  \includegraphics{TST-2D-PES.pdf}
+  \includegraphics{TST-2D-PES}
   \caption{2-D representation}
   \label{fig:sub1}
 \end{subfigure}%
 \begin{subfigure}[t]{.5\textwidth}
   \centering
-  \includegraphics{TST-3D-PES.pdf}
+  \includegraphics{TST-3D-PES}
   \caption{3-D representation}
   \label{fig:sub2}
 \end{subfigure}
@@ -369,14 +369,14 @@ This section of the review introduces existing code bases that can perform autom
 
 AutoTST, developed by Bhoorasingh et al., is one of the first automated TST tools designed to work for gas phase reactions in combustion settings \cite{bhoorasingh:2017}.
 AutoTST began as a module included within the Reaction Mechanism Generator (RMG) package which uses RMG reaction objects to perform calculations and is freely available under the MIT license. 
-The overall workflow for AutoTST is shown in figure \ref{fig:autotst-overview}.
+The overall workflow for AutoTST is shown in figure \ref{fig:autotst_overview}.
 
 This tool does not require users to provide geometry input files or guesses for key reaction coordinates contrary to required inputs of most quantum chemistry packages.
 A user manually matches an RMG reaction object to one of three reaction families (hydrogen abstraction, intramolecular hydrogen migration, and radical addition to multiple bond): from there AutoTST calculates kinetics. 
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.75\textwidth]{autotst-overview.png}
+    \includegraphics[width=0.75\textwidth]{autotst_overview}
     \caption{A flow chart describing the workflow of AutoTST, modified from \cite{bhoorasingh:2017}. Training data are used to estimate the TS geometry. This geometry is then optimized using a set of partial optimizations and validated using IRC calculations.}
     \label{fig:autotst-overview}
 \end{figure}
@@ -387,7 +387,7 @@ A depiction of a tree is given in figure \ref{fig:autotst_tree}.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.5\textwidth]{autotst_tree.png}
+    \includegraphics[width=0.5\textwidth]{autotst_tree}
     \caption{An example of a decision tree used in AutoTST. Reacting atoms are matched to a node on the tree to provide key distances in the reaction center. If no exact match exists or data does not exist for an exact match, a general match on a higher node will be used.}
     \label{fig:autotst_tree}
 \end{figure}
@@ -522,7 +522,7 @@ AARON is built on the AaronTools \cite{aarontools:2018} collection which allows 
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.7\textwidth]{aaron_workflow.png}
+    \includegraphics[width=\textwidth]{aaron_workflow}
     \caption{An overview of the AARON workflow. Borrowed from \cite{Guan:2018}}
     \label{fig:aaron_workflow}
 \end{figure}
@@ -542,7 +542,7 @@ This process will follow geometries through the workflow to check for common err
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.7\textwidth]{aaron_exception.png}
+    \includegraphics[width=\textwidth]{aaron_exception}
     \caption{The procedure for ``Step Vetting'' which is used in AARON to monitor jobs when searching for TS geometries.}
     \label{fig:aaron_exception}
 \end{figure}
@@ -587,7 +587,7 @@ Reactant, product, and TS geometries are passed to EStokTP's master equation sol
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\textwidth]{estoktp.png}
+    \includegraphics[width=1\textwidth]{estoktp}
     \caption{Program structure of EStokTP.}
     \label{fig:estoktp_structure}
 \end{figure}
@@ -595,7 +595,7 @@ Reactant, product, and TS geometries are passed to EStokTP's master equation sol
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.7\textwidth]{estoktp_habstraction.png}
+    \includegraphics[width=1\textwidth]{estoktp_habstraction}
     \caption{TS geometry constructed for H abstraction in the \ce{OH} + methylacetate reaction. Figure borrowed from \cite{estoktp:2018}}
     \label{fig:estoktp_habstraction}
 \end{figure}
@@ -628,7 +628,7 @@ To ensure the lowest energy conformer is isomorphic to the starting species and 
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\textwidth]{kinbot_reactions.pdf}
+    \includegraphics[width=0.5\textwidth]{kinbot_reactions}
     \caption{A table describing all of the reaction families supported by KinBot,  from \cite{kinbot:2019}.}
     \label{fig:kinbot_families}
 \end{figure}
@@ -714,11 +714,12 @@ Finally, the determination of symmetry numbers and coupling to a statistical mec
 The presence of many code bases is advantageous to perpetuate research through competition, but it can also slow the progress (the reinventing of the wheel may not be entirely necessary in some cases).
 A collaborative effort should be made, when possible, to allow codes and their developers to interact and communicate with one another to further develop the field of automated TST.
 
+\newgeometry{top=0.5in, bottom=1in, left=0in, right=0in} 
+\begin{center}
 \begin{singlespace}
 \begin{adjustbox}{angle=90}
 \begin{scriptsize}
-\begin{centering}
-\begin{tabular}{m{0.5in}||m{0.25in} | m{0.5in} | m{0.8in} | m{0.75in}| m{0.5in}| m{0.5in }|m{0.5in}| m{0.5in}| m{0.5in}| m{0.5in}| m{0.5in}| m{0.5in} | m{0.5in}}
+\begin{tabular}{m{0.45in}||m{0.25in} | m{0.45in} | m{0.8in} | m{0.7in}| m{0.5in}| m{0.5in }|m{0.45in}| m{0.45in}| m{0.5in}| m{0.45in}| m{0.5in}| m{0.5in} | m{0.45in}}
     
     Software & Year Published & Input & Generation of Guesses & Geometry Optimizations & Conformer Analysis & Validation & Hindered Rotors & Zero Point Energies & Symmetry & Kinetics & Supported QM Software & Supported Atoms & Open Source? Licensing? \\
     \hline
@@ -738,20 +739,20 @@ A collaborative effort should be made, when possible, to allow codes and their d
     \label{table:comparison}
 
 \end{tabular}
-\end{centering}
 \end{scriptsize}
 \end{adjustbox}
 \end{singlespace}
+\end{center}
+\restoregeometry
+
+\section{Acknowledgements}
+
+This material is based upon work supported by the National Science Foundation under Grant No. 1605568.
+This work was partially supported by the U.S. Department of Energy, Office of Science, Basic Energy Sciences, under Award \#0000232253, as part of the Computational Chemical Sciences Program.
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section*{Acknowledgements}
-
-
-\bibliography{refs}
+\bibliography{refs.bib}
 \bibliographystyle{elsarticle-num}
 
 
