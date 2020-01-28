@@ -699,12 +699,15 @@ This review has dentified that many code bases contain the following:
 
 Each of these categories plus a few more are summarized in table \ref{table:comparison}. 
 
-\newgeometry{top=0.5in, bottom=1in, left=0in, right=0in} 
+\newgeometry{top=0.4in, bottom=1in, left=0in, right=0in} 
+\begin{table}[h!]
+\caption{A table describing the reviewed codes that describes their differences.}
+\label{table:comparison}
 \begin{center}
 \begin{singlespace}
 \begin{adjustbox}{angle=90}
 \begin{scriptsize}
-\begin{tabular}{m{0.45in}||m{0.25in} | m{0.45in} | m{0.8in} | m{0.7in}| m{0.5in}| m{0.5in }|m{0.45in}| m{0.45in}| m{0.5in}| m{0.45in}| m{0.5in}| m{0.5in} | m{0.45in}}[h!]
+\begin{tabular}{m{0.45in}||m{0.25in} | m{0.45in} | m{0.8in} | m{0.7in}| m{0.5in}| m{0.5in }|m{0.45in}| m{0.45in}| m{0.5in}| m{0.45in}| m{0.5in}| m{0.5in} | m{0.45in}}
     
     Software & Year Published & Input & Generation of Guesses & Geometry Optimizations & Conformer Analysis & Validation & Hindered Rotors & Zero Point Energies & Symmetry & Kinetics & Supported QM Software & Supported Atoms & Open Source? Licensing? \\
     \hline
@@ -717,17 +720,17 @@ Each of these categories plus a few more are summarized in table \ref{table:comp
     \hline
     AARON   & 2018 & Reaction template, labeled atoms & Template previous run reaction to reaction of interest & Partial optimizations at L2 & Yes, rule based & ``Step Vetting'' Validation & No & No & No & No & Gaussian & All atom types & Yes, GPL-3.0 license \\ 
     \hline
-    EStokTP & 2018 & & Uses provided internal coordinates to construct 3D geometry & Conformer search at L2, series of partial optimizations at L2 theory & Yes, stochastic & IRC Calculation &Yes, 1D, 2D, 3D & Yes, L3 calculation & Yes, MESS package & Yes, AITSTME & Gaussian, MolPro & H, C, O, S, N & Yes, GPL-3.0 license  \\ 
+    EStokTP & 2018 & Guesses of reaction center coordinates, reaction family & Uses provided internal coordinates to construct 3D geometry & Conformer search at L2, series of partial optimizations at L2 theory & Yes, stochastic & IRC Calculation &Yes, 1D, 2D, 3D & Yes, L3 calculation & Yes, MESS package & Yes, AITSTME & Gaussian, MolPro & H, C, O, S, N & Yes, GPL-3.0 license  \\ 
     \hline
     KinBot  & 2019 & SMILES or 3D coordinates of reactant, reaction families of interest & Indirect or direct setting of reaction center, relaxation of reaction shell. Scan along active bonds.  & L0 search for conformer analysis, L2 search for final optimization. & Yes, systematic or random & IRC Calculation & Yes, 1D & No & Yes, graph based approach & Yes, MESS or MESMER & Gaussian & H, C, O, S & Yes, BSD 3-Clause license \\ 
     \hline
-    \label{table:comparison}
-
+   
 \end{tabular}
 \end{scriptsize}
 \end{adjustbox}
 \end{singlespace}
 \end{center}
+\end{table}
 \restoregeometry
 %In addition, each of these code bases lies somewhere on the plot of fidelity vs throughput. 
 %We suggest a qualitative comparison of fidelity vs throughput for previously discussed code bases, rate rule estimations, and parameters determined via experimentation in figure \ref{fig:autokin_comparison}.
