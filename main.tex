@@ -698,28 +698,13 @@ This review has dentified that many code bases contain the following:
 \end{enumerate}
 
 Each of these categories plus a few more are summarized in table \ref{table:comparison}. 
-%In addition, each of these code bases lies somewhere on the plot of fidelity vs throughput. 
-%We suggest a qualitative comparison of fidelity vs throughput for previously discussed code bases, rate rule estimations, and parameters determined via experimentation in figure \ref{fig:autokin_comparison}.
-Though each of these code bases are effective, there is currently no tool that attains the desired high throughput \textit{and} high fidelity required to calculate kinetic rates for entire reaction mechanisms.
-The end goal of automated kinetics should strive for open-source codes that allow users to perform high fidelity TST calculations on reactions involving any atom type and for all reaction families (homo- and heterogeneous).
-This software should: require simple inputs to create an educated guess of the TS geometry; perform a through conformational analysis and hindered rotor scans on all reactants, products, and TS geometries; calculate zero point energies; calculate symmetry numbers of complexes accurately; and estimate kinetic parameters while being able to work on a variety of reaction types, atom types, quantum software packages, and high performance computing environments.
-
-AutoTST, AutoTS, AARON, and KinBot allow libraries of previously results to generate TS guesses but AutoTS is able to provide these guesses when no training data exists as well.
-Being able to generate TSs with and without training data is highly sought after and should be included in future developments of softwares.
-In addition, generalizability is desired -- both AutoTS and AARON support many atom types and AutoTS can perform calculations on almost any reaction family, both of these features should be included in future software.
-A detailed conformational analysis is of great importance and the stochastic and systematic methods that exist in AARON, KinBot, Genesys, and EStokTP allow for effective exploration of conformational space.
-Hindered rotor scans and zero point energy calculations in KinBot, Genesys, and EStokTP help to more accurately estimate the kinetics of a reaction.
-Finally, the determination of symmetry numbers and coupling to a statistical mechanics or master equation solver is necessary to obtain kinetics and is currently present in AutoTST, Genesys, KinBot and EStokTP.
-
-The presence of many code bases is advantageous to perpetuate research through competition, but it can also slow the progress (the reinventing of the wheel may not be entirely necessary in some cases).
-A collaborative effort should be made, when possible, to allow codes and their developers to interact and communicate with one another to further develop the field of automated TST.
 
 \newgeometry{top=0.5in, bottom=1in, left=0in, right=0in} 
 \begin{center}
 \begin{singlespace}
 \begin{adjustbox}{angle=90}
 \begin{scriptsize}
-\begin{tabular}{m{0.45in}||m{0.25in} | m{0.45in} | m{0.8in} | m{0.7in}| m{0.5in}| m{0.5in }|m{0.45in}| m{0.45in}| m{0.5in}| m{0.45in}| m{0.5in}| m{0.5in} | m{0.45in}}
+\begin{tabular}{m{0.45in}||m{0.25in} | m{0.45in} | m{0.8in} | m{0.7in}| m{0.5in}| m{0.5in }|m{0.45in}| m{0.45in}| m{0.5in}| m{0.45in}| m{0.5in}| m{0.5in} | m{0.45in}}[h!]
     
     Software & Year Published & Input & Generation of Guesses & Geometry Optimizations & Conformer Analysis & Validation & Hindered Rotors & Zero Point Energies & Symmetry & Kinetics & Supported QM Software & Supported Atoms & Open Source? Licensing? \\
     \hline
@@ -744,11 +729,28 @@ A collaborative effort should be made, when possible, to allow codes and their d
 \end{singlespace}
 \end{center}
 \restoregeometry
+%In addition, each of these code bases lies somewhere on the plot of fidelity vs throughput. 
+%We suggest a qualitative comparison of fidelity vs throughput for previously discussed code bases, rate rule estimations, and parameters determined via experimentation in figure \ref{fig:autokin_comparison}.
+Though each of these code bases are effective, there is currently no tool that attains the desired high throughput \textit{and} high fidelity required to calculate kinetic rates for entire reaction mechanisms.
+The end goal of automated kinetics should strive for open-source codes that allow users to perform high fidelity TST calculations on reactions involving any atom type and for all reaction families (homo- and heterogeneous).
+This software should: require simple inputs to create an educated guess of the TS geometry; perform a through conformational analysis and hindered rotor scans on all reactants, products, and TS geometries; calculate zero point energies; calculate symmetry numbers of complexes accurately; and estimate kinetic parameters while being able to work on a variety of reaction types, atom types, quantum software packages, and high performance computing environments.
+
+AutoTST, AutoTS, AARON, and KinBot allow libraries of previously results to generate TS guesses but AutoTS is able to provide these guesses when no training data exists as well.
+Being able to generate TSs with and without training data is highly sought after and should be included in future developments of softwares.
+In addition, generalizability is desired -- both AutoTS and AARON support many atom types and AutoTS can perform calculations on almost any reaction family, both of these features should be included in future software.
+A detailed conformational analysis is of great importance and the stochastic and systematic methods that exist in AARON, KinBot, Genesys, and EStokTP allow for effective exploration of conformational space.
+Hindered rotor scans and zero point energy calculations in KinBot, Genesys, and EStokTP help to more accurately estimate the kinetics of a reaction.
+Finally, the determination of symmetry numbers and coupling to a statistical mechanics or master equation solver is necessary to obtain kinetics and is currently present in AutoTST, Genesys, KinBot and EStokTP.
+
+The presence of many code bases is advantageous to perpetuate research through competition, but it can also slow the progress (the reinventing of the wheel may not be entirely necessary in some cases).
+A collaborative effort should be made, when possible, to allow codes and their developers to interact and communicate with one another to further develop the field of automated TST.
+
+
 
 \section{Acknowledgements}
 
 This material is based upon work supported by the National Science Foundation under Grant No. 1605568.
-This work was partially supported by the U.S. Department of Energy, Office of Science, Basic Energy Sciences, under Award \#0000232253, as part of the Computational Chemical Sciences Program.
+The authors were partially supported by the U.S. Department of Energy, Office of Science, Basic Energy Sciences, under Award \#0000232253, as part of the Computational Chemical Sciences Program.
 
 
 
