@@ -93,7 +93,7 @@ Northeastern University, Boston, MA 02115, USA}
 %====================================================================
 \begin{abstract}
 
-Detailed reaction mechanisms help us understand and predict the combustion of novel fuels and combustor designs.
+Detailed reaction mechanisms help us understand and predict complex phenomena in combustion, atmospheric chemistry, and catalytic systems.
 These mechanisms contain hundreds of species and thousands of reactions, for which thermodynamic and kinetic parameters must be specified.
 Ideally, parameters come from high fidelity experiments or theoretical calculations, but given the sheer number of parameters, they are often estimated.
 With the growth of high performance computing, researchers are developing software to automatically perform accurate transition state theory calculations to calculate kinetic parameters. 
@@ -113,10 +113,6 @@ This review highlights the recent advances in automated transition state theory 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 % 
-Generating detailed kinetic models is of utmost importance for understanding combustion \todo{ref}, reaction pathways in biological settings \todo{ref}, and catalytic reaction pathways \todo{ref}.
-These models have allowed researchers to more accurately simulate A, B, and C. \todo{figure out what these examples are and add references to these studies}
-These detailed mechanisms often contain hundreds of species and thousands of reactions, where each species and reaction require thermodynamic and kinetic parameters, respectively.  
-
 \begin{comment}
 With the goal of limiting emissions and increasing the efficiency of internal combustion engines, the combustion community has been turning to novel fuels and fuel blends.
 Understanding combustion allows us to smartly make use of new fuels, but not much is known about the combustion of these fuels.
@@ -124,12 +120,14 @@ Detailed kinetic modeling is an imperative tool to thoroughly understand combust
 The proliferation of detailed kinetics models to describe complex combustion has enabled researchers to more accurately simulate engines, flame propagation, ignition delay, and other important combustion phenomena. 
 \end{comment}
 
-This review focuses on the determination of kinetic parameters.
+Generating detailed microkinetic models is of utmost importance for understanding reaction pathways in combustion \cite{VandeVijver:2015}, atmospheric chemistry \cite{Vereecken:2012}, and catalytic settings \cite{chorkendorff:2007}.
+These models often contain hundreds of species and thousands of reactions, where each species and reaction require thermodynamic and kinetic parameters, respectively.  
+Although thermodynamic parameters are just as important, this review focuses on the determination of kinetic parameters.
 Researchers can determine kinetics in a variety of ways: experimentation, estimations, and transition state theory (TST) calculations.
 Experimentation is often the preferred route of determining kinetics, but these are costly and near impossible for reactions involving multiple radicals or with species that quickly degrade.
 Parameter estimations are often determined by simple rules, generalized across reactions between structurally similar species \cite{Curran:1998bx}. 
 Estimations are advantageous because they are much faster than both experiments and transition state theory calculations, but can be off by several orders of magnitude when rules are misapplied or lacking sufficient details. 
-TST calculations allow reaction rates to be computed from first principles and can be quite accurate, in some cases within a factor of two \cite{Klippenstein:2017eu}, but require hours of manual input, and need trained guesses to find the correct transition state (TS) geometries. 
+TST calculations allow reaction rates to be computed from first principles and can be quite accurate, in some cases within a factor of two \cite{Klippenstein:2017eu}, but require manual input and trained guesses to find the correct transition state (TS) geometries. 
 Given the number of reactions present in detailed combustion reaction mechanism, TST calculations need to be automated.
 This review paper identifies tools that perform automated TS searches, describes process workflows, compares key differences, and highlights future goals of automated TST calculators.
 
@@ -140,11 +138,15 @@ This review paper identifies tools that perform automated TS searches, describes
 \section{Transition State Theory}
 
 %The goal of this section is to describe the basics of TST.
-This section serves as a brief overview of TST, additional details can be found in a reviews by Truhlar and coworkers \cite{truhlar:1996} and Klippenstein \cite{Klippenstein:2017eu}.
+
+%To understand concepts mentioned further in this review, we suggest reviews on TST \cite{truhlar:1996, Klippenstein:2017eu}, chemical force fields \cite{Harrison:2018, gonzalez:2011}, Hartree-Fock methods \cite{Echenique:2007}, semi-empirical methods \cite{Christensen:2016}, density functional theory (DFT) \cite{Mardirossian:2017mp}, coupled cluster calculations \cite{Sneskov:2012}.
+
+This section serves as a brief overview of transition state theory (TST) and points to resources reviews by Truhlar and coworkers \cite{truhlar:1996} and Klippenstein \cite{Klippenstein:2017eu} for additional information.
 TST, also known as activated complex theory, is based on the idea that reactions proceed through an activated complex, or transition state (TS).
 If the potential energy surface (PES) is plotted along the reaction coordinate, minima where reactants and products exist and a saddle point where a TS exists are apparent (figure \ref{fig:pes}). 
-TST relies on characterizing the reactants, products, and the TS using quantum chemistry calculations such as density functional theory (DFT) \cite{DFT:1964}.
-This section of the review will describes electronic structure calculations of: reactants, products and TSs; conformational analysis; and how to use said calculations to calculate kinetic parameters.
+TST relies on characterizing the reactants, products, and the TS using electronic structure calculations.
+To fully understand TST 
+This section of the review will gives a high-level overview of electronic structure calculations; conformational analysis; rotor treatment; and how to use said calculations to calculate kinetic parameters.
 
 \begin{figure}[htbp]
 \centering
@@ -167,12 +169,33 @@ This section of the review will describes electronic structure calculations of: 
 
 \subsection{Electronic structure calculations}
 
-One of the fundamental concepts of TST is electronic structure calculations.
-These calculations involve using the coordinates of a species or a TS to estimate the energy and forces \cite{simons:2003} which are used to optimize geometries to an energy minima (in the case of species optimization) or to a first order saddle points (in the case of a TS search).
-Electronic structure calculations can also determine hindered rotor potentials as described in later sections. 
-Calculations can be performed using differing degrees of fidelity, otherwise know as levels of theory. 
+
+Electronic structure calculations are of utmost importance when calculating energies and forces and when performing geometry optimizations. 
+Calculations can be performed using differing degrees of fidelity, otherwise know as levels of theory.
 In general, a high level of theory will result in higher fidelity calculations and more accurate results.
-We aim to highlight how electronic structure calculations are performed in four broad levels of theory: force fields, Hartree-Fock (HF) / semi-empirical methods, density functional theory (DFT), and coupled cluster calculations. 
+We aim to highlight how electronic structure calculations are performed in four broad levels of theory: force fields, Hartree-Fock (HF), density functional theory (DFT), and coupled cluster calculations. 
+To understand concepts mentioned further in this review, we suggest reviews on chemical force fields \cite{Harrison:2018, gonzalez:2011}, Hartree-Fock methods \cite{Echenique:2007}, semi-empirical methods \cite{Christensen:2016}, density functional theory (DFT) \cite{Mardirossian:2017mp}, and coupled cluster calculations \cite{Sneskov:2012}.
+These forms of calculations are ranked with examples given in table \ref{tab:electronic_structures}.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{c|cc}
+        Level of Theory & Type\todo{don't like this name} & Examples \\
+        \hline
+        Level 0 (L0) & Force Fields & UFF \cite{UFF:1992}, MMFF \cite{MMFF94:1996}, AMBER \cite{SalomonFerrer:2012} \\
+        Level 1 (L1) & Hartree-Fock & HF \cite{HF:1987}, PM3 \cite{PM3:1989} \\
+        Level 2 (L2) & Density Function Theory & M062X \cite{Zhao:2007}, B3LYP \\
+        Level 3 (L3) & Coupled Cluster & CCSD, CCSD(T)
+    \end{tabular}
+    \caption{Caption}
+    \label{tab:electronic_structures}
+\end{table}
+
+Another important note is that L1, L2, and L3 calculations are highly dependent on the combination of quantum method and basis set used. 
+Basis sets and choices when selecting basis sets are discussed in depth by Nagy and Jensen \cite{Nagy:2017}.
+
+
+\begin{comment}
 
 \subsubsection{Force fields}
 
@@ -214,36 +237,50 @@ Because of the computational cost, these calculations are often reserved for sin
 CC calculations will be defined as a ``level 3'' (L3) level of theory.
 
 %\todo{can have higher order excitations as well (beyond Q),  I would mention CCSD(T) method here which is Single, Double, Pertubative Triple.  It is the most popular methods and known as the 'gold standard' and offers the best accuracy to cost. Going beyond (T) doesn't add much accuracy unless it's a multireference molecule.  You might also want to mention that CC method accuracy is highly dependent on basis set size.  Need to extrapolate to complete basis set limit (CBS) or use F12 with big basis sets}
-
+\end{comment}
 
 \subsection{Conformer Analysis}
 
-In order to ensure that TST calculations are accurate, the lowest energy conformers for species and TSs must be identified.
-This process is trivial for simple species or TS geometries, but becomes increasingly complex with many rotatable dihedrals, invertable double bonds, and invertable chiral centers. 
-Geometries that contain $\alpha$ number of rotatable dihedrals scanned in $\theta$ degree increments, with $\beta$ number of invertable double bonds and $\gamma$ number of invertable chiral centers will result in $N$ number of possible conformers given by: 
+In order to ensure that TST calculations are accurate, conformational studies of species and TSs should be performed 
+This process is trivial for simple species or TS geometries, but becomes increasingly complex with many rotatable torsions, rotations about double bonds, and invertable chiral centers. 
+Species geometries that contain $\alpha$ number of non-symmetric rotatable torsions scanned in $\theta$ degree increments, with $\beta$ number of rotations about double bonds and $\gamma$ number of invertable chiral centers will result in $N$ upper limit of possible conformers given by: 
 \begin{equation}
     N = \Big(\frac{360^\circ}{\theta}\Big)^{\alpha} \cdot 2^{\beta} \cdot 2^{\gamma}
     \label{eq:confs}
 \end{equation}
 
+\todo[inline]{``n the case of external symmetry, identical conformers are counted twice (or more times) by this formula.'' - from reviewer 1. Unsure how to mention this is our equation for conformers.}
+
+It is noted that calculations of TS geometries will often approximate $\beta$ and $\gamma$ being zero because the rotations about double bonds and invertible chiral centers are unlikely when 
+
 The evaluation of all $N$ conformers will result in a systematic search that identifies the global minima but requires large amounts of computational resources, pushing researchers have towards stochastic methods \cite{Ebejer:2012}, such as Monte Carlo methods or Genetic Algorithms to identify low energy conformers. 
 These stochastic methods involve a guided exploration of a smaller portion of the conformational space.
 Ideally, this results in the lowest energy, conformer but that is not always the case given the number of local minima present in conformational space.
 
+\subsection{Calculation of Kinetic Parameters}
+\begin{itemize}
+    \item Canonical Partition Function
+    \item Master Equation Solvers
+    \item Rotor Treatment
+    \item Symmetry Numbers
+    
+\end{itemize}
 
-\subsection{Canonical Partition Function}
+\subsection{Calculation of Kinetic Parameters}
 
-TST makes a series of assumptions in order to arrive at kinetic parameters. 
-First, it is assumed that both reactants and TS are in a quasi-equilibrium state \cite{QSS:2017}.
+\subsubsection{Canonical Partition Function}
+
+TST can make a series of assumptions in order to arrive at kinetic parameters. 
+First, it can be assumed that both reactants and TS are in a quasi-equilibrium state \cite{QSS:2017}.
 Additionally, it is assumed that the rate limiting step is the transition from the TS to the products. 
 From these assumptions, a modified form of the Eyring equation (equation \ref{eyring:1}) is used to relate the thermodynamic properties of the TS and reactants to the elementary rate of reaction \cite{eyring:1935}.
 
 \begin{equation}
-    k(T) = \kappa \frac{k T}{h} \exp{\frac{-\Delta G^\ddagger}{RT}}
+    k(T) = \kappa \frac{k_B T}{h} \exp{\frac{-\Delta G^\ddagger}{RT}}
     \label{eyring:1}
 \end{equation}
 
-In equation \ref{eyring:1}, $k$ is the Boltzmann constant, $T$ is the temperature, $h$ is Plank's constant, $\Delta G^\ddagger$ is the change in Gibb's energy between the TS and the reactants,  $R$ is the gas law constant, and $\kappa$ is the correction faction for quantum tunneling described by equation \ref{tunneling}:
+In equation \ref{eyring:1}, $k_B$ is the Boltzmann constant, $T$ is the temperature, $h$ is Plank's constant, $\Delta G^\ddagger$ is the change in Gibb's energy between the TS and the reactants,  $R$ is the gas law constant, and $\kappa$ is the correction faction for quantum tunneling described by equation \ref{tunneling}:
 
 \begin{equation}
     \kappa = e^{\frac{V}{kT}} \int^{\infty}_{E_0} \frac{K e^{\frac{-E}{kT}}}{kT} dE
@@ -263,7 +300,18 @@ Equation \ref{eyring:2} can be obtained, from \ref{eyring:1}, though statistical
 
 $Q^\ddagger$ represents the canonical partition function of the TS, $\prod^n_i Q_i$ is the product of the partition functions of $n$ number of reactants, $\Delta E^{\ddagger}_0$ is the activation energy for this reaction.
 These equations can only be used if the partition functions of the reactants, products, and TS are known. 
+The partition function of a species or a TS can be given by the Boltzmann weighted sum of $i$ states given by equation \ref{eq:Q}.
 
+\begin{equation}
+    Q = \sum_i g_i \exp\Big(-\frac{\epsilon_i}{k_B T})
+    \label{eq:Q}
+\end{equation}
+
+In equation \ref{eq:Q}, $Q$ is the partition function, $g_i$ is the degeneracy of the $i$th state, $\epsilon_i$ is the energy level of the $i$th state, $k_B$ is the Boltzmann constant, and $T$ is the temperature of the system.
+From this point, a set of assumptions can be made in how to arrive at an adequate approximation of the canonical partition function from quantum calculations \cite{Truhlar:1991}. \todo[inline]{Find a reference for these assumptions, or ask @rwest}
+
+
+\begin{comment}
 The rigid rotor harmonic oscillator approximation is frequently used to calculate the overall partition function.
 This approximation treats the the bond as a system with a resting equilibrium distance and a force constant that restores changes in bond length to its equilibrium distance.
 The total partition function, $Q_{tot}$, is the product of the translational ($Q_{trans}$), rotational ($Q_{rot}$), vibrational ($Q_{vib}$), and electronic ($Q_{elec}$) partition functions of a molecule. 
@@ -299,37 +347,37 @@ The rotational partition function is related to the moments of inertia, $I_x$, $
 The vibrational partition function is related to the vibrational frequencies, $\nu_i$, of each vibrational mode in the molecule.
 Finally, the electronic partition function is the sum of states over electronic energies, $\epsilon_{ele,i}$, with degeneracies, $g_i$. 
 It is often assumed the lowest energy state is the only one available (valid unless the first excited energy level is unusually low) so $Q_{elec}=g_0$.
+\end{comment}
+
+\subsubsection{Master equation solvers}
+
+\todo[inline]{I need to write this, but I need to read more before I can write this...}
 
 \subsubsection{Hindered rotors}
+
 An internal rotor is a non-terminal single bond with rotatable tops on either end. 
-In the harmonic oscillation (H.O.) approximation, torsional rocking about this bond is modelled as harmonic motion within a potential energy well, following a potential curve described by equation \ref{eq:HO}, where $V_{H.O.}$ is the potential energy, $k$ is the spring constant, and $\Theta$ is the degree of rotation of the torsion.
-\begin{equation}
-    V_{H.O.} = \frac{1}{2} k \Theta^2
-    \label{eq:HO}
-\end{equation}
-%although the true potential energy can often be more irregular than a harmonic one. 
-At low temperatures the H.O. approximation holds true. However, at very high temperatures, the compound has enough energy that the hindrance between wells is negligible and so rotors can be represented as a free rotors. 
+An internal rotor can be treated as a free rotor, harmonic oscillator (H.O.), or hindered rotor (H.R.).
+A free rotor is assumed to have no barrier to rotate which may be appropriate at very high temperatures but tend to be incorrect at low temperatures.
+In the harmonic oscillation (H.O.) approximation, torsional rocking about this bond is modelled as harmonic motion within a potential energy well.
+At low temperatures the H.O. approximation holds true. 
+However, at very high temperatures, the compound has enough energy that the hindrance between wells is negligible and so rotors can be represented as a free rotors. 
 Hindered rotors (H.R.) occur at intermediate temperatures where the compound has enough energy to rotate out of one conformer and into another, but not enough energy for hindrance to be negligible.
 
 The calculation of the partition function can be further expanded by using the 1-D hindered rotor approximation \cite{pfaendtner:2007}.
 In this approximation, each side of a four atom dihedral is considered a separable rotatable top.
 Starting from a minimum energy structure, the potential energy is determined using electronic structure calculations as one top is rotated over \ang{360}. 
-This potential energy curve is fitted to a Fourier series described in equation \ref{eq:HR}:
-
-\begin{equation}
-    V(\Theta_j)_{H.R.} = \sum^{n}_{k=1} \Big[ a_k (1 - \cos{k \Theta_j}) + b_k \sin{k \Theta_j} \Big]
-    \label{eq:HR}
-\end{equation}
-
-Where $V$ is the potential energy as a function of the rotation of the torsion of interest $\Theta$, $n$ is the number of scanned points (e.g. if the scan was performed over \ang{10} intervals, $n$ would be 36), and $a_k$ and $b_k$ are fitted parameters.
 It is noted that the above equations are used to represent 1-D hindered rotors which are completely separable.
 Treatment of coupled hindered rotors (e.g. 2-D and 3-D) is not discussed in this review, but is discussed Fern\'andez-Ramos' paper on the treatment of 2-D rotors \cite{fernandez:2013}.
 
 
 \subsubsection{Symmetry number}
 
-A symmetry number is the number of different but equivalent arrangements of a molecule or a TS geometry \cite{FernandezRamos:2007}.
-Accurately determining the symmetry number of species and TS geometries is imperative to calculating thermodynamic and kinetic parameters, the symmetry number is included in the rate expression.
+A symmetry number is the number of different but equivalent arrangements of a molecule or a TS geometry.
+Accurately determining the symmetry number of species and TS geometries is imperative to calculating thermodynamic and kinetic parameters, the symmetry number is included in the rate constant expression. 
+We suggest readers review Refs. \cite{FernandezRamos:2007, Pollak:1978} for a detailed description symmetry numbers in chemical kinetics.
+
+
+\begin{comment}
 For a majority of cases, rotational symmetry numbers are adequate when describing the overall external symmetry number of stable species and can be calculated using equation \ref{eq:symm}.
 
 \begin{equation}
@@ -352,7 +400,7 @@ For example, assume the reaction \ce{A_i + A_j -> Products} has a TS geometry, $
 In this case, the rotational symmetry number would be $\sigma_{rot,R} = \sigma_{rot,A}^2$ but this does not account for the translation of identical molecule (e.g. \ce{A_i + A_j} in 3D space compared to \ce{A_j + A_i}), so the rotational translational symmetry number would be $\sigma_{rot,R} = 2\sigma_{rot,A}^2$. 
 The factor of two accounts for the translational exchange of positions of \ce{A_i} and \ce{A_j} via translation.
 Additional explanations of symmetry numbers are described by Fern\'andez-Ramos and co-workers \cite{FernandezRamos:2007}.
-
+\end{comment}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -572,7 +620,7 @@ AARON is still in its early stages of development with room for improvement, spe
 \subsection{EStokTP (2018)}
 
 
-EStokTP (Electronic Structure to k(T,P)) \cite{Cavallotti:2019jctc} is an automated rate calculator by Cavallotti and Klippenstein that takes a series of input files and returns a temperature and pressure dependent rate expression and optimized electronic structures of reactants, products, and TSs.
+EStokTP (Electronic Structure to k(T,P)) \cite{Cavallotti:2019jctc} is an automated rate calculator by Cavallotti and Klippenstein that takes a series of input files and returns a temperature and pressure dependent rate constant expression and optimized electronic structures of reactants, products, and TSs.
 A general program structure of EStokTP is shown in figure \ref{fig:estoktp_structure}.
 EStokTP is freely available under the GPL-3.0 liscense.
 
@@ -689,7 +737,7 @@ The authors do not comment on improvement in the article itself, but point to \t
 This review summarizes existing code bases that can perform automated TST calculations.
 %But it is hard to definitively say one code is ``best'' because the definition of ``best'' is subjective and near impossible to define.
 Though all of these code bases fall under the umbrella of automated TST calculations, each has features to tackle specific issues well.
-AutoTST provides high throughput calculations that perform better than most rate estimations, AutoTS finds TS geometries for almost any reaction family, Genesys provides on the fly calculations with little user input, AARON handles reactions involving transition metals, EStokTP provides high fidelity rate expressions with less user input than traditional TS searches, and KinBot bridges the gap between mechanism generation and automated TST calculations. 
+AutoTST provides high throughput calculations that perform better than most rate estimations, AutoTS finds TS geometries for almost any reaction family, Genesys provides on the fly calculations with little user input, AARON handles reactions involving transition metals, EStokTP provides high fidelity rate constant expressions with less user input than traditional TS searches, and KinBot bridges the gap between mechanism generation and automated TST calculations. 
 This review has dentified that many code bases contain the following:
 \begin{enumerate}
     \item Input method,
