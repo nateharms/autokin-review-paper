@@ -351,7 +351,10 @@ It is often assumed the lowest energy state is the only one available (valid unl
 
 \subsubsection{Master equation solvers}
 
-\todo[inline]{I need to write this, but I need to read more before I can write this...}
+In later sections of this review, master equation solvers are referenced.
+These solvers represent a series of codes that can be used to calculate reactions involving multiple energy wells when transitioning from reactants to products \cite{}.
+
+\todo[inline]{Not too sure what all I should mention here.}
 
 \subsubsection{Hindered rotors}
 
@@ -411,6 +414,84 @@ Additional explanations of symmetry numbers are described by Fern\'andez-Ramos a
 
 This section of the review introduces existing code bases that can perform automated TST calculations, highlights and compares their key features and their methodology, and briefly discusses their test sets.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%                                                %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%                     String Methods                    %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%                                                %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Freezing String Methods (2011)}
+
+The freeing string method (FSM), developed by Head-Gordon and coworkers, is a TS search method that uses both reactant and product geometries in a double ended search \cite{}.
+FSM uses an iterative approach when searching for TS geometries. 
+First, FSM will dray an interpolated path between user provided reactant and product complexes along a PES.
+It will then step along this path by a user specified forward step size and optimized perpendicularly to this path. 
+The optimization of these new complexes is performed using a conjugated gradient scheme for a specific number of steps. 
+The optimization is constrained such that no step will change the Cartesian position of any atom by greater than 0.05 \si{\angstrom} and is stopped if the distance between optimizing complexes exceeds a distance that is greater than initial distance between the new nodes plus one half of the step size. 
+This process is iterated until the entire string is known for a PES connecting the two initial complexes. 
+A cartoon representation of this process is shown in figure \ref{fig:fsm}. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=5in]{fsm}
+    \caption{Cartoon representation of the freezing string method over an example PES. Borrowed from \cite{}}
+    \label{fig:fsm}
+\end{figure}
+
+Interpolation between complexes can either be Cartesian interpolation or linear synchronous transit (LST) interpolation. 
+Cartesian interpolation is simply a straight line drawn between reactant and product complexes and can easily be calculated.
+LST interpolation is more complex and that we point to the original paper for an accurate description of this form of interpolation. 
+
+One or more complexes, or nodes, along the string can then be used to perform exact TS searches.
+Often the highest energy complex is used, however, more can be used for a complete search. 
+Successfully optimized TSs are validated through intrinsic reaction coordinate (IRC) calculations to validate that the TS corresponds to the correct input reactant and product geometries. 
+
+All levels of theory available in Q-Chem \cite{} can be used when using FSM, however the authors used L2 level of theory calculations for all of their examples.
+The authors demonstrated the efficacy of FSM on three reactions: the conversion of cis,cis-2,4-hexadiene to trans-3,4-dimethylcyclobutene; the alanine dipeptide $C5$ to $C_{7AX}$ isomerization; and metallacycle formation in a Ni-exchanged zeolite.
+Overall, the authors goal was to compare efficacy and computational time between the FSM workflow against the growing string method described in the following section.
+
+\subsection{Growing String Methods (2013)}
+
+The growing string method (GSM) was originally developed by Head-Gordon and co-workers (the same group that developed FSM) but the most current version of the GSM is maintained by Paul Zimmerman and his research group in molecularGSM and is described in figure \ref{fig:gsm}.
+The GSM shares many similarities to the FSM, both involve a ``string'' that connects the reactant and product wells that incrementally steps along a reaction path.
+However, the difference between FSM and GSM is how these steps are taken. 
+
+The GSM starts with reactant and product complexes, or nodes, in wells of a PES.
+An interpolation between these two points is drawn and new nodes are created one step along that interpolation. 
+Nodes on the string are optimized  until their gradient on the PES is below a threshold and a new interpolation is made using \textit{all} nodes along the string (in contrast to the FSM which only uses the two most center nodes when creating its next interpolation).
+This process is iterated where additional nodes are added, the string is optimized, and a new interpolation is made between all nodes until an energy maximum is found. 
+The energy maximum can then be used to perform a direct TS search.
+Interpolation methods differ between variations of GSM methods used which can be as simple as spline fits to more robust path curvature evaluations \todo{cite different ways which the path can be fitted}.
+
+In addition to a double ended method, molecularGSM has a single ended method, as described in figure \ref{fig:se-gsm}.
+This process works similarly to the double ended method, but only one half of the string is used to find a TS.
+This process will iterative add frontier nodes to the reactant side of the string.
+After each node is added, the path will be interpolated similarly to the double ended method.
+After a new frontier node is added and optimized, the frontier node is checked to see if (1) the frontier node is lower than the previous node and (2) the frontier node's constraint gradient is positive. 
+If these two checks pass, all nodes along the string are optimized and the highest energy node is used for a direct TS search.
+The final node is then optimized to product geometries.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=5in]{gsm}
+    \caption{Workflow for the double ended growing string method utilized in molecularGSM \cite{}}
+    \label{fig:gsm}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=5in]{se-gsm}
+    \caption{Workflow for the double ended growing string method utilized in molecularGSM \cite{}}
+    \label{fig:se-gsm}
+\end{figure}
+
+molecularGSM has been tested in a variety of different settings, so many that we refer to multiple studies \todo{cite} rather than summarize them here.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%                                                %%%%%%%%%%%%%%%%%%
@@ -418,25 +499,19 @@ This section of the review introduces existing code bases that can perform autom
 %%%%%%%%%%%%%%%%%%                                                %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \subsection{AutoTST (2016)}
 
 AutoTST, developed by Bhoorasingh et al., is one of the first automated TST tools designed to work for gas phase reactions in combustion settings \cite{bhoorasingh:2017}.
 AutoTST began as a module included within the Reaction Mechanism Generator (RMG) package which uses RMG reaction objects to perform calculations and is freely available under the MIT license. 
 The overall workflow for AutoTST is shown in figure \ref{fig:autotst_overview}.
 
-This tool does not require users to provide geometry input files or guesses for key reaction coordinates contrary to required inputs of most quantum chemistry packages.
-A user manually matches an RMG reaction object to one of three reaction families (hydrogen abstraction, intramolecular hydrogen migration, and radical addition to multiple bond): from there AutoTST calculates kinetics. 
+AutoTST will determine kinetics for combustion reactions in three reaction families, or templates, common in combustion: hydrogen abstraction, radical addition to multiple bond, and intra-hydrogen migration. 
+A figure describing these reaction families is displayed in figure \ref{fig:autotst_families}.
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.75\textwidth]{autotst_overview}
-    \caption{A flow chart describing the workflow of AutoTST, modified from \cite{bhoorasingh:2017}. Training data are used to estimate the TS geometry. This geometry is then optimized using a set of partial optimizations and validated using IRC calculations.}
-    \label{fig:autotst-overview}
-\end{figure}
-
-Predictions of distances between reacting atoms are made based on a hierarchical decision tree corresponding to a reaction family.
-The reaction is matched to a node on the tree based upon functional groups near the reacting atoms. This node specifies the distances between reacting atoms.
+AutoTST will create rough guesses of TS geometries by estimating key distances between reacting atoms using previously optimized TS geometries. 
+One a reaction has been matched to a supported family, predictions of distances between reacting atoms are made based on a hierarchical decision tree corresponding to a reaction family.
+The reaction is matched to a node on the tree based upon functional groups near the reacting atoms. 
+This node specifies the distances between reacting atoms.
 A depiction of a tree is given in figure \ref{fig:autotst_tree}.
 
 \begin{figure}[h!]
@@ -446,13 +521,26 @@ A depiction of a tree is given in figure \ref{fig:autotst_tree}.
     \label{fig:autotst_tree}
 \end{figure}
 
-With these key distances, AutoTST then employees RDKit \cite{RDKit:2018} to generate three-dimensional geometries of reactant, product, and TS geometries.
-Reactant and product geometries are created using RDKit's built-in embed feature at an L0 level of theory. 
-A bounds matrix describing upper and lower allowable distances between atoms is generated for TS geometries and the distances between reacting atoms are set according to key distances.
-This matrix is used to generate a 3D geometry guess of the TS.
+These key distances are set for reacting atoms and are used to generate a 3D guess of the geometry using RDKit \cite{RDKit:2018} at a L0 level of theory.
 The guess of the TS geometry then goes through a series of optimizations at a L2 level of theory: (1) a loose geometry relaxation with distances in the reaction center frozen; (2) a constrained saddle point search with the the reaction center fixed; and (3) a tight overall saddle search of the TS geometry without constraints.
 If AutoTST converges on a final TS, it validates the TS via intrinsic reaction coordinate (IRC) calculations \cite{Fukui:1970} and cross checks these results with the input reactants and products.
+
+Reactant and product geometries are generated using RDKit at a L0 level of theory and are subsequently optimized at a L2 level of theory. 
 Once TS, reactant, and product geometries are known and validated, Arkane \cite{gao:2016}, a canonical calculator included in RMG, is used to arrive at modified Arrhenius parameters.
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{autotst_overview}
+    \caption{A flow chart describing the workflow of AutoTST, modified from \cite{bhoorasingh:2017}. Training data are used to estimate the TS geometry. This geometry is then optimized using a set of partial optimizations and validated using IRC calculations.}
+    \label{fig:autotst-overview}
+\end{figure}
+
+
+%With these key distances, AutoTST then employees RDKit \cite{RDKit:2018} to generate three-dimensional geometries of reactant, product, and TS geometries.
+%Reactant and product geometries are created using RDKit's built-in embed feature at an L0 level of theory. 
+%A bounds matrix describing upper and lower allowable distances between atoms is generated for TS geometries and the distances between reacting atoms are set according to key distances.
+%This matrix is used to generate a 3D geometry guess of the TS.
 
 To test this work flow, Bhoorasingh and coworkers attempted calculations for 1117 reactions present in a model for the combustion of butanol and four of its isomers \cite{Sarathy:2012}.
 Of these reactions, 885 were hydrogen abstraction reactions, 78 were intramolecular hydrogen migration reactions, and 184 were radical addition to multiple bond reactions. 
@@ -502,7 +590,7 @@ This process will continue searching up to a maximum number of broken bonds, the
 Once active bonds are identified, input geometries of reactant and product complexes can be used to create the TS guess.
 
 AutoTS can generate TS guesses by linear searches or by templating. 
-A linear search involves aligning reactant and product geometries by positioning the reactant and product molecules at opposite corners of a cube with a size large enough to allow for molecules to not overlap.
+A linear search will position reacting molecules at opposite corners of a cube with a size large enough to allow for molecules to not overlap.
 This geometry is then rotated until the inertial tensor is diagonalized to create a standard reproducible geometry.
 The format TS guess is created by calculating energies along a linear distance coordinate path connecting the reactants and products, using an L2 level of theory.
 Interpolation along cubic splines is used to identify the energy maximum geometry to be used as the starting TS guess.
@@ -569,10 +657,10 @@ Validated TS, reactant, and product geometries are then used to extract Arrheniu
 
 \subsection{AARON (2018)}
 
-The open-source AARON code-base (An Automated Reaction Optimizer for New catalysts) is a Perl based software developed by Guan and co-workers to tackle automated quantum mechanic calculations for catalytic reactions involving chiral products \cite{Guan:2018}. 
-AARON is freely available under the GPL-3.0 liscense.
+The open-source AARON code-base (An Automated Reaction Optimizer for New catalysts) is a software developed by Guan and co-workers to tackle automated quantum mechanic calculations for catalytic reactions involving chiral products \cite{Guan:2018}. 
+%AARON is freely available under the GPL-3.0 license.
 A brief overview of the workflow is shown in figure \ref{fig:aaron_workflow}.
-AARON is built on the AaronTools \cite{aarontools:2018} collection which allows users to build and modify 3D geometries by reading in \texttt{.xyz} files.
+%AARON is built on the AaronTools \cite{aarontools:2018} collection which allows users to build and modify 3D geometries by reading in \texttt{.xyz} files.
 
 \begin{figure}
     \centering
@@ -591,15 +679,17 @@ If an optimized child is a duplicate of a previously identified conformer, it is
 This process repeats until all substituents have been evaluated. 
 
 Unique conformers are used in a Boltzmann-weighted sum to determine thermochemical parameters of TS complexes. 
-AARON also has an error handling workflow called ``Step Vetting'' to solve problems that arise and to validate TS geometries, a diagram is given in figure \ref{fig:aaron_exception}.
+AARON also has an error handling workflow called ``Step Vetting'' to solve problems that arise and to validate TS geometries.%, a diagram is given in figure \ref{fig:aaron_exception}.
 This process will follow geometries through the workflow to check for common errors (e.g. breaking of non-reactive bonds, atoms clashing, and more) and attempts to correct them.
 
+\begin{comment}
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{aaron_exception}
     \caption{The procedure for ``Step Vetting'' which is used in AARON to monitor jobs when searching for TS geometries.}
     \label{fig:aaron_exception}
 \end{figure}
+\end{comment}
 
 To test this workflow, the authors looked at three test sets: Pd-catalyzed Heck allenylation, Rh-catalyzed hydrogenation of enamides, and Lewis-base promoted propargylation of aromatic aldehydes.
 In each test case, small template libraries were created using a published set of TS geometries with corresponding energies and used AARON to perform TS searches.
@@ -607,6 +697,59 @@ AARON was able to locate a majority of the TS geometries with good agreement in 
 
 AARON is still in its early stages of development with room for improvement, specifically, creating an automated approach to create TS libraries by making use of numerous TS data generated in each run.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%                                                %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%                     SC-AFIR                    %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%                                                %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{AFIR (2018)}
+
+The artificial force induced reaction (AFIR) is a TS search algorithm that will apply an artificial force to push or pull reacting fragments together or apart to create a reaction path that is analyzed to find a saddle point.
+The artificial force applies is described by equation \ref{eq:afir}.
+
+\begin{equation}
+    F^{AFIR}(\textbf{Q}) = E(\textbf{Q}) + \rho\alpha \frac{\sum_{i\epsilon\textbf{A}} \sum_{j\straightepsilon\textbf{B}} \omega_{ij}\textbf{\textit{r}}_{ij}}{\sum_{i\straightepsilon\textbf{A}} \sum_{j\straightepsilon\textbf{B}} \omega_{ij}}
+    \label{eq:afir}
+\end{equation}
+
+In the above equation, $E(\textbf{Q}$ is the PES of geometrical parameters $\textbf{Q}$, $\alpha$ is the strength of the force, $\rho$ is either 1.0 or -1.0, $r_{ij}$ is the interatomic distance between atoms $i$ and $j$, and $\omega_{ij}$ is defined using the below where $\textbf{\textit{R}}_i$ and $\textbf{\textit{R}}_j$ are the covalent radii of atoms $i$ and $j$.
+
+\begin{equation}
+    \omega_{ij} = \Big( \frac{\textbf{\textit{R}}_i + \textbf{\textit{R}}_j}{\textbf{\textit{r}}_{ij}} \Big)^6
+\end{equation}
+
+The force parameter is defined as follows.
+In equation \ref{eq:alpha}, $\textit{R}_0$ and $\varepsilon$ are 3.8164 \angstrom and 1.0061 kJ/mol, respectively, and are parameters of the Lennard-Jones potential for the Ar-Ar interaction.
+$\gamma$ represents the user defined collision energy and is used as an approximate upper limit of the barrier height for the system. 
+
+\begin{equation}
+    \alpha = \frac{\gamma}{\big[2^{-\frac{1}{6}} - \big( 1+ \sqrt{1+ \frac{\gamma}{\varepsilon }} \big)^{-\frac{1}{6}} \big] \textbf{\textit{R}}_0}
+    \label{eq:alpha}
+\end{equation}
+
+The AFIR method works by obtaining the AFIR path, the reaction path obtained from minimizing the AFIR function.
+This path is dependant on the initial structure and the reacting atoms chosen. 
+For example, there are single component (SC) and multi component (MC) AFIR methods that correspond to unimolecular and multimolecular reactions, respectively.
+Depending on if a SC method or MC method is chosen, AFIR will perform different optimization techniques to obtain the AFIR path. 
+Equidistant path points are first distributed along the AFIR path and are then stepped tangent to the path.
+This relaxation is performed 10 times with a large step (1.0 \angstrom) and then five times with a small step (0.5 \angstrom). 
+The energy minimum points correspond to the reactants and products while the energy maximum points correspond to TSs found. 
+All geometries are then optimized by a standard quasi-Newton method.
+IRC calculations are then performed to validate all identified TSs.
+
+In the MC method, starting geometries of  are either randomly generated or are provided by users.
+These starting geometries are used to calculated AFIR paths between reacting fragments and AFIR paths are analyzed to find TSs.
+In the SC method, fragments of a starting unimolecular reactant are pushed or pulled apart. 
+These fragments include reacting atoms and atoms neighboring the reacting atoms noninclusive of atoms neighboring both reacting atoms.
+
+AFIR methods have been used in a variety of studies, too numerous to list here, but the AFIR method is a trusted and well established method available in the GRRM17 software.
+
+%s\begin{equation}
+%    \gamma = -R T\ln\Big(\frac{h}{t k_B T}\Big)
+%\end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -620,15 +763,15 @@ AARON is still in its early stages of development with room for improvement, spe
 \subsection{EStokTP (2018)}
 
 
-EStokTP (Electronic Structure to k(T,P)) \cite{Cavallotti:2019jctc} is an automated rate calculator by Cavallotti and Klippenstein that takes a series of input files and returns a temperature and pressure dependent rate constant expression and optimized electronic structures of reactants, products, and TSs.
+EStokTP (Electronic Structure to k(T,P)) \cite{Cavallotti:2019jctc} is an automated rate calculator by Cavallotti and Klippenstein that returns a temperature and pressure dependent rate constant expression and optimized electronic structures of reactants, products, and TSs.
 A general program structure of EStokTP is shown in figure \ref{fig:estoktp_structure}.
-EStokTP is freely available under the GPL-3.0 liscense.
+%EStokTP is freely available under the GPL-3.0 liscense.
 
-Input files containing quantum methods desired, reasonable guesses for some internal coordinates, and labeled atoms describing the reaction family are used to perform calculations.
+A user will provide quantum methods desired, reasonable guesses for some internal coordinates, and labeled atoms describing the reaction family are used to perform calculations.
 Currently, EStokTP works for four reaction families: abstraction, addition, beta scission, and isomerization. 
-In the case of hydrogen abstraction inputs (shown in figure \ref{fig:estoktp_habstraction}), the user specifies the hydrogen being abstracted (\texttt{isite}), the atom bound to that hydrogen (\texttt{jsite}), and another atom connected to \texttt{jsite} (\texttt{ksite}).
-In addition, a dummy atom (X) is added to the complex as a reference point for atoms in the reaction center.
-Users will then specify two entry angles for reactants (\texttt{aabs1}, \texttt{aabs2}) and three dihedral angles.
+%In the case of hydrogen abstraction inputs (shown in figure \ref{fig:estoktp_habstraction}), the user specifies the hydrogen being abstracted (\texttt{isite}), the atom bound to that hydrogen (\texttt{jsite}), and another atom connected to \texttt{jsite} (\texttt{ksite}).
+%In addition, a dummy atom (X) is added to the complex as a reference point for atoms in the reaction center.
+Users will then specify two entry angles for reactants (\texttt{aabs1} and \texttt{aabs2} in figure \ref{fig:estoktp_habstraction}) and three dihedral angles near reacting atoms.
 %These dihedral angles are as follows: first atom of abstracting reactant, \texttt{isite}, dummy atom, \texttt{jsite}; second atom of abstracting reactant, first atom of abstracting reactant, \texttt{isite}, dummy atom; and, (if available) third atom of abstracting reactant, second atom of abstracting reactant, first atom of abstracting reactant, \texttt{isite}.
 EStokTP interfaces with Gaussian \cite{Gaussian:2009} or MolPro \cite{molpro:2012} to construct the TS guess with the specified internal coordinates by positioning the reactants according to user specified internal coordinates. 
 $5 + 3^n$ or $100$ conformers are generated randomly, whichever is smaller and where $n$ is the number of non-methyl dihedrals, relaxed and the highest energy conformer undergoes a series of partial optimizations to arrive at a saddle point at a L2 level of theory. 
@@ -671,14 +814,15 @@ Although the methodology for barrierless reactions is promising, this class of r
 
 KinBot \cite{kinbot:2018, kinbot:2019}, developed by Zador and co-workers at Sandia National Labs, crosses the bridge between reaction mechanism generation, automatic TST calculations, and PES exploration.
 Because this review focuses on TST, reference the recent publication by Van de Vijver and Zador for a detailed description of KinBot's PES exploration methods \cite{kinbot:2019}.
-KinBot is freely available through the BSD 3-Clause liscense.
+%KinBot is freely available through the BSD 3-Clause liscense.
 
-To run KinBot, a user would provide a simple input file describing the structure of the species of interest (via SMILES string or Cartesian coordinates), species multiplicity, quantum methods, reaction families of interest, and additional options. 
+Kinbot investigates TS geometries for all possible reactions that a species can undergo (e.g. rather than investigating a single reaction, Kinbot evaluates many).
+To run KinBot, a user would provide the structure of the species of interest (via SMILES string or Cartesian coordinates), its multiplicity, quantum methods, reaction families to investigate, and additional options. 
 KinBot first performs a systematic or random conformational search and a geometry optimization of the reactant geometries using the Gaussian quantum chemistry suite.
 By default, a systematic conformer search will iterate through all rotatable dihedrals and orientations of cyclic substructures. 
 Conformers are then optimized at a L1 level of theory to identify the lowest energy conformer, which is then optimized to calculate frequencies at a L2 level of theory.
 If the reactant provided contains many rotatable bonds, a user may specify a maximum number of samples to use during a calculation, and the use of a random sampling mechanism rather than the default.
-To ensure the lowest energy conformer is isomorphic to the starting species and TS, KinBot will ensure no bond lengths significantly change, resulting in unwanted rearrangements of atoms.
+To ensure the lowest energy conformer is isomorphic to the starting species and TSs, KinBot will ensure no bond lengths significantly change, resulting in unwanted rearrangements of atoms.
 
 \begin{figure}
     \centering
@@ -689,7 +833,7 @@ To ensure the lowest energy conformer is isomorphic to the starting species and 
 
 KinBot also relies on predefined reaction families, or general reaction templates, when generating mechanisms. 
 From a user specified list of reaction families (figure \ref{fig:kinbot_families}), KinBot will then set up a TS guess using either a ``direct'', ``indirect'', or ``scan'' strategy performed at a low level of theory (L0).
-Through the direct and indirect methods, a transition state guess is created by performing a series of geometry modifications and constrained optimizations to bring reacting atoms to a specified distance. 
+Through the direct and indirect methods, a TS guess is created by performing a series of geometry modifications and constrained optimizations to bring reacting atoms to a specified distance. 
 Dihedrals, angles, and bonds of the complex are modified (in that order) and undergo a constrained optimization with modified variable frozen.
 If the direct or indirect method results in a poor guess, KinBot will use the scan method, where the TS guess is created by scanning the electronic energies along the active bond and by selecting the maximum energy complex.
 
@@ -703,7 +847,7 @@ Cyclic TSs are considered to be rings when performing conformational analysis.
 Once reactant, product, and TS geometries are identified, internal rotors are scanned (if requested by the user) at a L2 level of theory.
 KinBot systematically scans each rotatable dihedral in \ang{30} increments and performs constrained optimizations, from which potentials are fitted to a Fourier expansion.
 %defined by equation \ref{eq:hinderedrotor_kinbot} where $V_{ci}$ and $V_{si}$ are fitted parameters and $\phi$ is the dihedral.
-This fitted curve is then used in Master Equation codes to account for hindered rotations.
+This fitted curve is then used in master equation codes to account for hindered rotations.
 Additionally, if a lower energy conformer is identified while performing said scans (i.e. if a user does not specify an exhaustive search), the scan is restarted with the new lower energy conformer.
 
 %\begin{equation}
@@ -725,6 +869,67 @@ All calculations that performed by KinBot are able to be used in two master equa
 
 Van de Vijver and Zador tested the efficacy of KinBot on four different test sets: [1,3]-sigmatropic H-migration reactions, thermal decomposition of gamma-valerolactone, propene and OH, and Aramco Mech up to C4 species.
 The authors do not comment on improvement in the article itself, but point to \texttt{kinbot.sandia.gov} and the KinBot manual for descriptions of improvements.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%                                                %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%                     vdW-TSSCDS                 %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%                                                %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{AutoMeKin (2019)}
+
+AutoMeKin, formally TSSCDS, performs TS searches transition state search using a chemical dynamics simulations methodology was initially developed Martínez-Núñez but has been an ongoing work to recently include non-equivalently bound complexes.
+The general AutoMeKin workflow, as described in figure \ref{fig:tsscds}, starts by taking an input geometry and optimize it to an energy minimum using a L1 level of theory.
+Frequencies are calculated for this geometry at an L1 level of theory as well.
+These frequencies are used as trajectories for chemical dynamics simulations (CDS) that are run in parallel.
+CDS are performed over a 20 fs time length.
+At each time step for each tragectory, AutoMeKin employees a Bond Breakage / Formation Search (BBFS) algorithm to identify if any bonds are breaking for forming. 
+BBFS creates a connectivity matrix that describes pairwise adjacency between atoms. 
+Elements in the matrix are either one for neighboring atoms or zero for non neighboring atoms. 
+Atoms are defined as neighboring if the distance between atoms is less than 10\% of the sum of the covalent radii of the atoms. 
+Over each step of the CDS, a connectivity matrix is constructed and if the matrix changes, then is assumed that a TS exists for this trajectory.
+The geometry at which this change occurs is taken as the starting guess for the TS.
+
+The starting guess of the TS is optimized to a saddle point at a low L1 level of theory and TSs are screened to detect duplicates.
+Unique TSs undergo IRC calculations and resultant stable minima of either side of the IRC calculations are optimize at a higher L2 level of theory. 
+The L1 optimized TSs are then optimized again at a higher L2 level of theory and IRC calculations are performed again to verify that the reoptimized TSs follow the same reaction path to the L2 optimized minima. 
+\begin{figure}
+    \centering
+    \includegraphics[width=5in]{tsscds}
+    \caption{Caption}
+    \label{fig:tsscds}
+\end{figure}
+
+The AutoMeKin workflow was not designed to consider non-covalent bonds because the distance between non-covalently bond atoms is often too large for the cutoff described above.
+Because of this, TSSCDS was modified to work with systems including non-covalent bonds such as vdW complexes, hydrogen bonds, and Lewis acids and bases.
+
+vdW treatment in AutoMeKin starts with a user specified geometry containing the number of reacting fragments and the number of atoms.
+From this input, a connectivity matrix, $\textbf{\textit{C}}$, is construction to describe the intra- and intermolecular distances of pairwise atoms.
+Consider a system with two molecules, fragments $\textit{A}$ and $\textit{B}$, the connectivity matrix $\textbf{\textit{C}}$ would be depicted by equation \ref{eq:C} where $\textbf{\textit{A}}$ and $\textbf{\textit{B}}$ represent the intramolecular distances of fragments $\textit{A}$ and $\textit{B}$, respectively, while $\textit{\textbf{AB}}$ represents the intermolecualar distances.
+Elements in matrix $\textbf{\textit{C}}$ are either one or zero to denote if pairwise atoms are bound to each other.
+For the diagonal matrices $\textbf{\textit{A}}$ and $\textbf{\textit{B}}$, elements are assigned a one if the distance between atoms are less than 10\% greater than the sum of covalent radii else values are zero.
+For matrix $\textbf{\textit{AB}}$, elements are assigned a one if the distance between atoms are less than 10\% greater than the sum of van der Waals radii of the two atoms.
+
+\begin{equation}
+    \textbf{\textit{C}} = \begin{pmatrix}
+\textbf{\textit{A}} & \textbf{\textit{AB}} \\
+\textbf{\textit{AB}} & \textbf{\textit{B}}
+\end{pmatrix}
+\label{eq:C}
+\end{equation}
+
+The remainder of the vdW treatment in AutoMeKin method mirrors the original AutoMeKin method with a few caveats.
+Users can specify if fragments are flexible or rigid.
+Rigid fragments are ones where intramolecular parameters are frozen while intermolecular parameters are not and flexible fragments are ones where both inter- and intramolecular parameters are not fixed. 
+Setting fragments as flexible or rigid can help identify an upper bound of the interaction energy between the two fragments but the flexible setting can offer a complete description of the interactions.
+
+AutoMeKin is a mature code and has been tested on a variety of systems \todo{cite}.
+Although users are able to provide only a single input geometry, the developers of AutoMeKin suggest starting from several initial structures to search the complete PES.
+In addition, AutoMeKin only interfaces with the MOPAC and Gaussian quantum packages for L1 and L2 calculations.
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
