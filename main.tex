@@ -184,19 +184,18 @@ These forms of calculations are ranked with examples given in table \ref{tab:ele
         \hline
         Level 0 (L0) & Force Fields & UFF \cite{UFF:1992}, MMFF \cite{MMFF94:1996}, AMBER \cite{SalomonFerrer:2012} \\
         Level 1 (L1) & Hartree-Fock & HF \cite{HF:1987}, PM3 \cite{PM3:1989} \\
-        Level 2 (L2) & Density Function Theory & M062X \cite{Zhao:2007}, B3LYP \\
+        Level 2 (L2) & Density Function Theory & M062X \cite{Zhao:2007}, B3LYP \cite{Becke:1993} \\
         Level 3 (L3) & Coupled Cluster & CCSD, CCSD(T)
     \end{tabular}
-    \caption{Caption}
+    \caption{A table describing the difference in different levels of theory used in this review with examples. Fidelity of calculations is assumed to increase over higher numbered levels.}
     \label{tab:electronic_structures}
 \end{table}
 
 Another important note is that L1, L2, and L3 calculations are highly dependent on the combination of quantum method and basis set used. 
 Basis sets and choices when selecting basis sets are discussed in depth by Nagy and Jensen \cite{Nagy:2017}.
 
-
+%%%%%%%%%%%%
 \begin{comment}
-
 \subsubsection{Force fields}
 
 Force fields use attractive and repulsive parameters between atoms to calculate the potential energy of a system \cite{gonzalez:2011}. 
@@ -243,6 +242,7 @@ CC calculations will be defined as a ``level 3'' (L3) level of theory.
 
 In order to ensure that TST calculations are accurate, conformational studies of species and TSs should be performed 
 This process is trivial for simple species or TS geometries, but becomes increasingly complex with many rotatable torsions, rotations about double bonds, and invertable chiral centers. 
+\begin{comment}
 Species geometries that contain $\alpha$ number of non-symmetric rotatable torsions scanned in $\theta$ degree increments, with $\beta$ number of rotations about double bonds and $\gamma$ number of invertable chiral centers will result in $N$ upper limit of possible conformers given by: 
 \begin{equation}
     N = \Big(\frac{360^\circ}{\theta}\Big)^{\alpha} \cdot 2^{\beta} \cdot 2^{\gamma}
@@ -252,19 +252,11 @@ Species geometries that contain $\alpha$ number of non-symmetric rotatable torsi
 \todo[inline]{``n the case of external symmetry, identical conformers are counted twice (or more times) by this formula.'' - from reviewer 1. Unsure how to mention this is our equation for conformers.}
 
 It is noted that calculations of TS geometries will often approximate $\beta$ and $\gamma$ being zero because the rotations about double bonds and invertible chiral centers are unlikely when 
-
-The evaluation of all $N$ conformers will result in a systematic search that identifies the global minima but requires large amounts of computational resources, pushing researchers have towards stochastic methods \cite{Ebejer:2012}, such as Monte Carlo methods or Genetic Algorithms to identify low energy conformers. 
+\end{comment}
+The evaluation of all conformers will result in a systematic search that identifies the global minima but requires large amounts of computational resources, pushing researchers have towards stochastic methods \cite{Ebejer:2012}, such as Monte Carlo methods or Genetic Algorithms to identify low energy conformers. 
 These stochastic methods involve a guided exploration of a smaller portion of the conformational space.
 Ideally, this results in the lowest energy, conformer but that is not always the case given the number of local minima present in conformational space.
 
-\subsection{Calculation of Kinetic Parameters}
-\begin{itemize}
-    \item Canonical Partition Function
-    \item Master Equation Solvers
-    \item Rotor Treatment
-    \item Symmetry Numbers
-    
-\end{itemize}
 
 \subsection{Calculation of Kinetic Parameters}
 
@@ -308,7 +300,7 @@ The partition function of a species or a TS can be given by the Boltzmann weight
 \end{equation}
 
 In equation \ref{eq:Q}, $Q$ is the partition function, $g_i$ is the degeneracy of the $i$th state, $\epsilon_i$ is the energy level of the $i$th state, $k_B$ is the Boltzmann constant, and $T$ is the temperature of the system.
-From this point, a set of assumptions can be made in how to arrive at an adequate approximation of the canonical partition function from quantum calculations \cite{Truhlar:1991}. \todo[inline]{Find a reference for these assumptions, or ask @rwest}
+From this point, a set of assumptions can be made in how to arrive at an adequate approximation of the canonical partition function from quantum calculations \cite{Truhlar:1991}.
 
 
 \begin{comment}
@@ -352,9 +344,11 @@ It is often assumed the lowest energy state is the only one available (valid unl
 \subsubsection{Master equation solvers}
 
 In later sections of this review, master equation solvers are referenced.
-These solvers represent a series of codes that can be used to calculate reactions involving multiple energy wells when transitioning from reactants to products \cite{}.
+These solvers represent a series of codes that can be used to calculate reactions involving multiple energy wells and pressure dependence when transitioning from reactants to products.
+For an adequate summary of the master equation in chemical kinetics and solution methods, we point to a comprehensive review by Pilling and Robertson \cite{Pilling:2003}.
+This section aims to introduce Arkane (formally CanTherm) \cite{gao:2016}, MESS \cite{MESS:2013}, and MESMER \cite{MESMER:2012}, three commonly used master equation solvers mentioned in future sections. 
+MESS and MESMER follow the complete master equation methodology while Arkane follow the Rice–Ramsperger–Kassel–Marcus (RRKM) approximation \cite{RRKM:1999}. 
 
-\todo[inline]{Not too sure what all I should mention here.}
 
 \subsubsection{Hindered rotors}
 
@@ -423,9 +417,9 @@ This section of the review introduces existing code bases that can perform autom
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Freezing String Methods (2011)}
+\subsection{Freezing String Methods}
 
-The freeing string method (FSM), developed by Head-Gordon and coworkers, is a TS search method that uses both reactant and product geometries in a double ended search \cite{}.
+The freeing string method (FSM), developed by Behn and coworkers, is a TS search method that uses both reactant and product geometries in a double ended search \cite{Behn:2011}.
 FSM uses an iterative approach when searching for TS geometries. 
 First, FSM will dray an interpolated path between user provided reactant and product complexes along a PES.
 It will then step along this path by a user specified forward step size and optimized perpendicularly to this path. 
@@ -437,7 +431,7 @@ A cartoon representation of this process is shown in figure \ref{fig:fsm}.
 \begin{figure}
     \centering
     \includegraphics[width=5in]{fsm}
-    \caption{Cartoon representation of the freezing string method over an example PES. Borrowed from \cite{}}
+    \caption{Cartoon representation of the freezing string method over an example PES. Borrowed from \cite{Behn:2011}}
     \label{fig:fsm}
 \end{figure}
 
@@ -449,13 +443,13 @@ One or more complexes, or nodes, along the string can then be used to perform ex
 Often the highest energy complex is used, however, more can be used for a complete search. 
 Successfully optimized TSs are validated through intrinsic reaction coordinate (IRC) calculations to validate that the TS corresponds to the correct input reactant and product geometries. 
 
-All levels of theory available in Q-Chem \cite{} can be used when using FSM, however the authors used L2 level of theory calculations for all of their examples.
+All levels of theory available in Q-Chem \cite{QChem:2015} can be used when using FSM, however the authors used L2 level of theory calculations for all of their examples.
 The authors demonstrated the efficacy of FSM on three reactions: the conversion of cis,cis-2,4-hexadiene to trans-3,4-dimethylcyclobutene; the alanine dipeptide $C5$ to $C_{7AX}$ isomerization; and metallacycle formation in a Ni-exchanged zeolite.
 Overall, the authors goal was to compare efficacy and computational time between the FSM workflow against the growing string method described in the following section.
 
-\subsection{Growing String Methods (2013)}
+\subsection{Growing String Methods}
 
-The growing string method (GSM) was originally developed by Head-Gordon and co-workers (the same group that developed FSM) but the most current version of the GSM is maintained by Paul Zimmerman and his research group in molecularGSM and is described in figure \ref{fig:gsm}.
+The growing string method (GSM) was originally developed by Head-Gordon and co-workers \cite{Behn:2011jc} but the most current version of the GSM is maintained by Paul Zimmerman and his research group in molecularGSM \cite{Zimmerman:2013jctc, Zimmerman:2015jcc} and is described in figure \ref{fig:gsm} .
 The GSM shares many similarities to the FSM, both involve a ``string'' that connects the reactant and product wells that incrementally steps along a reaction path.
 However, the difference between FSM and GSM is how these steps are taken. 
 
@@ -464,7 +458,7 @@ An interpolation between these two points is drawn and new nodes are created one
 Nodes on the string are optimized  until their gradient on the PES is below a threshold and a new interpolation is made using \textit{all} nodes along the string (in contrast to the FSM which only uses the two most center nodes when creating its next interpolation).
 This process is iterated where additional nodes are added, the string is optimized, and a new interpolation is made between all nodes until an energy maximum is found. 
 The energy maximum can then be used to perform a direct TS search.
-Interpolation methods differ between variations of GSM methods used which can be as simple as spline fits to more robust path curvature evaluations \todo{cite different ways which the path can be fitted}.
+%Interpolation methods differ between variations of GSM methods used which can be as simple as spline fits to more robust path curvature evaluations \todo{cite different ways which the path can be fitted}.
 
 In addition to a double ended method, molecularGSM has a single ended method, as described in figure \ref{fig:se-gsm}.
 This process works similarly to the double ended method, but only one half of the string is used to find a TS.
@@ -478,18 +472,18 @@ The final node is then optimized to product geometries.
 \begin{figure}
     \centering
     \includegraphics[width=5in]{gsm}
-    \caption{Workflow for the double ended growing string method utilized in molecularGSM \cite{}}
+    \caption{Workflow for the double ended growing string method utilized in molecularGSM \cite{Zimmerman:2013jctc}}
     \label{fig:gsm}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=5in]{se-gsm}
-    \caption{Workflow for the double ended growing string method utilized in molecularGSM \cite{}}
+    \caption{Workflow for the single ended growing string method utilized in molecularGSM \cite{Zimmerman:2015jcc}}
     \label{fig:se-gsm}
 \end{figure}
 
-molecularGSM has been tested in a variety of different settings, so many that we refer to multiple studies \todo{cite} rather than summarize them here.
+molecularGSM has been tested in a variety of different settings, so many that we refer to multiple studies \cite{Zimmerman:2013jctc, Zimmerman:2013jcp, Zimmerman:2015jcc, Jafari:2017, Roessler:2018, Aldaz:2018} rather than summarize them here.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -499,7 +493,7 @@ molecularGSM has been tested in a variety of different settings, so many that we
 %%%%%%%%%%%%%%%%%%                                                %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{AutoTST (2016)}
+\subsection{AutoTST}
 
 AutoTST, developed by Bhoorasingh et al., is one of the first automated TST tools designed to work for gas phase reactions in combustion settings \cite{bhoorasingh:2017}.
 AutoTST began as a module included within the Reaction Mechanism Generator (RMG) package which uses RMG reaction objects to perform calculations and is freely available under the MIT license. 
@@ -576,7 +570,7 @@ Based on error analysis against benchmark calculations, Bhoorasingh and co-worke
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{AutoTS (2017)}
+\subsection{AutoTS}
 
 AutoTS is a framework introduced by Jacobson et al. from Schrodinger Inc. \cite{jacobson:2017}. 
 This workflow is included in Jaguar version 9.7 \cite{Jaguar:2013}, a commercial quantum chemistry package provided by Schrodinger Inc., shown in figure \ref{fig:autots_workflow}.
@@ -625,7 +619,7 @@ From the version of AutoTS published, the authors wished to add support of react
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Genesys (2018)}
+\subsection{Genesys}
 
 An automated TST calculator was recently added to Genesys, a reaction mechanism generator software developed by Vandewiele and co-workers at Ghent University \cite{VANDEVIJVER:2018, vandewiele:2012}. 
 This tool requires users to provide a description of the reaction family, identified reacting atoms, and quantum chemistry settings.
@@ -655,7 +649,7 @@ Validated TS, reactant, and product geometries are then used to extract Arrheniu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{AARON (2018)}
+\subsection{AARON}
 
 The open-source AARON code-base (An Automated Reaction Optimizer for New catalysts) is a software developed by Guan and co-workers to tackle automated quantum mechanic calculations for catalytic reactions involving chiral products \cite{Guan:2018}. 
 %AARON is freely available under the GPL-3.0 license.
@@ -705,9 +699,9 @@ AARON is still in its early stages of development with room for improvement, spe
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{AFIR (2018)}
+\subsection{AFIR}
 
-The artificial force induced reaction (AFIR) is a TS search algorithm that will apply an artificial force to push or pull reacting fragments together or apart to create a reaction path that is analyzed to find a saddle point.
+The artificial force induced reaction (AFIR) is a TS search algorithm that will apply an artificial force to push or pull reacting fragments together or apart to create a reaction path that is analyzed to find a saddle point \cite{Maeda:2016, Madea:2018}. 
 The artificial force applies is described by equation \ref{eq:afir}.
 
 \begin{equation}
@@ -745,7 +739,7 @@ These starting geometries are used to calculated AFIR paths between reacting fra
 In the SC method, fragments of a starting unimolecular reactant are pushed or pulled apart. 
 These fragments include reacting atoms and atoms neighboring the reacting atoms noninclusive of atoms neighboring both reacting atoms.
 
-AFIR methods have been used in a variety of studies, too numerous to list here, but the AFIR method is a trusted and well established method available in the GRRM17 software.
+AFIR methods have been used in a variety of studies, too numerous to list here but a few listed here \cite{Maeda:2016, Madea:2018}, but the AFIR method is a trusted and well established method available in the GRRM17 software \cite{Madea:2013}.
 
 %s\begin{equation}
 %    \gamma = -R T\ln\Big(\frac{h}{t k_B T}\Big)
@@ -760,7 +754,7 @@ AFIR methods have been used in a variety of studies, too numerous to list here, 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\subsection{EStokTP (2018)}
+\subsection{EStokTP}
 
 
 EStokTP (Electronic Structure to k(T,P)) \cite{Cavallotti:2019jctc} is an automated rate calculator by Cavallotti and Klippenstein that returns a temperature and pressure dependent rate constant expression and optimized electronic structures of reactants, products, and TSs.
@@ -880,7 +874,7 @@ The authors do not comment on improvement in the article itself, but point to \t
 
 \subsection{AutoMeKin (2019)}
 
-AutoMeKin, formally TSSCDS, performs TS searches transition state search using a chemical dynamics simulations methodology was initially developed Martínez-Núñez but has been an ongoing work to recently include non-equivalently bound complexes.
+AutoMeKin, formally TSSCDS, performs TS searches transition state search using a chemical dynamics simulations methodology was initially developed Martínez-Núñez but has been an ongoing work to recently include non-equivalently bound complexes \cite{Martinez:2015,Martinez:2015jccp,rodriguez:2018,mopac:2016}.
 The general AutoMeKin workflow, as described in figure \ref{fig:tsscds}, starts by taking an input geometry and optimize it to an energy minimum using a L1 level of theory.
 Frequencies are calculated for this geometry at an L1 level of theory as well.
 These frequencies are used as trajectories for chemical dynamics simulations (CDS) that are run in parallel.
@@ -901,8 +895,7 @@ The L1 optimized TSs are then optimized again at a higher L2 level of theory and
     \caption{Caption}
     \label{fig:tsscds}
 \end{figure}
-
-The AutoMeKin workflow was not designed to consider non-covalent bonds because the distance between non-covalently bond atoms is often too large for the cutoff described above.
+The AutoMeKin workflow was not designed to consider non-covalent bonds because the distance between non-covalently bond atoms is often too large for the cutoff described above \cite{Kopec:2019}.
 Because of this, TSSCDS was modified to work with systems including non-covalent bonds such as vdW complexes, hydrogen bonds, and Lewis acids and bases.
 
 vdW treatment in AutoMeKin starts with a user specified geometry containing the number of reacting fragments and the number of atoms.
@@ -925,7 +918,7 @@ Users can specify if fragments are flexible or rigid.
 Rigid fragments are ones where intramolecular parameters are frozen while intermolecular parameters are not and flexible fragments are ones where both inter- and intramolecular parameters are not fixed. 
 Setting fragments as flexible or rigid can help identify an upper bound of the interaction energy between the two fragments but the flexible setting can offer a complete description of the interactions.
 
-AutoMeKin is a mature code and has been tested on a variety of systems \todo{cite}.
+AutoMeKin is a mature code and has been tested on a variety of systems \cite{Martinez:2015,Martinez:2015jccp,rodriguez:201,Kopec:2019}.
 Although users are able to provide only a single input geometry, the developers of AutoMeKin suggest starting from several initial structures to search the complete PES.
 In addition, AutoMeKin only interfaces with the MOPAC and Gaussian quantum packages for L1 and L2 calculations.
 
