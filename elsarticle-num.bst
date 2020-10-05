@@ -45,9 +45,9 @@ ENTRY
     type
     volume
     year
-    %%eprint % urlbst
+    eprint % urlbst
     doi % urlbst
-    %%url % urlbst
+    url % urlbst
     lastchecked % urlbst
   }
   {}

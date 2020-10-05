@@ -104,7 +104,7 @@ Northeastern University, Boston, MA 02115, USA}
 \begin{abstract}
 
 Detailed reaction mechanisms help us understand and predict complex phenomena in combustion, atmospheric chemistry, and catalytic systems.
-These mechanisms contain hundreds of species and thousands of reactions, for which thermodynamic and kinetic parameters must be specified.
+These mechanisms often contain hundreds of species and thousands of reactions, for which thermodynamic and kinetic parameters must be specified.
 Ideally, parameters come from high fidelity experiments or theoretical calculations, but given the sheer number of parameters, are often estimated.
 With the growth of high performance computing, researchers are developing software to automatically perform accurate transition state theory calculations to calculate kinetic parameters. 
 This review highlights the recent advances in automated transition state theory calculations, underscores unique features of existing code bases, and proposes future avenues of research.
@@ -154,24 +154,27 @@ This review highlights the recent advances in automated transition state theory 
 \section{Introduction}
 % 
 
-\begin{comment}
-With the goal of limiting emissions and increasing the efficiency of internal combustion engines, the combustion community has been turning to novel fuels and fuel blends.
 
-Understanding combustion allows us to smartly make use of new fuels, but not much is known about the combustion of these fuels.
-Detailed kinetic modeling is an imperative tool to thoroughly understand combustion, and the construction of these models requires the determination of thousands of kinetic and thermodynamic parameters.
-The proliferation of detailed kinetics models to describe complex combustion has enabled researchers to more accurately simulate engines, flame propagation, ignition delay, and other important combustion phenomena. 
-\end{comment}
 
 Generating detailed microkinetic models is of utmost importance for understanding reaction pathways in combustion \cite{VandeVijver:2015}, atmospheric chemistry \cite{Vereecken:2012}, and catalytic settings \cite{STOLTZE:2000}.
-These models often contain many species and reactions, where each species and reaction require thermodynamic and kinetic parameters, respectively.  
-This review focuses on the determination of kinetic parameters.
-Kinetics can be determined in a variety of ways: experiments, estimations, and transition state theory (TST) calculations.\sks[inline]{Maybe cite}
-Experimentation is often preferred, but is costly and near impossible for reactions involving multiple radicals or with species that quickly degrade \cite{Sabbe:2005}.\sks[inline]{Explain timescales?e.g 1e-6th of a second etc}
-
-Parameter estimations are often determined by simple rules, generalized across reactions between structurally similar species \cite{Curran:1998bx, cai:2014}. 
+These models often contain hundreds of species and thousands reactions, where each species and reaction require thermodynamic and kinetic parameters, respectively.
+Given the size of these models, efforts have been made to generate detailed kinetic models automatically \cite{vandevijver:2015}. 
+GRACE \cite{yoneda:1979}, KING \cite{maio:1992}, NetGen \cite{susnow:1997}, EXGAS \cite{warth:2000}, COMGEN \cite{ratkiewicz:2003}, RING \cite{rangarajan:2012}, GENESYS \cite{vandewiele:2012}, and RMG \cite{gao:2016} are a handful of these codes that can generate mechanisms automatically.
+Though all of these codes have different ways of generating mechanisms, they all rely on thermochemical and kinetic data to create generate their mechanisms. 
+\rhw{Automated mechanism generation. 
+- automated
+- Several codes (cite them, and a review paper).
+- generate models with thousands of reactions
+- consider hundreds of thousands or millions (eg. magoon? others?)
+- need data.
+}
+Because this review focuses on the determination of kinetic parameters, discussion of thermochemistry will be omitted.
+Kinetic parameters can be obtained from a variety of sources: experiments, estimations, and transition state theory (TST) calculations.
+Experimentation is often preferred, but is costly and near impossible for reactions involving multiple radicals or with species that quickly degrade \cite{Sabbe:2005}.
+Parameter estimates are often determined by simple rules, generalized across reactions between structurally similar species \cite{Curran:1998bx, cai:2014}. 
 Estimations are much faster than both experiments and TST calculations making them advantageous when 
-But estimations can be several orders of magnitude incorrect when rules are misapplied or lacking.
-TST calculations allow reaction rates to be computed from first principles and tend to be accurate within a factor of two \cite{fernandez:2006, Klippenstein:2017eu}, but are computationally expensive and require manual input and trained guesses to find the correct transition state (TS) geometries for just one reaction pathway. 
+But estimates can be several orders of magnitude incorrect when rules are misapplied or lacking.
+TST calculations allow reaction rate constants to be computed from first principles and tend to be accurate within a factor of two \cite{fernandez:2006, Klippenstein:2017eu}, but are computationally expensive and require manual input and trained guesses to find the correct transition state (TS) geometries for just one reaction pathway. 
 Given the enormous number of reactions present in detailed reaction mechanisms, TST calculations need to be automated to make use of high-performance computing.
 This review identifies tools that perform automated TS searches, describes process workflows, compares key differences, and highlights future goals of automated TST calculations.
 
@@ -246,9 +249,9 @@ Additionally, both accuracy and cost of higher level calculations are highly dep
 \subsubsection{Force fields}
 
 Force fields use attractive and repulsive parameters between atoms to calculate the potential energy of a system \cite{gonzalez:2011}. 
-These parameters are often obtained from higher level of theory calculations (e.g. density functional theory or coupled cluster calculations), and describe the forces based on the distance between two bonded atoms, angles between three bonded atoms, dihedrals between four bonded atoms, non-bonded electrostatic forces, and van der Waals interactions.
+These parameters are often obtained from higher level of theory calculations (e.g. density functional theory or coupled cluster calculations), and describe the forces based on the distance between two bonded atoms, angles between three bonded atoms, torsions between four bonded atoms, non-bonded electrostatic forces, and van der Waals interactions.
 Two widely used force fields are the universal force field (UFF) \cite{UFF:1992} and the Merck Molecular force field (MMFF) \cite{MMFF94:1996}.
-The UFF uses parameters for bonds, angles, dihedrals, inversions, electrostatic forces, and van der Waals interactions from literature sources or extrapolations to determine the energy of a complex containing any atom type.
+The UFF uses parameters for bonds, angles, torsions, inversions, electrostatic forces, and van der Waals interactions from literature sources or extrapolations to determine the energy of a complex containing any atom type.
 The MMFF includes parameters for the same geometric features as the UFF in addition to parameters for out of plane bending, often resulting in higher fidelity calculations. 
 %Parameters for the MMFF are included for all organic atom types and were determined from 2,775 structures optimized with either HF or semi-empirical methods.
 Force field calculations are known for giving rough potential energy estimates with little computational resources, and force fields will be referred to as level of theory ``level 0'' (L0).
@@ -287,10 +290,12 @@ CC calculations will be defined as a ``level 3'' (L3) level of theory.
 
 \subsection{Conformer Analysis}
 
-To ensure accuracy of TST calculations, conformational studies of species and TSs should be performed to calculate trustworthy thermodynamic and kinetic parameters \cite{Allen:1993, Csaszar:1998}.
-This process is trivial for simple geometries, but becomes increasingly complex with the size of the species, many rotatable torsions, rotations about double bonds, and invertible chiral centers.
+Electronic structure calculations are frequently used to optimize geometries to minima or saddle points. 
+Depending on the input geometry, the optimization may result an high energy conformation of a molecule when lower energy conformations exist. 
+To ensure accuracy of TST calculations, a conformer analysis should be performed to identify many low energy conformations of species and TSs and use these conformers in a Boltzmann distribution to calculate trustworthy thermodynamic and kinetic parameters \cite{Allen:1993, Csaszar:1998}.
+This process is trivial for simple geometries, but becomes increasingly complex with the size of the species, many rotatable torsions, rotations about double bonds, and invertible atom centers.
 
-The evaluation of all conformers will result in a systematic search that is guaranteed to identify the global minima but requires a large amount of computational resources.
+Exploring all of these degrees of freedom will result in a systematic search that is guaranteed to identify the global minima but requires a large amount of computational resources.
 Stochastic methods \cite{Ebejer:2012}, such as Monte Carlo or genetic algorithms, involve a guided exploration of a smaller portion of the conformational space to identify low energy conformers, resulting in the lowest energy conformer.
 Unfortunately, this is not always the case given the high number of local minima present in species with many conformational degrees of freedom.
 \sks[inline]{I think we only search conformational space for equilibrium geometries (0K) but I'm not sure about how you can explain it here. Maybe David has more thoughts on this!}
@@ -303,14 +308,21 @@ First, it is assumed that both reactants and TS are in a quasi-equilibrium state
 Additionally, it is assumed that the rate limiting step is the transition from the TS to the products and a modified form of the Eyring equation (\eqnref{eyring:1}) can be written.
 
 \begin{equation}
-    k(T) = \kappa \frac{k_B T}{h} \exp{\frac{-\Delta G^\ddagger}{RT}}
+    k(T) = \kappa(T) \frac{k_B T}{h} \exp{\frac{-\Delta G^\ddagger}{k_B T}}
     \label{eyring:1}
 \end{equation}
 
-In \eqnref{eyring:1}, $k_B$ is the Boltzmann constant, $T$ is the temperature, $h$ is Plank's constant, $\Delta G^\ddagger$ is the change in Gibb's energy when progressing from the reactants to the products,  $R$ is the ideal gas constant, and $\kappa$ is the correction faction for quantum tunneling, the probability a particle will tunnel through a barrier without having to overcome that barrier \cite{RUBAKOV:1984}.
+In \eqnref{eyring:1}, $k_B$ is the Boltzmann constant, $T$ is the temperature, $h$ is Plank's constant, $\Delta G^\ddagger$ is the change in Gibb's energy when progressing from the reactants to the products, $R$ is the ideal gas constant, 
+and $\kappa(T)$ is the temperature dependent correction faction for quantum tunneling.
+Quantum tunneling is the probability that the reaction will proceed through a barrier that is lower than electronic barrier \cite{RUBAKOV:1984}, thus increasing the apparent rate constant.
+The correction factor for quantum tunneling is often derived from either the Eckart model \cite{eckart:1930} or the Wigner model \cite{Winger:1932}.
+
+\begin{comment}
+
+the probability a particle will tunnel through a barrier without having to overcome that barrier \cite{RUBAKOV:1984}.
 In the case if tunneling, reactants will form products even if the barrier height is large and system energy is low. 
 
-The correction factor for quantum tunneling is often derived from either the Eckart model \cite{eckart:1930} or the Wigner model \cite{Winger:1932}.
+
 In the Eckart model, the barrier is based on the following equation:
 
 \begin{equation}
@@ -378,7 +390,7 @@ In contrast, the Wigner model \cite{Winger:1932} describes the canonical tunneli
     \kappa (T) = 1 + \frac{1}{24} \Big( \frac{h |\nu_{TS}|}{k_B T}\Big)^2
 \end{equation}
 
-%The correction factor for tunneling can be calculated though equation \tabref{tunneling}:\rhw{Without specifying $\kappa(E)$ this can't actually be used, so is it helpful for understanding?}
+%The correction factor for tunneling can be calculated through equation \tabref{tunneling}:\rhw{Without specifying $\kappa(E)$ this can't actually be used, so is it helpful for understanding?}
 %\begin{equation}
 %    \kappa(E) = e^{\frac{V(E)}{kT}} \int^{\infty}_{E_0} \frac{K(E) e^{\frac{-E}{kT}}}{kT} dE
 %    \label{tunneling}
@@ -386,26 +398,50 @@ In contrast, the Wigner model \cite{Winger:1932} describes the canonical tunneli
 %where $V$ is the barrier height, $E$ is energy, $E_0$ is the energy of the reactants, and $K(E)$ is the transmission probability for tunneling.\rhw{what's $E_0$} \ndh{answered}
 
 In general, $\kappa(T)$ is dependant on the energy of the system, the shape of the barrier, and the effective mass of the system, described in detail by Brown \cite{Brown:1981}.
-\eqnref{eyring:2} can be obtained, from \eqnref{eyring:1}, though statistical thermodynamics and with a tunneling correction, $\kappa(T)$. 
+\end{comment}
 
 \begin{equation}
-    k(T) = \kappa(T) \frac{k T}{h} \frac{Q^\ddagger}{\prod^{n}_{i} Q_i} \exp{\frac{-\Delta E^{\ddagger}_{0}}{k T}}
+    k(T) = \kappa(T) \frac{k_B T}{h} \frac{Q^\ddagger}{\prod^{n}_{i} Q_i} \exp{\frac{-\Delta E^{\ddagger}_{0}}{k_B T}}
     \label{eyring:2}
 \end{equation}
+
+\eqnref{eyring:2} can be obtained, from \eqnref{eyring:1}, through statistical thermodynamics and with a tunneling correction, $\kappa(T)$. 
 $Q^\ddagger$ represents the canonical partition function of the TS, $\prod^n_i Q_i$ is the product of the partition functions of $n$ number of reactants, $\Delta E^{\ddagger}_0$ is the activation energy for this reaction.
 These equations can only be used if the partition functions of the TS, reactants, and products are known. 
-The partition function of a species or a TS can be given by the Boltzmann weighted sum of $i$ states given by:
+The canonical partition function of a species can be represented by the molecular partition function of that species, $q$, and the number of indistinguishable molecules of that species in the system, $N$, as described by \eqnref{eq:q}.
+
 \begin{equation}
-    Q = \sum_i g_i \exp\left(-\frac{\epsilon_i}{k_B T}\right)
+    Q = \frac{q^N}{N!}
+    \label{eq:q}
+\end{equation}
+
+
+The molecular partition function of a species or a TS can be given by the Boltzmann weighted sum of $i$ energy states given by:
+\begin{equation}
+    q = \sum_i g_i \exp\left(-\frac{\epsilon_i}{k_B T}\right)
     \label{eq:Q}
 \end{equation}
-where $Q$ is the partition function, $g_i$ is the degeneracy of the $i$th state, $\epsilon_i$ is the energy level of the $i$th state, $k_B$ is the Boltzmann constant, and $T$ is the temperature of the system.
+$g_i$ is the degeneracy of the $i$th state, $\epsilon_i$ is the energy level of the $i$th state, $k_B$ is the Boltzmann constant, and $T$ is the temperature of the system.
+It can be assumed the energy of each state is the sum of  separable energy contributions across $j$ modes and can be described by \eqnref{eq:epsilon}.
+
+\begin{equation}
+    \epsilon_i = \sum_j \epsilon_{j,i}
+    \label{eq:epsilon}
+\end{equation}
+
+Translational, rotational, vibrational, and electronic contributions to the partition function are commonly used modes.
+By combining \eqnref{eq:Q} and \eqnref{eq:epsilon}, we find that the molecular partition function can be represented as the product of molecular partition functions for particular modes (i.e. $q_j$ is the molecular partition function for mode $j$) as shown in \eqnref{qtot}. 
+ 
+\begin{equation}
+    q = \prod_j q_j
+    \label{qtot}
+\end{equation}
 %From this point, a set of assumptions can be made in how to arrive at an adequate approximation of the canonical partition function from quantum calculations \cite{Truhlar:1991}.\rhw{what does this sentence add/mean?}
 
 
 \begin{comment}
 The rigid rotor harmonic oscillator approximation is frequently used to calculate the overall partition function.
-This approximation treats the the bond as a system with a resting equilibrium distance and a force constant that restores changes in bond length to its equilibrium distance.
+This approximation treats the bond as a system with a resting equilibrium distance and a force constant that restores changes in bond length to its equilibrium distance.
 The total partition function, $Q_{tot}$, is the product of the translational ($Q_{trans}$), rotational ($Q_{rot}$), vibrational ($Q_{vib}$), and electronic ($Q_{elec}$) partition functions of a molecule. 
 
 \begin{equation}
@@ -444,26 +480,43 @@ It is often assumed the lowest energy state is the only one available (valid unl
 \subsubsection{Master equation solvers}
 
 %\ndh{revise this section a lil more in-depth}
+% Possibly helpful papers:
+% Stephen J. Klippenstein, Carlo Cavallotti. Ab initio kinetics for pyrolysis and combustion systems. 2019,,, 115-167. https://doi.org/10.1016/B978-0-444-64087-1.00002-4
+% Nicholas J.B. Green. Steady-state master equation methods. 2019,,, 465-514. https://doi.org/10.1016/B978-0-444-64207-3.00008-1 https://sci-hub.st/10.1016/B978-0-444-64207-3.00008-1
+% Stephen J. Klippenstein. From theoretical reaction dynamics to chemical modeling of combustion. Proceedings of the Combustion Institute 2017, 36 (1) , 77-111. https://doi.org/10.1016/j.proci.2016.07.100
+% Stephen J. Klippenstein, Vijay S. Pande, and Donald G. Truhlar . Chemical Kinetics and Mechanisms of Complex Systems: A Perspective on Recent Theoretical Advances. Journal of the American Chemical Society 2014, 136 (2) , 528-546. https://doi.org/10.1021/ja408723a
+% Yuri Georgievskii, James A. Miller, Michael P. Burke, and Stephen J. Klippenstein . Reformulation and Solution of the Master Equation for Multiple-Well Chemical Reactions. The Journal of Physical Chemistry A 2013, 117 (46) , 12146-12154. https://doi.org/10.1021/jp4060704
+% Joshua W. Allen, C. Franklin Goldsmith, William H. Green. Automatic estimation of pressure-dependent rate coefficients. Phys. Chem. Chem. Phys. 2012, 14 (3) , 1131-1155. https://doi.org/10.1039/C1CP22765C
+% Antonio Fernández-Ramos, , James A. Miller and, Stephen J. Klippenstein, , Donald G. Truhlar. Modeling the Kinetics of Bimolecular Reactions. Chemical Reviews 2006, 106 (11) , 4518-4584. https://doi.org/10.1021/cr050205w
+%James A. Miller, , Stephen J. Klippenstein. Master Equation Methods in Gas Phase Chemical Kinetics. The Journal of Physical Chemistry A 2006, 110 (36) , 10528-10544. https://doi.org/10.1021/jp062693x
+% Terry J. Frankcombe, Sean C. Smith. Selecting Methods to Solve Multi-Well Master Equations. Journal of Theoretical and Computational Chemistry 2003, 02 (02) , 179-191. https://doi.org/10.1142/S0219633603000483
 
-Master equation solvers are a series of codes that can be used to calculate reactions involving multiple van der Walls energy wells and pressure dependence when transitioning from reactants to products.
-These solvers can be coupled with automated TST code bases to determine kinetic parameters and the goal of this section is to introduce solvers that are utilized by code bases. 
-For an adequate summary of solution methods to the master equation, we point to a comprehensive review by Pilling and Robertson \cite{Pilling:2003}.
-This section introduces Arkane (formally CanTherm) \cite{gao:2016}, MESS \cite{MESS:2013}, and MESMER \cite{MESMER:2012}, three commonly used master equation solvers. 
-MESS and MESMER follow the complete master equation methodology \cite{truhlar:1996} while Arkane follow the Rice--Ramsperger--Kassel--Marcus (RRKM) approximation \cite{RRKM:1999}. 
+This review focuses on automating the application of Ab Initio Transition State Theory.
+For reactions involving recombination, dissociation, unimolecular isomerization, or multiple wells,  non-reactive collisional energy transfer can play a crucial role and   a Master Equation (ME) treatment is required \cite{Pilling:2003, truhlar:1996, 10.1126/science.aaa1257,10.1126/science.1260856}\rhw{check these are best references}. The master equation represents the time-varying energy-resolved populations of the isomers, considering collisional energy transfer as well as microcanonical reaction rates.\cite{Klippenstein:2017eu}.
+Master equation solvers can be used to calculate phenomenological kinetic parameters for reactions involving multiple wells and pressure dependence, including van der Walls complexes.
+Master equation solvers include Arkane (formally CanTherm) \cite{gao:2016}, MultiWell
+\cite{?,?}\rhw{Barker, J. R. Multiple-Well, Mulitple-Path Unimolecular Reaction Systems. I. MultiWell Computer Program Suite. Int. J. Chem. Kinet. 2001, 33, 232-245.}
+\rhw{Barker, J. R.; Nguyen, T. L.; Stanton, J. F.; Aieta, C.; Ceotto, M.; Gabas, F.; Kumar, T. J. D.; Li, C. G. L.; Lohr, L. L.; Maranzana, A.; Ortiz, N. F.; Preses, J. M.; Sonk, J. A.; Stimac, P. J. Mutiwell-2017 Software Suite; Barker, J. R. University of Michigan, Ann Arbor, Michigan, USA. http://clasp-research.engin.umich.edu/multiwell/ }
+,  MESS \cite{MESS:2013}, and MESMER \cite{MESMER:2012}.
+%MESS and MESMER follow the complete master equation methodology \cite{truhlar:1996} while Arkane follow the Rice--Ramsperger--Kassel--Marcus (RRKM) approximation \cite{RRKM:1999}. 
+
+A Master Equation approach still requires microcanonical reaction rates and hence characterization of the reactants, products, and transition states, so the results from any of the automated TS-locating tools can be used for performing ME calculations. However, of the tools reviewed, only EStokTP (via MESS), KinBot (via MESS or MESMER), and to some extent AutoTST (via RMG and Arkane) attempt to automate the ME calculations themselves.
+
+
 
 
 \subsubsection{Internal rotors}
 
 An internal rotor is a non-terminal bond with rotatable groups of atoms, or tops, on either end (e.g. the C-C bond in ethane). 
-An internal rotor can be treated as a free rotor, harmonic oscillator, or hindered rotor.
-A free rotor is assumed to have no rotational barrier; an appropriate assumption at very high temperatures, but incorrect for low temperatures.
-In the harmonic oscillator approximation, torsional rocking about this bond is modeled as harmonic motion within an inescapable potential energy well.
-At low temperatures, the harmonic oscillator approximation holds true. 
-Hindered rotors occur at intermediate temperatures where the compound has enough energy to rotate out of one conformer and into another, but not enough energy for hindrance to be negligible.
+An internal rotor can be treated as a free rotor, a rigid rotor, or a hindered rotor.
+A free rotor is assumed to have no rotational barrier; an appropriate assumption at low barrier to temperatures ratios (V/T), but incorrect for high ratios.
+In the rigid rotor approximation, the calculated frequencies are treated as harmonic oscillators with the optimized geometry as the equilibrium point and the corresponding displacements about this geometry are modeled as harmonic motion within an inescapable potential energy well.
+At high ratios, the harmonic oscillator approximation holds true. 
+Hindered rotors occur at intermediate ratios where the compound has enough energy to rotate out of one conformer and into another, but not enough energy for hindrance to be negligible.
 
-The calculation of the partition function can be further expanded by using the 1-D hindered rotor approximation \cite{pfaendtner:2007}.
+The calculation of the partition function can be further expanded by using the 1-D hindered rotor approximation \cite{pitzer:1942, pfaendtner:2007, Lin:2008}. 
 In this approximation, each side of a four atom dihedral is considered a separable rotatable top.
-Starting from a minimum energy structure, the potential energy is determined using electronic structure calculations as one top is rotated over \ang{360}. 
+Starting from a minimum energy structure, the potential energy is determined using electronic structure calculations as one top is rotated over \ang{360} for asymmetric tops or over $\ang{360}/\sigma$ for symmetric tops where $\sigma$ is the degree of rotational symmetry of that top. 
 It is noted that the description represents separable 1-D hindered rotors.
 
 Coupled hindered rotors (e.g. 2-D and 3-D) involve a grid like search where rotations about multiple tops are investigated at the same time. 
@@ -473,8 +526,18 @@ More in depth discussion of coupled hindered rotors is discussed in reference \c
 
 \subsubsection{Symmetry number}
 
-A symmetry number is the number of different but equivalent configurations of a molecule or a TS geometry \cite{gilson:2010}.
-Determining the symmetry number of species and TS geometries is imperative because it is included in the rate constant expression and therefore necessary in calculating thermodynamic and kinetic parameters.
+A symmetry number is the number of equivalent orientation of a molecule that can be found as a result of rotation \cite{Lynch:2004, gilson:2010}.
+This can be broken down further into internal symmetry ($sigma_{int}$, symmetry by modification of internal coordinates) and external symmetry ($\sigma_{ext}$, symmetry by rotations of the entire fixed molecule).
+The total symmetry is simply the product of the internal and external symmetry.
+Determining the external symmetry number of species and TS geometries is imperative because it is included in the rotational partition function ($q_{rot}$) as shown in \eqnref{eq:q_rot}.
+
+\begin{equation}
+    q_{rot} = \frac{\pi^{1/2}}{\sigma_{ext}}\Big(\frac{8 \pi^2 I_A k_B T}{h^2}\Big)^{1/2} \Big(\frac{8 \pi^2 I_B k_B T}{h^2}\Big)^{1/2} \Big(\frac{8 \pi^2 I_C k_B T}{h^2}\Big)^{1/2}
+    \label{eq:q_rot}
+\end{equation}
+
+In the above equation, $\sigma_{ext}$ is the external symmetry, $I_A$, $I_B$, and $I_C$ are the principal moments of inertia, $k_B$ is the Boltzmann constant, $T$ is the temperature, and $h$ is Plank's constant. 
+\eqnref{eq:q_rot} represents the rotational contributions to the molecular partition function and is included in \eqnref{qtot} and subsequently in the rate expression, \eqnref{eyring:2}. 
 We suggest readers review Refs. \cite{FernandezRamos:2007, Pollak:1978} for a detailed description of symmetry numbers in chemical kinetics.
 
 
@@ -511,7 +574,7 @@ Additional explanations of symmetry numbers are described by Fern\'andez-Ramos a
 \section{Automated transition state theory code bases}
 
 This section of the review introduces existing code bases capable of performing automated TST calculations, highlights and compares each code's key features and methodologies, and discusses test sets.
-The code based reviewed are as follows:
+The software reviewed are as follows:
 \begin{itemize}
     \item Freezing String Methods \cite{Behn:2011}
     \item molecularGSM \cite{Peters:2004,Zimmerman:2013jctc,Zimmerman:2013jcp,Zimmerman:2015jcc}
@@ -542,7 +605,7 @@ The freezing string method (FSM) is an iterative TS search method that uses both
 First, an interpolated path between user provided reactant and product complexes along a PES is drawn.
 FSM will step reactant and product geometries along this path by a user specified inward step size and partially optimize complexes perpendicularly to the path. 
 The resultant complexes are then used to draw a new interpolation and this process is iterated.
-The optimization of these new complexes is performed using a conjugated gradient scheme for a specific number of steps. 
+The optimization of these new complexes is performed using a conjugated gradient scheme for a specific number of steps of limited size. 
 %The optimization is constrained such that no step will change the Cartesian position of any atom by greater than 0.05 \si{\angstrom} and is stopped if the distance between optimizing complexes exceeds a distance that is greater than initial distance between the new nodes plus one half of the step size. \rhw{too much detail?}
 This process is repeated until the entire string connecting the two initial complexes is known. 
 A representation of this process is shown in \figref{fig:fsm}. 
@@ -556,12 +619,10 @@ A representation of this process is shown in \figref{fig:fsm}.
 %\rhw{do you have permission from publishers yet? often just a form to complete on their website}
 
 Interpolations between complexes is performed either using Cartesian interpolation or linear synchronous transit (LST) interpolation \cite{HALGREN:1977, Peng:1993}. 
-%Cartesian interpolation is when a line is drawn between reactant and product complexes and is easily calculated.
-%LST interpolation is more complex and we point to the original paper for its described . 
 
 One or more complexes, or nodes, along the string are used to perform exact TS searches.
 Often the highest energy complex is used, however, more can be used for a complete search of more complex reactions. 
-Successfully optimized TSs are validated through intrinsic reaction coordinate (IRC) calculations \cite{Maeda:2015} which verifies that the TS corresponds to the correct input reactant and product geometries. 
+Successfully optimized (i.e. converged) TSs are validated through intrinsic reaction coordinate (IRC) calculations \cite{Maeda:2015} which verifies that the TS corresponds to the correct input reactant and product geometries. 
 
 All levels of theory available in Q-Chem \cite{QChem:2015}, an electronic structure calculator, can be used when using FSM, although the authors used L2 level of theory calculations for three reactions in their preliminary study: the conversion of cis,cis-2,4-hexadiene to trans-3,4-dimethylcyclobutene; the alanine dipeptide $C5$ to $C_{7AX}$ isomerization; and metallacycle formation in a Ni-exchanged zeolite \cite{Behn:2011}. %The FSM workflow was also compared against the growing string method, another code base described later.
 Another research goal was to compare efficacy and computational time between the FSM workflow and the growing string method described in the following section.
@@ -573,14 +634,15 @@ The molecularGSM is similar to the FSM; both involve a double ended ``string'' t
 However, the difference between FSM and molecularGSM is how such steps are taken. 
 
 Starting from user provided reactant and product wells, molecularGSM draws an interpolation between these nodes and new nodes are created one step inwards along that path. 
-Nodes on the string are optimized until the gradient on the PES is below a threshold and a new interpolation is made using \textit{all} nodes along the string in contrast to the FSM which only uses the two most center nodes when creating its next interpolation.
+Nodes on the string are optimized until the gradient on the PES is below an optimization threshold and a new interpolation is made using \textit{all} nodes along the string in contrast to the FSM which only uses the two most center nodes when creating its next interpolation.
 This process is repeated, adding additional nodes until the string is optimized and a new interpolation is made between all nodes to find an energy maximum. 
 The energy maximum is used to perform a direct TS search.
 %Interpolation methods differ between variations of GSM methods used which can be as simple as spline fits to more robust path curvature evaluations \todo{cite different ways which the path can be fitted}.
 
 In addition to a double ended method, molecularGSM has a single ended method, as described in \figref{fig:se-gsm}.
 This process works similarly to the double ended method, but only half of the string is used to find a TS.
-This process will iteratively add frontier nodes to the reactant side of the string and the path will be interpolated in a similar fashion.
+This process will iteratively grow the string by adding frontier nodes to the reactant side of the string. 
+The path will be interpolated in a similar fashion to the double ended molecularGSM.
 When a new frontier node is added and optimized, the frontier node is checked to see if (1) the frontier node is a lower energy than the previous node and (2) the frontier node's constraint gradient on the PES is positive. 
 If these two checks pass, all nodes along the string are optimized and the highest energy node is used for a direct TS search.
 The final node in the single ended method is then optimized to product geometries.
@@ -694,7 +756,7 @@ These key distances are used to generate a guess of TS geometry.
 \end{figure}
 
 Determined key distances are used to constrain a 3D guess of the geometry using RDKit, a cheminformatics software, \cite{RDKit:2018} at a L0 level of theory.
-The TS geometry guess then goes through a series of optimizations at a L2 level of theory: (1) a loose geometry relaxation with distances in the reaction center frozen, (2) a constrained saddle point search with the the reaction center fixed, and (3) a tight overall saddle search of the TS geometry without constraints.
+The TS geometry guess then goes through a series of optimizations at a L2 level of theory: (1) a loose geometry relaxation with distances in the reaction center frozen, (2) a constrained saddle point search with the reaction center fixed, and (3) a tight overall saddle search of the TS geometry without constraints.
 The final optimized TS is validated via L2 IRC calculations and cross checked with the input reactants and products.
 
 Reactant and product geometries are generated and optimized in a similar fashion using a L0 and L2 level of theory, respectively. 
@@ -790,7 +852,7 @@ These starting geometries are used to find TSs by reacting fragments of the reac
 In the SC method, fragments of a starting unimolecular reactant are pushed or pulled apart. 
 These fragments include reacting atoms and atoms neighboring the reacting atoms noninclusive of atoms neighboring both reacting atoms.
 
-AFIR methods have been used in a variety of studies \cite{Maeda:2016, Madea:2018} with Aldol reactions, Claisen rearrangements, and Co-catalyzed hydroformylation to name a few \cite{Maeda:2016}
+AFIR methods have been used in a variety of studies \cite{Maeda:2016, Madea:2018} with Aldol reactions, Claisen rearrangements, and Co-catalyzed hydroformylation to name a few \cite{Maeda:2016}.
 In addition, the AFIR method is a well-established method available in the GRRM17 software, an electronic structure code \cite{Madea:2013}.
 
 
@@ -860,16 +922,16 @@ Reactant and product geometries are created by embedding using a L0 level of the
 Low energy conformers within a user defined specific cutoff criteria are identified and are further optimized at a user defined level of theory (often L2 level of theory).
 After, the lowest energy conformer is used to attempt 1D hindered rotor scans on all rotatable bonds at a L2 level of theory.
 
-TS complexes are generated by matching the reaction to a template to identify reacting atoms and by using key distances of the reaction center. 
-Key distances are either based on previous TS searches or user specified distances.
+TS complexes are generated by first matching the reaction to a template to identify reacting atoms.
+Distances between reacting atoms are set to key distances that are based on previous TS searches or user specified.
 Similar to AutoTST, 3D complexes are created by using the user specified key distances to create a 3D geometry at a L0 level of theory.
 %editing the bounds matrix with the key distances and then embedded in a 3D geometry at a L0 level of theory.
 Complexes are loosely optimized to a minima while keeping the reacting atoms fixed at a L1 level of theory.
-TS geometries undergo exhaustive conformer searches at L1 or L2 user definedlevel of theory calculations by relaxing geometries to a minima, keeping the reaction center frozen.
+TS geometries undergo exhaustive conformer searches at L1 or L2 user defined level of theory calculations by relaxing geometries to a minima, keeping the reaction center frozen.
 The lowest energy conformer is optimized to a saddle point at a L2 level of theory where 1D hindered rotor scans are attempted. 
 TSs are verified by identifying a only one imaginary frequency and calculating the change in bond lengths when applying Cartesian displacements of the imaginary frequency.
 This is preformed in lieu of IRC calculations to reduce computational costs.
-A TS is verified if the the translational mode corresponding to the imaginary frequency contains motion along active bonds, and if these contributions are larger than that of the residual complex, the TS is validated. 
+A TS is verified if the translational mode corresponding to the imaginary frequency contains motion along active bonds, and if these contributions are larger than that of the residual complex, the TS is validated. 
 Validated TS, reactant, and product geometries are then used to extract Arrhenius parameters using statistical thermodynamics.
 To test their workflow, the authors performed calculations on 8 reactions representative of the 8 supported reaction families and saw good agreement (within a factor of 2).
 
@@ -950,13 +1012,13 @@ Currently, EStokTP works for four reaction families: abstraction, addition, beta
 Users will then specify two entry angles for reactants and three dihedral angles between reacting atoms.
 %These dihedral angles are as follows: first atom of abstracting reactant, \texttt{isite}, dummy atom, \texttt{jsite}; second atom of abstracting reactant, first atom of abstracting reactant, \texttt{isite}, dummy atom; and, (if available) third atom of abstracting reactant, second atom of abstracting reactant, first atom of abstracting reactant, \texttt{isite}.
 EStokTP interfaces with Gaussian \cite{Gaussian:2009} or MolPro \cite{molpro:2012} to construct the TS guess by positioning the reactants using the user specified internal coordinates. 
-EStokTP will perform a conformer analysis by generating $5 + 3^n$ or $100$ TS conformers randomly, whichever is smaller, where $n$ is the number of non-methyl dihedrals. 
+EStokTP will perform a conformer analysis by generating $5 + 3^n$ or $100$ TS conformers randomly, whichever is smaller, where $n$ is the number of non-methyl torsions. 
 These conformers are relaxed and the highest energy geometry undergoes a series of partial optimizations to arrive at a saddle point at a L2 level of theory. 
 The TS is validated through IRC calculations, and 1-, 2-, or 3D hindered rotor calculations are performed at a L2 level of theory.
 Single point energies are calculated at a L3 level of theory.
 
-In addition, EStokTP is also unique in that it uses a multi van der Waals well method when identifying TS geometries and kinetics.
-van der Waals wells can be considered for both the reactant and product side (present in abstraction reactions), just the reactant side (present in addition and scission reaction), or not consider the van der Waals wells at all (present in isomerization).
+EStokTP is unique in that it uses a multi van der Waals well method when identifying TS geometries and kinetics.
+Van der Waals wells can be considered for both the reactant and product side (present in abstraction reactions), just the reactant side (present in addition and scission reaction), or not consider the van der Waals wells at all (in isomerization).
 Reactant, product, and TS geometries are passed to MESS \cite{MESS:2013} to obtain kinetic parameters.
 
 
@@ -1000,7 +1062,7 @@ Because this review focuses on TST, reference the recent publication by Van de V
 Kinbot investigates TS geometries for all possible reactions a species can undergo (i.e. rather than investigating a single reaction, Kinbot evaluates many).
 To run KinBot, a user provides the structure of the species of interest (via SMILES string or Cartesian coordinates), its multiplicity, quantum methods, and reaction families to investigate. 
 KinBot first performs a systematic or random conformational search and a geometry optimization of the reactant geometries using the Gaussian quantum chemistry suite.
-By default, a systematic conformer search will be performed and it will iterate through all rotatable dihedrals and orientations of cyclic substructures. 
+By default, a systematic conformer search will be performed and it will iterate through all rotatable torsions and orientations of cyclic substructures. 
 Conformers are then optimized at a L1 level of theory to identify the lowest energy conformer, which is then optimized to calculate frequencies at a L2 level of theory.
 If the reactant provided contains many rotatable bonds, a user may specify a maximum number of samples to use during a calculation and to use a random sampling mechanism rather than the default.
 To ensure the lowest energy conformer is isomorphic to the starting species and TSs, KinBot will ensure no bond lengths significantly change, resulting in unwanted rearrangements of atoms.
@@ -1018,7 +1080,7 @@ To ensure the lowest energy conformer is isomorphic to the starting species and 
 KinBot relies on predefined reaction families, or general reaction templates, when generating mechanisms. 
 From a user specified list of reaction families (described in \cite{kinbot:2019}), KinBot will set up a TS guess using either a ``direct'', ``indirect'', or ``scan'' strategy performed at a low level of theory (L0).
 Through the direct and indirect methods, a TS guess is created by performing a series of geometry modifications and constrained optimizations to bring reacting atoms to a specified distance. 
-Dihedrals, angles, and bonds of the complex are modified (in that order) and undergo a constrained optimization with modified geometry frozen.
+Torsions, angles, and bonds of the complex are modified (in that order) and undergo a constrained optimization with modified geometry frozen.
 Alternatively, KinBot can use a scan method, where the TS guess is created by scanning the electronic energies along the active bond and selecting the maximum energy complex.
 
 Once a TS guess is identified, the geometry is optimized to a first-order saddle point with a L1 level of theory, and if a saddle point is found, the geometry is optimized again and the frequencies are calculated at a L2 level of theory.
@@ -1053,7 +1115,7 @@ Finally, KinBot (at the users request) performs single point energy calculations
 All calculations performed by KinBot are able to be used in two master equation codes: MESS \cite{MESS:2013} or MESMER \cite{MESMER:2012}, where only minor manual input is required to perform rate estimations.
 
 Van de Vijver and Zador tested the efficacy of KinBot on four different test sets: [1,3]-sigmatropic H-migration reactions, thermal decomposition of gamma-valerolactone, propene and OH, and Aramco Mech up to C4 species.
-The authors do not comment on improvement in the article itself, but point to \texttt{kinbot.sandia.gov} and the KinBot manual for descriptions of improvements.
+The authors do not comment on improvement in the article itself.
 
 
 \subsection{TS Gen (2020)}
@@ -1212,18 +1274,30 @@ Each of these categories plus a few more are summarized in \tabref{table:compari
 
 \begin{landscape}
 \begin{singlespace}
-\begin{scriptsize}
+\begin{footnotesize}
 \tiny
-\begin{longtable}{| p{0.5in} | p{0.25in} | p{0.45in} | p{0.8in} | p{0.7in}| p{0.5in}| p{0.5in }| p{0.45in}| p{0.45in}| p{0.5in}| p{0.45in}| p{0.5in}| p{0.5in} | p{0.45in} |}
-\caption{A table describing the reviewed codes that describes their differences.}
-\label{table:comparison}
-
-Software  &  Year Published  &  Input  &  Generation of Guesses  &  Geometry Optimizations of TS Guess &  Conformer Analysis  &  Validation  &  Hindered Rotors  & Level of Theory for Single Point Energies &  Symmetry  &  Kinetics  &  Supported QM Software  &  Supported Atoms  &  Open Source? Licensing?  \\ 
+\begin{longtable}{| p{0.5in} | p{0.25in} | p{0.6in} | p{1.0in} | p{0.6in}| p{0.45in}| p{0.5in }| p{0.3in}| p{0.2in}| p{0.5in}| p{0.45in}| p{0.5in}| p{0.5in} | p{0.45in} |}
+\caption{\label{table:comparison}A table describing the reviewed codes that describes their differences.}\\
+\hline
+Software  &  
+Year Published  & 
+ Input  &  
+ Generation of Guesses  &  
+ Geometry Optimizations of TS Guess &  
+ Conformer Analysis  & 
+Validation  &  
+\rotatebox[origin=c]{90}{Hindered} \rotatebox[origin=c]{90}{Rotors}  & 
+\rotatebox[origin=c]{90}{Level of Theory for} \rotatebox[origin=c]{90}{Single Point Energies} &
+Symmetry  &  
+ Kinetics  &
+Supported QM Software  &
+Supported Atoms  &
+ Open Source? Licensing?  \\ 
 \hline
 \hline
 FSM & 2011 &  3D geometries of reactants and products  & String method connecting reactants and products, string is a straight line recalculated using newest points & Native surface walking algorithm at L2 & No &  IRC Calculation  & No & L2 & No & No & Q-Chem & All atom types &  No, proprietary license  \\ 
 \hline
-molecularGSM & 2011 &  3D geometries of reactants and products for double ended method, reactants for single ended method & String method connecting reactants and products, string is a fitted curve recalculated using newest points & Native surface walking algorithm at L2 & No &  IRC Calculation  & No & L2 & No & No & Gaussian, MolPro, Orca, Q-Chem & All atom types &  Yes, MIT license  \\ 
+molecular GSM & 2011 &  3D geometries of reactants and products for double ended method, reactants for single ended method & String method connecting reactants and products, string is a fitted curve recalculated using newest points & Native surface walking algorithm at L2 & No &  IRC Calculation  & No & L2 & No & No & Gaussian, MolPro, Orca, Q-Chem & All atom types &  Yes, MIT license  \\ 
 \hline
 AutoMeKin & 2014 &  3D geometries of reactants and products  & Chemical dynamics calculation performed to observe breaking / forming of bonds over a time scale, the point of change geometry is used as the starting guess & L1 optimization followed by an L1 validation, L2 reoptimization & No &  IRC Calculation  & No & L2 & No & No & MOPAC, Gaussian & All atom types &  Yes, MIT license  \\ 
 \hline
@@ -1233,7 +1307,7 @@ AFIR & 2016 &  3D geometries of reactants and products  & Reacting atoms are pus
 \hline
 AutoTS   & 2017 &  3D geometries of reactants and products  &  IDs active bonds through systematic deletion, Linear regression along reaction coordinates to find energy maximum at L2. Templates previous run reaction to reaction of interest.  &  QST search using reactants, products, and TS guess at L2  &  No  &  Vetting and Connecting  &  No  & L2 &  No  &  No  &  Jaguar  &  All atom types  &  No, proprietary license  \\ 
 \hline
-Genesys  & 2018 &  Guess of reaction center coordinates, reaction family  &  Uses key distances to embed with L0  &  Low level optimization and Conformer analysis ad L1, Final optimization at L2  &  Yes, systematic  &  Normal mode analysis  &  Yes, 1D  & L3  &  Unspecified  &  Yes, by hand  &  Gaussian &  H, C, O, S  &  No, not distributed  \\ 
+Genesys  & 2018 &  Guess of reaction center coordinates, reaction family  &  Uses key distances to embed with L0  &  Low level optimization and Conformer analysis at L1, Final optimization at L2  &  Yes, systematic  &  Normal mode analysis  &  Yes, 1D  & L3  &  Unspecified  &  Yes, by hand  &  Gaussian &  H, C, O, S  &  No, not distributed  \\ 
 \hline
 AARON    & 2018 &  Reaction template, labeled atoms  &  Template previous run reaction to reaction of interest  &  Partial optimizations at L2  &  Yes, rule based  &  ``Step Vetting'' Validation  &  No  & L2 &  No  &  No  &  Gaussian  &  All atom types  &  Yes, GPL-3.0 license  \\ 
 \hline
@@ -1251,8 +1325,7 @@ autodE & 2020 & SMILES of reactants and products & Truncating or Tempting method
 \hline
 
 \end{longtable}
-
-\end{scriptsize}
+\end{footnotesize}
 \end{singlespace}
 \end{landscape}
 
@@ -1282,11 +1355,9 @@ The authors were partially supported by the U.S. Department of Energy, Office of
 
 
 \rhw{Remove the arXiv preprint links that are incorrect and the redundant URLs}
-\rhw{Check all titles for CAPITALS eg. not vdw-tsscds}
-\rhw{Use journal acronyms, eg. not Journal of Computational Chemistry}
 
-\bibliographystyle{elsarticle-num}
 \bibliography{refs.bib}
+\bibliographystyle{elsarticle-num}
 
 
 
