@@ -156,7 +156,7 @@ This review highlights the recent advances in automated transition state theory 
 
 
 
-Generating detailed microkinetic models is of utmost importance for understanding reaction pathways in combustion \cite{VandeVijver:2015}, atmospheric chemistry \cite{Vereecken:2012}, and catalytic settings \cite{STOLTZE:2000}.
+Generating detailed microkinetic models is of utmost importance for understanding reaction pathways in combustion \cite{vandevijver:2015}, atmospheric chemistry \cite{Vereecken:2012}, and catalytic settings \cite{STOLTZE:2000}.
 These models often contain hundreds of species and thousands reactions, where each species and reaction require thermodynamic and kinetic parameters, respectively.
 Given the size of these models, efforts have been made to generate detailed kinetic models automatically \cite{vandevijver:2015}. 
 GRACE \cite{yoneda:1979}, KING \cite{maio:1992}, NetGen \cite{susnow:1997}, EXGAS \cite{warth:2000}, COMGEN \cite{ratkiewicz:2003}, RING \cite{rangarajan:2012}, GENESYS \cite{vandewiele:2012}, and RMG \cite{gao:2016} are a handful of these codes that can generate mechanisms automatically.
@@ -174,7 +174,7 @@ Experimentation is often preferred, but is costly and near impossible for reacti
 Parameter estimates are often determined by simple rules, generalized across reactions between structurally similar species \cite{Curran:1998bx, cai:2014}. 
 Estimations are much faster than both experiments and TST calculations making them advantageous when 
 But estimates can be several orders of magnitude incorrect when rules are misapplied or lacking.
-TST calculations allow reaction rate constants to be computed from first principles and tend to be accurate within a factor of two \cite{fernandez:2006, Klippenstein:2017eu}, but are computationally expensive and require manual input and trained guesses to find the correct transition state (TS) geometries for just one reaction pathway. 
+TST calculations allow reaction rate constants to be computed from first principles and tend to be accurate within a factor of two \cite{fernandezramos:2006, Klippenstein:2017eu}, but are computationally expensive and require manual input and trained guesses to find the correct transition state (TS) geometries for just one reaction pathway. 
 Given the enormous number of reactions present in detailed reaction mechanisms, TST calculations need to be automated to make use of high-performance computing.
 This review identifies tools that perform automated TS searches, describes process workflows, compares key differences, and highlights future goals of automated TST calculations.
 
@@ -210,7 +210,7 @@ The following subsections give a high-level overview of electronic structure cal
   \caption{3-D representation}
   \label{fig:sub2}
 \end{subfigure}
-\caption{An example potential energy surface for a triatomic reaction \ce{A + BC -> AB + C} . The minima represent the energy of reactant and product geometries while the maximum ($X^\ddagger$) represents the energy of the activated complex, or TS. \rhw[inline]{RHW should upload to figshare and we cite these figures}}
+\caption{An example potential energy surface for a triatomic reaction \ce{A + BC -> AB + C} . The minima represent the energy of reactant and product geometries while the maximum ($X^\ddagger$) represents the energy of the activated complex, or TS. From \cite{West:2020:TSTfigures}}
 \label{fig:pes}
 \end{figure}
 
@@ -312,9 +312,10 @@ Additionally, it is assumed that the rate limiting step is the transition from t
     \label{eyring:1}
 \end{equation}
 
-In \eqnref{eyring:1}, $k_B$ is the Boltzmann constant, $T$ is the temperature, $h$ is Plank's constant, $\Delta G^\ddagger$ is the change in Gibb's energy when progressing from the reactants to the products, $R$ is the ideal gas constant, 
-and $\kappa(T)$ is the temperature dependent correction faction for quantum tunneling.
+In \eqnref{eyring:1}, $k_B$ is the Boltzmann constant, $T$ is the temperature, $h$ is Plank's constant, $\Delta G^\ddagger$ is the change in Gibb's energy when progressing from the reactants to the transition state, $R$ is the ideal gas constant, 
+and $\kappa(T)$ is the temperature-dependent correction faction for quantum tunneling.
 Quantum tunneling is the probability that the reaction will proceed through a barrier that is lower than electronic barrier \cite{RUBAKOV:1984}, thus increasing the apparent rate constant.
+In general, $\kappa$ is dependant on the energy of the system, the shape of the barrier, and the effective mass of the system.
 The correction factor for quantum tunneling is often derived from either the Eckart model \cite{eckart:1930} or the Wigner model \cite{Winger:1932}.
 
 \begin{comment}
@@ -400,12 +401,13 @@ In contrast, the Wigner model \cite{Winger:1932} describes the canonical tunneli
 In general, $\kappa(T)$ is dependant on the energy of the system, the shape of the barrier, and the effective mass of the system, described in detail by Brown \cite{Brown:1981}.
 \end{comment}
 
+
+\eqnref{eyring:2} can be obtained, from \eqnref{eyring:1} through statistical thermodynamics. 
 \begin{equation}
     k(T) = \kappa(T) \frac{k_B T}{h} \frac{Q^\ddagger}{\prod^{n}_{i} Q_i} \exp{\frac{-\Delta E^{\ddagger}_{0}}{k_B T}}
     \label{eyring:2}
 \end{equation}
 
-\eqnref{eyring:2} can be obtained, from \eqnref{eyring:1}, through statistical thermodynamics and with a tunneling correction, $\kappa(T)$. 
 $Q^\ddagger$ represents the canonical partition function of the TS, $\prod^n_i Q_i$ is the product of the partition functions of $n$ number of reactants, $\Delta E^{\ddagger}_0$ is the activation energy for this reaction.
 These equations can only be used if the partition functions of the TS, reactants, and products are known. 
 The canonical partition function of a species can be represented by the molecular partition function of that species, $q$, and the number of indistinguishable molecules of that species in the system, $N$, as described by \eqnref{eq:q}.
@@ -437,7 +439,7 @@ By combining \eqnref{eq:Q} and \eqnref{eq:epsilon}, we find that the molecular p
     \label{qtot}
 \end{equation}
 %From this point, a set of assumptions can be made in how to arrive at an adequate approximation of the canonical partition function from quantum calculations \cite{Truhlar:1991}.\rhw{what does this sentence add/mean?}
-
+\rhw[inline]{Unsure how to fix (will think on it) but this section currently leaves me thinking "so what?" when it ends. I guess it's trying to set up the $q_{rot}$ discussion later.}
 
 \begin{comment}
 The rigid rotor harmonic oscillator approximation is frequently used to calculate the overall partition function.
@@ -492,11 +494,10 @@ It is often assumed the lowest energy state is the only one available (valid unl
 % Terry J. Frankcombe, Sean C. Smith. Selecting Methods to Solve Multi-Well Master Equations. Journal of Theoretical and Computational Chemistry 2003, 02 (02) , 179-191. https://doi.org/10.1142/S0219633603000483
 
 This review focuses on automating the application of Ab Initio Transition State Theory.
-For reactions involving recombination, dissociation, unimolecular isomerization, or multiple wells,  non-reactive collisional energy transfer can play a crucial role and   a Master Equation (ME) treatment is required \cite{Pilling:2003, truhlar:1996, 10.1126/science.aaa1257,10.1126/science.1260856}\rhw{check these are best references}. The master equation represents the time-varying energy-resolved populations of the isomers, considering collisional energy transfer as well as microcanonical reaction rates.\cite{Klippenstein:2017eu}.
+For reactions involving recombination, dissociation, unimolecular isomerization, or multiple wells,  non-reactive collisional energy transfer can play a crucial role and   a Master Equation (ME) treatment is required \cite{Pilling:2003, truhlar:1996,Pilling:2014Science,Jasper:2014Science}\rhw{check these are best references}. The master equation represents the time-varying energy-resolved populations of the isomers, considering collisional energy transfer as well as microcanonical reaction rates.\cite{Klippenstein:2017eu}.
 Master equation solvers can be used to calculate phenomenological kinetic parameters for reactions involving multiple wells and pressure dependence, including van der Walls complexes.
 Master equation solvers include Arkane (formally CanTherm) \cite{gao:2016}, MultiWell
-\cite{?,?}\rhw{Barker, J. R. Multiple-Well, Mulitple-Path Unimolecular Reaction Systems. I. MultiWell Computer Program Suite. Int. J. Chem. Kinet. 2001, 33, 232-245.}
-\rhw{Barker, J. R.; Nguyen, T. L.; Stanton, J. F.; Aieta, C.; Ceotto, M.; Gabas, F.; Kumar, T. J. D.; Li, C. G. L.; Lohr, L. L.; Maranzana, A.; Ortiz, N. F.; Preses, J. M.; Sonk, J. A.; Stimac, P. J. Mutiwell-2017 Software Suite; Barker, J. R. University of Michigan, Ann Arbor, Michigan, USA. http://clasp-research.engin.umich.edu/multiwell/ }
+\cite{barker:2001multiwell,multiwell,nguyen:2015}
 ,  MESS \cite{MESS:2013}, and MESMER \cite{MESMER:2012}.
 %MESS and MESMER follow the complete master equation methodology \cite{truhlar:1996} while Arkane follow the Rice--Ramsperger--Kassel--Marcus (RRKM) approximation \cite{RRKM:1999}. 
 
@@ -521,7 +522,7 @@ It is noted that the description represents separable 1-D hindered rotors.
 
 Coupled hindered rotors (e.g. 2-D and 3-D) involve a grid like search where rotations about multiple tops are investigated at the same time. 
 These calculations can result in even more accurate treatment of hindered rotation in a species but require much more computation time.
-More in depth discussion of coupled hindered rotors is discussed in reference \cite{fernandez:2013}.
+More in depth discussion of coupled hindered rotors is discussed in reference \cite{fernandezramos:2013}.
 
 
 \subsubsection{Symmetry number}
@@ -1352,9 +1353,6 @@ A collaborative effort should be made, when possible, to allow codes and their d
 
 This material is based upon work supported by the National Science Foundation under Grant No. 1605568.
 The authors were partially supported by the U.S. Department of Energy, Office of Science, Basic Energy Sciences, under Award \#0000232253, as part of the Computational Chemical Sciences Program.
-
-
-\rhw{Remove the arXiv preprint links that are incorrect and the redundant URLs}
 
 \bibliography{refs.bib}
 \bibliographystyle{elsarticle-num}
